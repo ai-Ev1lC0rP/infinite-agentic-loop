@@ -37,17 +37,32 @@ Generate one new iteration using the UI specification.
 ```
 Deploy 5 parallel agents to generate 5 unique iterations simultaneously.
 
+```bash
+/project:infinite specs/invent_n8n_agent.md n8n_workflows 5
+```
+Generate 5 intelligent N8N workflow agents with unique automation capabilities.
+
 #### 3. Large Batch (20 iterations)  
 ```bash
 /project:infinite specs/invent_new_ui_v3.md src_new 20
 ```
 Generate 20 iterations in coordinated batches of 5 agents for optimal resource management.
 
+```bash
+/project:infinite specs/invent_n8n_agent.md n8n_workflows 20
+```
+Create 20 sophisticated N8N automation agents across diverse business domains.
+
 #### 4. Infinite Mode
 ```bash
 /project:infinite specs/invent_new_ui_v3.md infinite_src_new/ infinite
 ```
 Continuous generation in waves until context limits are reached, with progressive sophistication.
+
+```bash
+/project:infinite specs/invent_n8n_agent.md infinite_n8n_agents/ infinite
+```
+Unlimited N8N agent generation with evolving automation intelligence and complexity.
 
 ## How It Works
 

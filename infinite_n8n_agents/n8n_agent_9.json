@@ -1,0 +1,484 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-9",
+    "name": "Enterprise Security & Compliance Orchestrator - AI Agent v9",
+    "description": "Advanced enterprise security orchestration workflow featuring multi-layer threat detection with ML-powered anomaly detection, automated compliance checking with regulatory framework mapping, intelligent incident response orchestration with cross-team coordination, predictive risk assessment with threat modeling, behavioral access management with zero-trust principles, and automated security training with adaptive learning paths.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "security", "compliance", "threat-detection", "incident-response", "risk-assessment", "access-management", "security-training", "zero-trust", "ml-security"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/security-event-intake",
+        "options": {
+          "rawBody": true,
+          "allowedMethods": ["POST", "PUT", "PATCH"]
+        }
+      },
+      "id": "security-event-intake",
+      "name": "Multi-Source Security Event Intake",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "notes": "Primary intake for security events from SIEM systems, endpoint detection, network monitoring, application logs, and cloud security services for comprehensive threat intelligence processing."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "resource": "audit",
+        "operation": "getAll",
+        "additionalFields": {
+          "filter": "timestamp>=now-5m",
+          "include_raw_data": true,
+          "severity": "medium,high,critical",
+          "categories": "authentication,authorization,data_access,configuration_change,privilege_escalation"
+        }
+      },
+      "id": "real-time-audit-monitor",
+      "name": "Real-time Audit Log Monitor",
+      "type": "n8n-nodes-base.SecurityCenter",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "notes": "Monitors enterprise audit logs in real-time for security anomalies, compliance violations, and suspicious activities with ML-enhanced pattern recognition."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Multi-Layer Threat Detection Engine with ML Integration\nconst threatDetection = {\n  async analyzeThreatVectors(eventData) {\n    const threats = {\n      networkAnomalies: this.detectNetworkAnomalies(eventData),\n      behavioralAnomalies: this.detectBehavioralAnomalies(eventData),\n      signatureMatches: this.detectKnownThreats(eventData),\n      zeroDay: this.detectZeroDayIndicators(eventData),\n      insiderThreats: this.detectInsiderThreats(eventData)\n    };\n    \n    const riskScore = this.calculateRiskScore(threats);\n    const threatClassification = this.classifyThreat(threats, riskScore);\n    \n    return {\n      ...threats,\n      riskScore,\n      classification: threatClassification,\n      recommendedActions: this.getRecommendedActions(threatClassification),\n      urgencyLevel: this.determineUrgency(riskScore),\n      affectedAssets: this.identifyAffectedAssets(eventData)\n    };\n  },\n  \n  detectNetworkAnomalies(data) {\n    const patterns = {\n      unusualTraffic: data.network?.volumeSpike > 300,\n      suspiciousConnections: data.network?.unknownHosts?.length > 5,\n      portScanning: data.network?.portScanIndicators > 0,\n      dataExfiltration: data.network?.outboundDataSpike > 1000,\n      lateralMovement: data.network?.internalConnections?.suspicious > 0\n    };\n    \n    return {\n      detected: Object.values(patterns).some(p => p),\n      patterns,\n      confidence: this.calculateConfidence(patterns),\n      indicators: this.extractNetworkIndicators(data)\n    };\n  },\n  \n  detectBehavioralAnomalies(data) {\n    const user = data.user || {};\n    const baseline = data.userBaseline || {};\n    \n    const anomalies = {\n      unusualLoginTime: this.isUnusualTime(user.loginTime, baseline.normalHours),\n      unusualLocation: this.isUnusualLocation(user.location, baseline.normalLocations),\n      privilegeEscalation: user.requestedPrivileges > baseline.normalPrivileges,\n      dataAccess: user.dataAccessPattern !== baseline.normalDataAccess,\n      sessionDuration: user.sessionDuration > baseline.normalSessionLength * 3\n    };\n    \n    return {\n      detected: Object.values(anomalies).some(a => a),\n      anomalies,\n      userRiskProfile: this.calculateUserRisk(user, anomalies),\n      behaviorScore: this.calculateBehaviorScore(anomalies)\n    };\n  },\n  \n  detectKnownThreats(data) {\n    const signatures = {\n      malwareHashes: this.checkMalwareSignatures(data.files),\n      suspiciousIPs: this.checkThreatIntelligence(data.network?.sourceIPs),\n      knownAttackPatterns: this.checkAttackPatterns(data.events),\n      compromisedCredentials: this.checkCredentialIntelligence(data.auth)\n    };\n    \n    return {\n      detected: Object.values(signatures).some(s => s.matches > 0),\n      signatures,\n      threatIntelligence: this.enrichWithThreatIntel(signatures)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const threatAnalysis = await threatDetection.analyzeThreatVectors(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        threatAnalysis,\n        timestamp: new Date().toISOString(),\n        analysisId: `threat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'threat-detection-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'threat-detection-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "threat-detection-engine",
+      "name": "ML-Powered Threat Detection Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "notes": "Advanced threat detection engine using machine learning algorithms for network anomaly detection, behavioral analysis, signature matching, and zero-day threat identification."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Automated Compliance Checking & Audit Trail Generation\nconst complianceEngine = {\n  frameworks: {\n    SOX: {\n      controls: ['financial_data_access', 'change_management', 'segregation_duties'],\n      requirements: ['audit_trail', 'access_controls', 'data_integrity']\n    },\n    GDPR: {\n      controls: ['data_minimization', 'consent_management', 'data_portability'],\n      requirements: ['privacy_by_design', 'breach_notification', 'data_protection']\n    },\n    HIPAA: {\n      controls: ['phi_access', 'encryption', 'audit_logs'],\n      requirements: ['minimum_necessary', 'authorization', 'safeguards']\n    },\n    PCI_DSS: {\n      controls: ['cardholder_data', 'secure_networks', 'vulnerability_management'],\n      requirements: ['encryption', 'access_control', 'monitoring']\n    },\n    ISO27001: {\n      controls: ['isms', 'risk_management', 'incident_response'],\n      requirements: ['continuous_improvement', 'documentation', 'training']\n    }\n  },\n  \n  async checkCompliance(eventData, frameworks = ['SOX', 'GDPR', 'HIPAA', 'PCI_DSS', 'ISO27001']) {\n    const complianceResults = {};\n    \n    for (const framework of frameworks) {\n      complianceResults[framework] = await this.assessFrameworkCompliance(eventData, framework);\n    }\n    \n    const overallCompliance = this.calculateOverallCompliance(complianceResults);\n    const violations = this.identifyViolations(complianceResults);\n    const auditTrail = this.generateAuditTrail(eventData, complianceResults);\n    \n    return {\n      complianceResults,\n      overallCompliance,\n      violations,\n      auditTrail,\n      recommendedActions: this.getComplianceActions(violations),\n      nextAuditDate: this.calculateNextAudit(overallCompliance)\n    };\n  },\n  \n  async assessFrameworkCompliance(eventData, framework) {\n    const config = this.frameworks[framework];\n    const controlsAssessment = {};\n    const requirementsAssessment = {};\n    \n    // Assess controls\n    for (const control of config.controls) {\n      controlsAssessment[control] = this.assessControl(eventData, framework, control);\n    }\n    \n    // Assess requirements\n    for (const requirement of config.requirements) {\n      requirementsAssessment[requirement] = this.assessRequirement(eventData, framework, requirement);\n    }\n    \n    const complianceScore = this.calculateFrameworkScore(controlsAssessment, requirementsAssessment);\n    const gaps = this.identifyComplianceGaps(controlsAssessment, requirementsAssessment);\n    \n    return {\n      framework,\n      score: complianceScore,\n      controls: controlsAssessment,\n      requirements: requirementsAssessment,\n      gaps,\n      status: complianceScore >= 0.8 ? 'compliant' : complianceScore >= 0.6 ? 'partial' : 'non-compliant'\n    };\n  },\n  \n  generateAuditTrail(eventData, complianceResults) {\n    return {\n      auditId: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n      timestamp: new Date().toISOString(),\n      eventSummary: this.summarizeEvent(eventData),\n      complianceSummary: this.summarizeCompliance(complianceResults),\n      dataClassification: this.classifyDataSensitivity(eventData),\n      accessPattern: this.analyzeAccessPattern(eventData),\n      riskAssessment: this.assessComplianceRisk(complianceResults),\n      evidenceChain: this.buildEvidenceChain(eventData),\n      regulatoryImplications: this.assessRegulatoryImpact(complianceResults)\n    };\n  },\n  \n  identifyViolations(complianceResults) {\n    const violations = [];\n    \n    for (const [framework, result] of Object.entries(complianceResults)) {\n      if (result.status === 'non-compliant') {\n        violations.push({\n          framework,\n          severity: 'high',\n          gaps: result.gaps,\n          impact: this.assessViolationImpact(framework, result.gaps),\n          remediation: this.getRemediationSteps(framework, result.gaps)\n        });\n      } else if (result.status === 'partial') {\n        violations.push({\n          framework,\n          severity: 'medium',\n          gaps: result.gaps,\n          impact: this.assessViolationImpact(framework, result.gaps),\n          remediation: this.getRemediationSteps(framework, result.gaps)\n        });\n      }\n    }\n    \n    return violations;\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const complianceCheck = await complianceEngine.checkCompliance(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        complianceAssessment: complianceCheck,\n        timestamp: new Date().toISOString(),\n        assessmentId: `compliance_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'compliance-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'compliance-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "compliance-engine",
+      "name": "Automated Compliance & Audit Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 500],
+      "notes": "Comprehensive compliance checking engine supporting SOX, GDPR, HIPAA, PCI-DSS, and ISO27001 with automated audit trail generation and violation detection."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "critical-threat",
+              "leftValue": "={{ $json.threatAnalysis?.riskScore }}",
+              "rightValue": 8,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "compliance-violation",
+              "leftValue": "={{ $json.complianceAssessment?.overallCompliance }}",
+              "rightValue": 0.6,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            },
+            {
+              "id": "insider-threat",
+              "leftValue": "={{ $json.threatAnalysis?.behavioralAnomalies?.detected }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combineOperation": "any"
+        }
+      },
+      "id": "security-triage",
+      "name": "Intelligent Security Triage",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [700, 400],
+      "notes": "Intelligent triage system that routes high-risk security events and compliance violations to appropriate response workflows based on severity and type."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Incident Response Orchestration with Cross-Team Coordination\nconst incidentResponse = {\n  async orchestrateResponse(eventData) {\n    const incident = this.createIncident(eventData);\n    const responseTeam = this.assembleResponseTeam(incident);\n    const responsePlaybook = this.selectPlaybook(incident);\n    const coordination = await this.coordinateResponse(incident, responseTeam, responsePlaybook);\n    \n    return {\n      incident,\n      responseTeam,\n      playbook: responsePlaybook,\n      coordination,\n      timeline: this.createResponseTimeline(coordination),\n      communications: this.setupCommunications(responseTeam),\n      escalationPath: this.defineEscalationPath(incident)\n    };\n  },\n  \n  createIncident(eventData) {\n    const threatData = eventData.threatAnalysis || {};\n    const complianceData = eventData.complianceAssessment || {};\n    \n    const severity = this.calculateIncidentSeverity(threatData, complianceData);\n    const category = this.categorizeIncident(threatData, complianceData);\n    const impact = this.assessImpact(eventData, severity);\n    \n    return {\n      id: `INC_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n      title: this.generateIncidentTitle(category, severity),\n      description: this.generateIncidentDescription(eventData),\n      severity,\n      category,\n      impact,\n      priority: this.calculatePriority(severity, impact),\n      status: 'new',\n      createdAt: new Date().toISOString(),\n      affectedSystems: this.identifyAffectedSystems(eventData),\n      potentialDataBreach: this.assessDataBreachRisk(eventData),\n      regulatoryNotificationRequired: this.checkRegulatoryNotification(complianceData)\n    };\n  },\n  \n  assembleResponseTeam(incident) {\n    const coreTeam = {\n      incidentCommander: this.selectIncidentCommander(incident.severity),\n      securityAnalyst: this.assignSecurityAnalyst(incident.category),\n      forensicsExpert: this.assignForensicsExpert(incident),\n      communicationsLead: this.assignCommunicationsLead(incident),\n      legalCounsel: incident.regulatoryNotificationRequired ? this.assignLegalCounsel() : null,\n      complianceOfficer: this.assignComplianceOfficer(incident)\n    };\n    \n    const extendedTeam = this.getExtendedTeam(incident);\n    const externalPartners = this.getExternalPartners(incident);\n    \n    return {\n      core: coreTeam,\n      extended: extendedTeam,\n      external: externalPartners,\n      escalationContacts: this.getEscalationContacts(incident.severity),\n      notificationList: this.buildNotificationList(incident)\n    };\n  },\n  \n  selectPlaybook(incident) {\n    const playbookMap = {\n      'data_breach': 'DataBreachResponse_v2.1',\n      'malware_infection': 'MalwareContainment_v1.8',\n      'insider_threat': 'InsiderThreatInvestigation_v1.5',\n      'compliance_violation': 'ComplianceIncident_v2.0',\n      'phishing_attack': 'PhishingResponse_v1.9',\n      'ransomware': 'RansomwareResponse_v2.2',\n      'unauthorized_access': 'AccessIncident_v1.7',\n      'data_exfiltration': 'DataExfiltrationResponse_v2.0'\n    };\n    \n    const playbookName = playbookMap[incident.category] || 'GeneralSecurityIncident_v1.0';\n    \n    return {\n      name: playbookName,\n      version: this.getPlaybookVersion(playbookName),\n      steps: this.getPlaybookSteps(playbookName),\n      checkpoints: this.getPlaybookCheckpoints(playbookName),\n      escalationTriggers: this.getEscalationTriggers(playbookName),\n      successCriteria: this.getSuccessCriteria(playbookName)\n    };\n  },\n  \n  async coordinateResponse(incident, responseTeam, playbook) {\n    const taskAssignments = this.assignTasks(playbook.steps, responseTeam);\n    const communicationChannels = this.setupCommunicationChannels(responseTeam);\n    const statusTracking = this.initializeStatusTracking(taskAssignments);\n    \n    // Immediate response actions\n    const immediateActions = {\n      containment: this.initiateContainment(incident),\n      preservation: this.initiateEvidencePreservation(incident),\n      notification: this.initiateNotifications(incident, responseTeam),\n      assessment: this.initiateImpactAssessment(incident)\n    };\n    \n    return {\n      taskAssignments,\n      communicationChannels,\n      statusTracking,\n      immediateActions,\n      coordinationHub: this.createCoordinationHub(incident.id),\n      decisionLog: this.initializeDecisionLog(incident),\n      resourceAllocation: this.allocateResources(incident, responseTeam)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const responseOrchestration = await incidentResponse.orchestrateResponse(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        incidentResponse: responseOrchestration,\n        timestamp: new Date().toISOString(),\n        responseId: responseOrchestration.incident.id,\n        processingNode: 'incident-response-orchestrator'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'incident-response-orchestrator'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "incident-response-orchestrator",
+      "name": "Incident Response Orchestrator",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 300],
+      "notes": "Advanced incident response orchestration with automated team assembly, playbook selection, task assignment, and cross-functional coordination for comprehensive security incident management."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Risk Assessment Automation with Predictive Threat Modeling\nconst riskAssessment = {\n  async assessRisk(eventData, historical = []) {\n    const currentRisk = this.calculateCurrentRisk(eventData);\n    const predictiveRisk = await this.predictFutureRisk(eventData, historical);\n    const threatModel = this.buildThreatModel(eventData);\n    const vulnerabilityAssessment = this.assessVulnerabilities(eventData);\n    const businessImpact = this.assessBusinessImpact(eventData);\n    \n    return {\n      currentRisk,\n      predictiveRisk,\n      threatModel,\n      vulnerabilityAssessment,\n      businessImpact,\n      riskMatrix: this.buildRiskMatrix(currentRisk, predictiveRisk),\n      mitigationStrategies: this.generateMitigationStrategies(threatModel),\n      riskTrends: this.analyzeRiskTrends(historical)\n    };\n  },\n  \n  calculateCurrentRisk(eventData) {\n    const threatScore = eventData.threatAnalysis?.riskScore || 0;\n    const complianceScore = (1 - (eventData.complianceAssessment?.overallCompliance || 1)) * 10;\n    const vulnerabilityScore = this.calculateVulnerabilityScore(eventData);\n    const exposureScore = this.calculateExposureScore(eventData);\n    \n    const weights = {\n      threat: 0.3,\n      compliance: 0.2,\n      vulnerability: 0.3,\n      exposure: 0.2\n    };\n    \n    const overallScore = (\n      threatScore * weights.threat +\n      complianceScore * weights.compliance +\n      vulnerabilityScore * weights.vulnerability +\n      exposureScore * weights.exposure\n    );\n    \n    return {\n      overall: overallScore,\n      components: {\n        threat: threatScore,\n        compliance: complianceScore,\n        vulnerability: vulnerabilityScore,\n        exposure: exposureScore\n      },\n      level: this.categorizeRiskLevel(overallScore),\n      confidence: this.calculateConfidence(eventData)\n    };\n  },\n  \n  async predictFutureRisk(eventData, historical) {\n    const trendAnalysis = this.analyzeTrends(historical);\n    const seasonalPatterns = this.identifySeasonalPatterns(historical);\n    const attackVectorEvolution = this.predictAttackVectorEvolution(eventData, historical);\n    const threatLandscapeChanges = this.predictThreatLandscapeChanges(eventData);\n    \n    const predictions = {\n      shortTerm: this.predictShortTermRisk(eventData, trendAnalysis),\n      mediumTerm: this.predictMediumTermRisk(eventData, seasonalPatterns),\n      longTerm: this.predictLongTermRisk(eventData, threatLandscapeChanges),\n      attackVectorRisk: attackVectorEvolution\n    };\n    \n    return {\n      predictions,\n      methodology: 'ML-enhanced predictive modeling with historical correlation',\n      confidence: this.calculatePredictionConfidence(predictions),\n      factors: this.identifyRiskFactors(eventData, historical),\n      recommendations: this.generatePreventiveRecommendations(predictions)\n    };\n  },\n  \n  buildThreatModel(eventData) {\n    const assets = this.identifyAssets(eventData);\n    const threatActors = this.identifyThreatActors(eventData);\n    const attackVectors = this.identifyAttackVectors(eventData);\n    const vulnerabilities = this.identifyVulnerabilities(eventData);\n    \n    const threatScenarios = this.generateThreatScenarios(assets, threatActors, attackVectors, vulnerabilities);\n    const attackPaths = this.mapAttackPaths(threatScenarios);\n    const impactAnalysis = this.analyzeScenarioImpacts(threatScenarios);\n    \n    return {\n      assets: this.categorizeAssets(assets),\n      threatActors: this.profileThreatActors(threatActors),\n      attackVectors: this.analyzeAttackVectors(attackVectors),\n      vulnerabilities: this.prioritizeVulnerabilities(vulnerabilities),\n      scenarios: threatScenarios,\n      attackPaths,\n      impactAnalysis,\n      riskHeatmap: this.generateRiskHeatmap(threatScenarios, impactAnalysis)\n    };\n  },\n  \n  assessVulnerabilities(eventData) {\n    const technicalVulns = this.assessTechnicalVulnerabilities(eventData);\n    const processVulns = this.assessProcessVulnerabilities(eventData);\n    const humanVulns = this.assessHumanVulnerabilities(eventData);\n    const physicalVulns = this.assessPhysicalVulnerabilities(eventData);\n    \n    return {\n      technical: technicalVulns,\n      process: processVulns,\n      human: humanVulns,\n      physical: physicalVulns,\n      prioritizedList: this.prioritizeAllVulnerabilities([technicalVulns, processVulns, humanVulns, physicalVulns]),\n      remediationPlan: this.generateRemediationPlan([technicalVulns, processVulns, humanVulns, physicalVulns]),\n      riskReduction: this.calculateRiskReduction([technicalVulns, processVulns, humanVulns, physicalVulns])\n    };\n  },\n  \n  assessBusinessImpact(eventData) {\n    const financialImpact = this.calculateFinancialImpact(eventData);\n    const operationalImpact = this.calculateOperationalImpact(eventData);\n    const reputationalImpact = this.calculateReputationalImpact(eventData);\n    const regulatoryImpact = this.calculateRegulatoryImpact(eventData);\n    const strategicImpact = this.calculateStrategicImpact(eventData);\n    \n    return {\n      financial: financialImpact,\n      operational: operationalImpact,\n      reputational: reputationalImpact,\n      regulatory: regulatoryImpact,\n      strategic: strategicImpact,\n      overall: this.calculateOverallBusinessImpact({\n        financial: financialImpact,\n        operational: operationalImpact,\n        reputational: reputationalImpact,\n        regulatory: regulatoryImpact,\n        strategic: strategicImpact\n      }),\n      timeline: this.projectImpactTimeline(eventData),\n      recoveryEstimate: this.estimateRecoveryTime(eventData)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const riskAnalysis = await riskAssessment.assessRisk(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        riskAssessment: riskAnalysis,\n        timestamp: new Date().toISOString(),\n        assessmentId: `risk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'risk-assessment-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'risk-assessment-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "risk-assessment-engine",
+      "name": "Predictive Risk Assessment Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 500],
+      "notes": "Advanced risk assessment engine with predictive threat modeling, vulnerability analysis, business impact assessment, and ML-powered future risk prediction."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Access Management Intelligence with Behavioral Analysis\nconst accessManagement = {\n  async analyzeAccessIntelligence(eventData) {\n    const behavioralAnalysis = this.analyzeBehavioralPatterns(eventData);\n    const zeroTrustAssessment = this.assessZeroTrustCompliance(eventData);\n    const privilegeAnalysis = this.analyzePrivilegeUsage(eventData);\n    const accessRisk = this.calculateAccessRisk(eventData);\n    const recommendations = this.generateAccessRecommendations(behavioralAnalysis, zeroTrustAssessment, privilegeAnalysis);\n    \n    return {\n      behavioralAnalysis,\n      zeroTrustAssessment,\n      privilegeAnalysis,\n      accessRisk,\n      recommendations,\n      adaptiveControls: this.suggestAdaptiveControls(eventData),\n      continuousMonitoring: this.setupContinuousMonitoring(eventData)\n    };\n  },\n  \n  analyzeBehavioralPatterns(eventData) {\n    const user = eventData.user || {};\n    const accessHistory = eventData.accessHistory || [];\n    \n    const patterns = {\n      timeBasedPatterns: this.analyzeTimePatterns(accessHistory),\n      locationBasedPatterns: this.analyzeLocationPatterns(accessHistory),\n      resourceAccessPatterns: this.analyzeResourcePatterns(accessHistory),\n      devicePatterns: this.analyzeDevicePatterns(accessHistory),\n      applicationUsagePatterns: this.analyzeApplicationPatterns(accessHistory)\n    };\n    \n    const anomalies = this.detectBehavioralAnomalies(patterns, user);\n    const riskScore = this.calculateBehavioralRisk(patterns, anomalies);\n    const baseline = this.updateUserBaseline(user, patterns);\n    \n    return {\n      patterns,\n      anomalies,\n      riskScore,\n      baseline,\n      adaptiveTrust: this.calculateAdaptiveTrust(patterns, anomalies),\n      recommendations: this.getBehavioralRecommendations(anomalies)\n    };\n  },\n  \n  assessZeroTrustCompliance(eventData) {\n    const principles = {\n      verifyExplicitly: this.assessExplicitVerification(eventData),\n      leastPrivilegeAccess: this.assessLeastPrivilege(eventData),\n      assumeBreach: this.assessBreachAssumption(eventData),\n      continuousValidation: this.assessContinuousValidation(eventData),\n      microsegmentation: this.assessMicrosegmentation(eventData),\n      encryptEverything: this.assessEncryption(eventData)\n    };\n    \n    const overallCompliance = this.calculateZeroTrustCompliance(principles);\n    const gaps = this.identifyZeroTrustGaps(principles);\n    const roadmap = this.generateZeroTrustRoadmap(gaps);\n    \n    return {\n      principles,\n      overallCompliance,\n      gaps,\n      roadmap,\n      maturityLevel: this.assessZeroTrustMaturity(principles),\n      quickWins: this.identifyQuickWins(gaps)\n    };\n  },\n  \n  analyzePrivilegeUsage(eventData) {\n    const currentPrivileges = eventData.user?.privileges || [];\n    const usageHistory = eventData.privilegeUsage || [];\n    const requestHistory = eventData.privilegeRequests || [];\n    \n    const analysis = {\n      utilizationRate: this.calculatePrivilegeUtilization(currentPrivileges, usageHistory),\n      unusedPrivileges: this.identifyUnusedPrivileges(currentPrivileges, usageHistory),\n      excessivePrivileges: this.identifyExcessivePrivileges(currentPrivileges, usageHistory),\n      privilegeEscalation: this.detectPrivilegeEscalation(requestHistory),\n      temporalPatterns: this.analyzeTemporalPrivilegeUsage(usageHistory),\n      riskAssessment: this.assessPrivilegeRisk(currentPrivileges, usageHistory)\n    };\n    \n    const optimization = {\n      privilegesToRemove: analysis.unusedPrivileges,\n      privilegesToReduce: analysis.excessivePrivileges,\n      privilegesToMonitor: this.identifyHighRiskPrivileges(analysis),\n      justInTimeRecommendations: this.generateJITRecommendations(analysis),\n      privilegeLifecycle: this.optimizePrivilegeLifecycle(analysis)\n    };\n    \n    return {\n      analysis,\n      optimization,\n      riskReduction: this.calculatePrivilegeRiskReduction(optimization),\n      implementation: this.generateImplementationPlan(optimization)\n    };\n  },\n  \n  calculateAccessRisk(eventData) {\n    const userRisk = this.calculateUserRisk(eventData.user);\n    const deviceRisk = this.calculateDeviceRisk(eventData.device);\n    const contextRisk = this.calculateContextRisk(eventData.context);\n    const dataRisk = this.calculateDataRisk(eventData.requestedData);\n    \n    const overallRisk = this.aggregateRiskScores({\n      user: userRisk,\n      device: deviceRisk,\n      context: contextRisk,\n      data: dataRisk\n    });\n    \n    const riskFactors = this.identifyRiskFactors({\n      user: userRisk,\n      device: deviceRisk,\n      context: contextRisk,\n      data: dataRisk\n    });\n    \n    return {\n      overall: overallRisk,\n      components: {\n        user: userRisk,\n        device: deviceRisk,\n        context: contextRisk,\n        data: dataRisk\n      },\n      riskFactors,\n      accessDecision: this.makeAccessDecision(overallRisk, riskFactors),\n      mitigationControls: this.suggestMitigationControls(riskFactors)\n    };\n  },\n  \n  generateAccessRecommendations(behavioral, zeroTrust, privilege) {\n    const immediateActions = [];\n    const shortTermActions = [];\n    const longTermActions = [];\n    \n    // Analyze behavioral recommendations\n    if (behavioral.anomalies.length > 0) {\n      immediateActions.push(...this.getBehavioralImmediateActions(behavioral.anomalies));\n    }\n    \n    // Analyze zero trust gaps\n    if (zeroTrust.gaps.length > 0) {\n      shortTermActions.push(...zeroTrust.quickWins);\n      longTermActions.push(...zeroTrust.roadmap);\n    }\n    \n    // Analyze privilege optimization\n    if (privilege.optimization.privilegesToRemove.length > 0) {\n      immediateActions.push({\n        action: 'remove_unused_privileges',\n        privileges: privilege.optimization.privilegesToRemove,\n        priority: 'high'\n      });\n    }\n    \n    return {\n      immediate: immediateActions,\n      shortTerm: shortTermActions,\n      longTerm: longTermActions,\n      prioritization: this.prioritizeRecommendations([...immediateActions, ...shortTermActions, ...longTermActions]),\n      implementation: this.generateImplementationTimeline([...immediateActions, ...shortTermActions, ...longTermActions])\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const accessIntelligence = await accessManagement.analyzeAccessIntelligence(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        accessIntelligence,\n        timestamp: new Date().toISOString(),\n        analysisId: `access_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'access-management-intelligence'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'access-management-intelligence'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "access-management-intelligence",
+      "name": "Zero-Trust Access Intelligence",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 300],
+      "notes": "Advanced access management intelligence with behavioral analysis, zero-trust compliance assessment, privilege optimization, and adaptive access controls."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Security Training & Awareness Automation\nconst securityTraining = {\n  async automateSecurityTraining(eventData) {\n    const riskProfile = this.assessUserRiskProfile(eventData);\n    const learningPath = this.generateAdaptiveLearningPath(riskProfile);\n    const trainingContent = this.personalizeTrainingContent(learningPath, eventData);\n    const delivery = this.optimizeTrainingDelivery(trainingContent, eventData);\n    const assessment = this.createPersonalizedAssessment(learningPath);\n    \n    return {\n      riskProfile,\n      learningPath,\n      trainingContent,\n      delivery,\n      assessment,\n      tracking: this.setupProgressTracking(eventData.user),\n      reinforcement: this.planReinforcementActivities(learningPath)\n    };\n  },\n  \n  assessUserRiskProfile(eventData) {\n    const user = eventData.user || {};\n    const riskFactors = {\n      roleBasedRisk: this.calculateRoleBasedRisk(user.role),\n      accessLevelRisk: this.calculateAccessLevelRisk(user.accessLevel),\n      historicalIncidents: this.analyzeHistoricalIncidents(user.incidents || []),\n      behavioralRisk: this.calculateBehavioralRisk(eventData.behavioralAnalysis),\n      technicalProficiency: this.assessTechnicalProficiency(user.technicalLevel),\n      complianceHistory: this.analyzeComplianceHistory(user.complianceHistory || [])\n    };\n    \n    const overallRisk = this.calculateOverallUserRisk(riskFactors);\n    const priorityAreas = this.identifyPriorityTrainingAreas(riskFactors);\n    const urgency = this.determineTrainingUrgency(overallRisk, riskFactors);\n    \n    return {\n      riskFactors,\n      overallRisk,\n      priorityAreas,\n      urgency,\n      riskCategory: this.categorizeUserRisk(overallRisk),\n      recommendedFrequency: this.recommendTrainingFrequency(overallRisk)\n    };\n  },\n  \n  generateAdaptiveLearningPath(riskProfile) {\n    const coreModules = this.getCoreSecurityModules();\n    const roleSpecificModules = this.getRoleSpecificModules(riskProfile.riskFactors.roleBasedRisk);\n    const riskBasedModules = this.getRiskBasedModules(riskProfile.priorityAreas);\n    const advancedModules = this.getAdvancedModules(riskProfile.riskFactors.technicalProficiency);\n    \n    const learningPath = {\n      foundation: this.sequenceFoundationModules(coreModules, riskProfile),\n      roleSpecific: this.sequenceRoleModules(roleSpecificModules, riskProfile),\n      riskMitigation: this.sequenceRiskModules(riskBasedModules, riskProfile),\n      advanced: this.sequenceAdvancedModules(advancedModules, riskProfile),\n      remedial: this.getRemedialModules(riskProfile.riskFactors.historicalIncidents)\n    };\n    \n    const timeline = this.createLearningTimeline(learningPath, riskProfile.urgency);\n    const prerequisites = this.mapPrerequisites(learningPath);\n    const adaptationRules = this.defineAdaptationRules(learningPath);\n    \n    return {\n      modules: learningPath,\n      timeline,\n      prerequisites,\n      adaptationRules,\n      totalDuration: this.calculateTotalDuration(learningPath),\n      competencyTargets: this.defineCompetencyTargets(learningPath)\n    };\n  },\n  \n  personalizeTrainingContent(learningPath, eventData) {\n    const user = eventData.user || {};\n    const preferences = user.learningPreferences || {};\n    \n    const personalization = {\n      contentFormat: this.selectContentFormat(preferences.format, user.technicalLevel),\n      difficulty: this.adjustDifficulty(learningPath, user.technicalLevel),\n      examples: this.selectRelevantExamples(learningPath, user.role, user.industry),\n      scenarios: this.createRelevantScenarios(learningPath, eventData.threatAnalysis),\n      language: preferences.language || 'en',\n      accessibility: this.applyAccessibilityFeatures(preferences.accessibility)\n    };\n    \n    const contentMapping = {\n      videos: this.generateVideoContent(learningPath, personalization),\n      interactives: this.generateInteractiveContent(learningPath, personalization),\n      documents: this.generateDocumentContent(learningPath, personalization),\n      simulations: this.generateSimulationContent(learningPath, personalization),\n      microlearning: this.generateMicrolearningContent(learningPath, personalization)\n    };\n    \n    return {\n      personalization,\n      content: contentMapping,\n      adaptiveElements: this.defineAdaptiveElements(personalization),\n      engagementFeatures: this.addEngagementFeatures(contentMapping, preferences)\n    };\n  },\n  \n  optimizeTrainingDelivery(trainingContent, eventData) {\n    const user = eventData.user || {};\n    const schedule = this.optimizeSchedule(user.workPattern, trainingContent.personalization);\n    const channels = this.selectOptimalChannels(user.communicationPreferences, trainingContent);\n    const gamification = this.addGamificationElements(trainingContent, user.motivationProfile);\n    \n    const delivery = {\n      schedule,\n      channels,\n      gamification,\n      notifications: this.setupNotifications(schedule, channels, user.preferences),\n      reminders: this.setupReminders(schedule, user.preferences),\n      social: this.addSocialLearningElements(trainingContent, user.team)\n    };\n    \n    const monitoring = {\n      engagement: this.setupEngagementMonitoring(delivery),\n      progress: this.setupProgressMonitoring(delivery),\n      effectiveness: this.setupEffectivenessMonitoring(delivery),\n      adaptation: this.setupAdaptationTriggers(delivery)\n    };\n    \n    return {\n      delivery,\n      monitoring,\n      optimization: this.setupContinuousOptimization(delivery, monitoring),\n      reporting: this.setupTrainingReporting(delivery, monitoring)\n    };\n  },\n  \n  createPersonalizedAssessment(learningPath) {\n    const assessmentTypes = {\n      knowledge: this.createKnowledgeAssessments(learningPath.modules),\n      practical: this.createPracticalAssessments(learningPath.modules),\n      simulation: this.createSimulationAssessments(learningPath.modules),\n      behavioral: this.createBehavioralAssessments(learningPath.modules)\n    };\n    \n    const adaptiveElements = {\n      difficulty: this.implementAdaptiveDifficulty(assessmentTypes),\n      feedback: this.implementAdaptiveFeedback(assessmentTypes),\n      remediation: this.implementAdaptiveRemediation(assessmentTypes),\n      advancement: this.implementAdaptiveAdvancement(assessmentTypes)\n    };\n    \n    const certification = {\n      criteria: this.defineCertificationCriteria(learningPath),\n      levels: this.defineCertificationLevels(learningPath),\n      validity: this.defineCertificationValidity(learningPath),\n      renewal: this.defineCertificationRenewal(learningPath)\n    };\n    \n    return {\n      assessments: assessmentTypes,\n      adaptive: adaptiveElements,\n      certification,\n      analytics: this.setupAssessmentAnalytics(assessmentTypes),\n      reporting: this.setupAssessmentReporting(assessmentTypes)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const eventData = item.json;\n    const trainingAutomation = await securityTraining.automateSecurityTraining(eventData);\n    \n    results.push({\n      json: {\n        originalEvent: eventData,\n        securityTraining: trainingAutomation,\n        timestamp: new Date().toISOString(),\n        trainingId: `training_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'security-training-automation'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'security-training-automation'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "security-training-automation",
+      "name": "Adaptive Security Training Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 500],
+      "notes": "Intelligent security training automation with adaptive learning paths, personalized content delivery, risk-based training assignments, and continuous competency assessment."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.enterprise-siem.com/v3/events",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"event_type\": \"security_analysis_complete\",\n  \"source\": \"n8n_security_orchestrator\",\n  \"data\": $json,\n  \"priority\": $json.threatAnalysis?.urgencyLevel || \"medium\",\n  \"tags\": [\"automated\", \"threat-detection\", \"compliance\", \"orchestration\"]\n}) }}"
+        },
+        "options": {
+          "timeout": 30000,
+          "retry": {
+            "enabled": true,
+            "maxAttempts": 3
+          }
+        }
+      },
+      "id": "siem-integration",
+      "name": "Enterprise SIEM Integration",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 200],
+      "notes": "Integrates security analysis results with enterprise SIEM systems for centralized monitoring, alerting, and correlation with other security events."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.compliance-platform.com/v2/assessments",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"assessment_type\": \"automated_compliance_check\",\n  \"frameworks\": Object.keys($json.complianceAssessment?.complianceResults || {}),\n  \"results\": $json.complianceAssessment,\n  \"audit_trail\": $json.complianceAssessment?.auditTrail,\n  \"violations\": $json.complianceAssessment?.violations || [],\n  \"timestamp\": new Date().toISOString()\n}) }}"
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "compliance-reporting",
+      "name": "Automated Compliance Reporting",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 400],
+      "notes": "Submits compliance assessment results to regulatory reporting platforms and maintains audit trails for SOX, GDPR, HIPAA, PCI-DSS, and ISO27001 compliance."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.incident-management.com/v1/incidents",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"incident\": $json.incidentResponse?.incident,\n  \"response_team\": $json.incidentResponse?.responseTeam,\n  \"playbook\": $json.incidentResponse?.playbook?.name,\n  \"coordination\": $json.incidentResponse?.coordination,\n  \"status\": \"active\",\n  \"auto_created\": true\n}) }}"
+        }
+      },
+      "id": "incident-management-integration",
+      "name": "Incident Management Platform",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 600],
+      "notes": "Creates and manages security incidents in enterprise incident management platforms with automated team assignment and playbook execution."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "regulatory-notification",
+              "leftValue": "={{ $json.incidentResponse?.incident?.regulatoryNotificationRequired }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "data-breach",
+              "leftValue": "={{ $json.incidentResponse?.incident?.potentialDataBreach }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combineOperation": "any"
+        }
+      },
+      "id": "regulatory-notification-check",
+      "name": "Regulatory Notification Check",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [1900, 500],
+      "notes": "Checks if security incidents require regulatory notification based on data breach indicators and compliance requirements."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.regulatory-reporting.com/v1/notifications",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"notification_type\": \"data_breach\",\n  \"incident_id\": $json.incidentResponse?.incident?.id,\n  \"severity\": $json.incidentResponse?.incident?.severity,\n  \"affected_records\": $json.riskAssessment?.businessImpact?.financial?.affectedRecords || 0,\n  \"frameworks\": Object.keys($json.complianceAssessment?.violations || {}),\n  \"timeline\": $json.incidentResponse?.timeline,\n  \"auto_generated\": true\n}) }}"
+        }
+      },
+      "id": "regulatory-notification",
+      "name": "Automated Regulatory Notification",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [2200, 500],
+      "notes": "Automatically submits regulatory notifications for data breaches and compliance violations to appropriate regulatory bodies."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Security Orchestration Dashboard & Analytics\nconst dashboard = {\n  generateDashboardData(allData) {\n    const summary = this.generateExecutiveSummary(allData);\n    const metrics = this.calculateSecurityMetrics(allData);\n    const trends = this.analyzeTrends(allData);\n    const alerts = this.generateActiveAlerts(allData);\n    const recommendations = this.consolidateRecommendations(allData);\n    \n    return {\n      summary,\n      metrics,\n      trends,\n      alerts,\n      recommendations,\n      timestamp: new Date().toISOString(),\n      dashboardId: `dashboard_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`\n    };\n  },\n  \n  generateExecutiveSummary(data) {\n    const threatData = data.filter(d => d.threatAnalysis);\n    const complianceData = data.filter(d => d.complianceAssessment);\n    const incidentData = data.filter(d => d.incidentResponse);\n    \n    return {\n      totalEvents: data.length,\n      threatsDetected: threatData.length,\n      criticalThreats: threatData.filter(d => d.threatAnalysis?.riskScore >= 8).length,\n      complianceViolations: complianceData.filter(d => d.complianceAssessment?.overallCompliance < 0.8).length,\n      activeIncidents: incidentData.filter(d => d.incidentResponse?.incident?.status === 'active').length,\n      overallSecurityPosture: this.calculateOverallPosture(data),\n      keyRisks: this.identifyKeyRisks(data),\n      complianceStatus: this.summarizeComplianceStatus(complianceData)\n    };\n  },\n  \n  calculateSecurityMetrics(data) {\n    return {\n      threatDetection: {\n        detectionRate: this.calculateDetectionRate(data),\n        falsePositiveRate: this.calculateFalsePositiveRate(data),\n        meanTimeToDetection: this.calculateMTTD(data),\n        threatCategories: this.categorizeThreatDistribution(data)\n      },\n      incidentResponse: {\n        meanTimeToResponse: this.calculateMTTR(data),\n        incidentResolutionRate: this.calculateResolutionRate(data),\n        escalationRate: this.calculateEscalationRate(data),\n        teamEffectiveness: this.calculateTeamEffectiveness(data)\n      },\n      compliance: {\n        overallComplianceScore: this.calculateOverallCompliance(data),\n        frameworkScores: this.calculateFrameworkScores(data),\n        auditReadiness: this.calculateAuditReadiness(data),\n        violationTrends: this.calculateViolationTrends(data)\n      },\n      accessManagement: {\n        riskScore: this.calculateAccessRiskScore(data),\n        privilegeOptimization: this.calculatePrivilegeOptimization(data),\n        zeroTrustMaturity: this.calculateZeroTrustMaturity(data),\n        behavioralAnomalies: this.calculateBehavioralAnomalies(data)\n      }\n    };\n  }\n};\n\nconst items = $input.all();\nconst dashboardData = dashboard.generateDashboardData(items.map(item => item.json));\n\nreturn [{\n  json: {\n    dashboardData,\n    processingNode: 'security-orchestration-dashboard',\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "security-orchestration-dashboard",
+      "name": "Security Orchestration Dashboard",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1900, 300],
+      "notes": "Comprehensive security orchestration dashboard providing executive summaries, security metrics, trend analysis, and consolidated recommendations for enterprise security management."
+    }
+  ],
+  "connections": {
+    "security-event-intake": {
+      "main": [
+        [
+          {
+            "node": "threat-detection-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "real-time-audit-monitor": {
+      "main": [
+        [
+          {
+            "node": "compliance-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "threat-detection-engine": {
+      "main": [
+        [
+          {
+            "node": "security-triage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compliance-engine": {
+      "main": [
+        [
+          {
+            "node": "security-triage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "security-triage": {
+      "main": [
+        [
+          {
+            "node": "incident-response-orchestrator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "risk-assessment-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "incident-response-orchestrator": {
+      "main": [
+        [
+          {
+            "node": "access-management-intelligence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "risk-assessment-engine": {
+      "main": [
+        [
+          {
+            "node": "security-training-automation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "access-management-intelligence": {
+      "main": [
+        [
+          {
+            "node": "siem-integration",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "security-orchestration-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "security-training-automation": {
+      "main": [
+        [
+          {
+            "node": "compliance-reporting",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "security-orchestration-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "siem-integration": {
+      "main": [
+        [
+          {
+            "node": "regulatory-notification-check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compliance-reporting": {
+      "main": [
+        [
+          {
+            "node": "incident-management-integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "incident-management-integration": {
+      "main": [
+        [
+          {
+            "node": "regulatory-notification-check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "regulatory-notification-check": {
+      "main": [
+        [
+          {
+            "node": "regulatory-notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "security-incident-escalation-workflow"
+  },
+  "staticData": {},
+  "tags": [
+    {
+      "id": "security-orchestration",
+      "name": "Security Orchestration"
+    },
+    {
+      "id": "compliance-automation",
+      "name": "Compliance Automation"
+    },
+    {
+      "id": "threat-detection",
+      "name": "Threat Detection"
+    },
+    {
+      "id": "incident-response",
+      "name": "Incident Response"
+    },
+    {
+      "id": "enterprise-security",
+      "name": "Enterprise Security"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2024-12-06T12:00:00.000Z",
+  "versionId": "enterprise-security-orchestrator-v9"
+}

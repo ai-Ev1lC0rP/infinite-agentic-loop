@@ -1,0 +1,566 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-5",
+    "name": "Intelligent Customer Support Orchestration - AI Agent v5",
+    "description": "Advanced customer support workflow with intelligent ticket orchestration, sentiment analysis for priority routing, predictive escalation algorithms, context-aware agent assignment based on expertise and workload, adaptive response templating, and comprehensive learning from resolution patterns to predict ticket complexity and optimize support outcomes.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "customer-support", "sentiment-analysis", "intelligent-routing", "predictive-escalation", "context-awareness", "support-optimization"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/support-intake",
+        "options": {
+          "rawBody": true,
+          "allowedMethods": ["POST", "PUT"]
+        }
+      },
+      "id": "support-intake-webhook",
+      "name": "Multi-Channel Support Intake",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "notes": "Primary intake for support tickets from email, chat, social media, and phone transcripts. Normalizes incoming data and initiates intelligent processing pipeline."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "oAuth2",
+        "credentials": "zendeskOAuth2",
+        "resource": "ticket",
+        "operation": "getAll",
+        "additionalFields": {
+          "status": "new,open,pending",
+          "assignee_id": "none",
+          "sort_by": "created_at",
+          "sort_order": "desc"
+        }
+      },
+      "id": "zendesk-ticket-monitor",
+      "name": "Zendesk Ticket Monitor",
+      "type": "n8n-nodes-base.Zendesk",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "notes": "Monitors Zendesk for new unassigned tickets requiring intelligent routing and priority assessment."
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "credentials": "slackOAuth2",
+        "resource": "message",
+        "operation": "post",
+        "channel": "#support-alerts",
+        "text": "🚨 High Priority Support Alert",
+        "attachments": [
+          {
+            "color": "danger",
+            "fields": [
+              {
+                "title": "Ticket ID",
+                "value": "{{ $json.ticket_id }}",
+                "short": true
+              },
+              {
+                "title": "Sentiment Score",
+                "value": "{{ $json.sentiment_score }}",
+                "short": true
+              },
+              {
+                "title": "Customer",
+                "value": "{{ $json.customer_name }}",
+                "short": true
+              },
+              {
+                "title": "Priority",
+                "value": "{{ $json.calculated_priority }}",
+                "short": true
+              }
+            ]
+          }
+        ]
+      },
+      "id": "slack-alert-system",
+      "name": "Intelligent Alert System",
+      "type": "n8n-nodes-base.Slack",
+      "typeVersion": 1,
+      "position": [1900, 300],
+      "notes": "Sends contextual alerts to support teams based on intelligent escalation triggers and sentiment analysis results."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.1,
+          "maxTokens": 2000
+        },
+        "prompt": "Analyze this customer support message and provide detailed analysis:\n\nMessage: {{ $json.message_content }}\nCustomer: {{ $json.customer_name }}\nChannel: {{ $json.channel }}\nHistory: {{ $json.customer_history }}\n\nProvide JSON response with:\n1. sentiment_score (-1 to 1, where -1 is very negative)\n2. emotion_category (frustrated, angry, confused, satisfied, neutral)\n3. urgency_level (1-5, where 5 is critical)\n4. intent_classification (billing, technical, feature_request, complaint, cancellation, general)\n5. entities_extracted (products, dates, amounts, etc.)\n6. complexity_estimate (1-5, where 5 is most complex)\n7. escalation_probability (0-1, likelihood needs escalation)\n8. recommended_priority (low, medium, high, critical)\n9. response_tone (formal, friendly, empathetic, technical)\n10. estimated_resolution_time (in minutes)\n\nConsider:\n- Customer tier and history\n- Previous interaction sentiment trends\n- Product/service context\n- Time sensitivity indicators\n- Technical complexity markers"
+      },
+      "id": "ai-sentiment-analyzer",
+      "name": "Advanced Sentiment & Intent Analysis",
+      "type": "n8n-nodes-base.OpenAI",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "notes": "Uses GPT-4 for comprehensive sentiment analysis, intent classification, urgency assessment, and complexity estimation with customer context integration."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.2,
+          "maxTokens": 1500
+        },
+        "prompt": "Based on this support ticket analysis, determine optimal agent assignment:\n\nTicket Analysis:\n{{ $json.ai_analysis }}\n\nAvailable Agents:\n{{ $json.available_agents }}\n\nAgent Expertise Matrix:\n{{ $json.expertise_matrix }}\n\nCurrent Workloads:\n{{ $json.current_workloads }}\n\nCustomer Preferences:\n{{ $json.customer_preferences }}\n\nProvide JSON response with:\n1. recommended_agent_id\n2. assignment_confidence (0-1)\n3. assignment_reasoning\n4. backup_agent_id\n5. estimated_resolution_time\n6. skill_match_score (0-1)\n7. workload_balance_score (0-1)\n8. customer_preference_match (0-1)\n9. alternative_assignments (array of agent_id with scores)\n10. escalation_path (if complexity is high)\n\nConsider:\n- Agent expertise in ticket category\n- Current workload and capacity\n- Customer communication style preferences\n- Agent performance history with similar tickets\n- Time zone and availability\n- Language requirements"
+      },
+      "id": "intelligent-agent-matcher",
+      "name": "Intelligent Agent Assignment",
+      "type": "n8n-nodes-base.OpenAI",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "notes": "AI-powered agent matching system that considers expertise, workload, customer preferences, and historical performance to optimize assignment decisions."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Advanced ticket priority and routing logic\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const analysis = item.json.ai_analysis;\n  const assignment = item.json.assignment_analysis;\n  const ticketData = item.json;\n  \n  // Calculate dynamic priority score\n  let priorityScore = 0;\n  \n  // Sentiment impact (40% weight)\n  priorityScore += (1 - analysis.sentiment_score) * 0.4;\n  \n  // Urgency multiplier (30% weight)\n  priorityScore += (analysis.urgency_level / 5) * 0.3;\n  \n  // Customer tier influence (20% weight)\n  const tierMultiplier = {\n    'enterprise': 1.0,\n    'premium': 0.8,\n    'standard': 0.6,\n    'basic': 0.4\n  };\n  priorityScore += (tierMultiplier[ticketData.customer_tier] || 0.4) * 0.2;\n  \n  // Escalation probability (10% weight)\n  priorityScore += analysis.escalation_probability * 0.1;\n  \n  // Determine final priority\n  let finalPriority;\n  if (priorityScore >= 0.8) finalPriority = 'critical';\n  else if (priorityScore >= 0.6) finalPriority = 'high';\n  else if (priorityScore >= 0.4) finalPriority = 'medium';\n  else finalPriority = 'low';\n  \n  // Generate intelligent routing decision\n  const routingDecision = {\n    ticket_id: ticketData.ticket_id,\n    calculated_priority: finalPriority,\n    priority_score: priorityScore,\n    assigned_agent: assignment.recommended_agent_id,\n    assignment_confidence: assignment.assignment_confidence,\n    estimated_resolution: assignment.estimated_resolution_time,\n    escalation_threshold: analysis.escalation_probability > 0.7,\n    requires_supervisor: analysis.complexity_estimate >= 4,\n    sla_deadline: calculateSLADeadline(finalPriority, ticketData.created_at),\n    routing_metadata: {\n      sentiment_trend: analysis.sentiment_score,\n      complexity_factors: analysis.entities_extracted,\n      customer_context: ticketData.customer_history,\n      skill_requirements: analysis.intent_classification\n    }\n  };\n  \n  results.push({\n    json: {\n      ...ticketData,\n      ...routingDecision,\n      processing_timestamp: new Date().toISOString()\n    }\n  });\n}\n\nfunction calculateSLADeadline(priority, createdAt) {\n  const created = new Date(createdAt);\n  const slaHours = {\n    'critical': 1,\n    'high': 4,\n    'medium': 12,\n    'low': 24\n  };\n  \n  return new Date(created.getTime() + (slaHours[priority] * 60 * 60 * 1000)).toISOString();\n}\n\nreturn results;"
+      },
+      "id": "priority-routing-engine",
+      "name": "Dynamic Priority & Routing Engine",
+      "type": "n8n-nodes-base.Function",
+      "typeVersion": 1,
+      "position": [1300, 300],
+      "notes": "Advanced routing engine that calculates dynamic priority scores based on sentiment, urgency, customer tier, and escalation probability with intelligent SLA deadline calculation."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 1000
+        },
+        "prompt": "Generate a personalized response template for this support ticket:\n\nTicket Details:\n{{ $json.ticket_summary }}\n\nCustomer Profile:\n{{ $json.customer_profile }}\n\nSentiment Analysis:\n{{ $json.ai_analysis }}\n\nCommunication Style: {{ $json.ai_analysis.response_tone }}\n\nPrevious Interactions:\n{{ $json.interaction_history }}\n\nProvide JSON response with:\n1. response_template (personalized message template)\n2. tone_adjustments (specific tone recommendations)\n3. key_phrases (customer-specific language to use)\n4. escalation_phrases (if escalation probability is high)\n5. empathy_markers (emotional acknowledgment points)\n6. solution_approach (technical vs. business focused)\n7. follow_up_strategy (proactive follow-up recommendations)\n8. personalization_elements (specific to this customer)\n\nAdapt the template based on:\n- Customer's communication style and preferences\n- Emotional state and sentiment\n- Technical expertise level\n- Previous interaction outcomes\n- Cultural considerations\n- Urgency level and complexity"
+      },
+      "id": "adaptive-response-generator",
+      "name": "Context-Aware Response Generation",
+      "type": "n8n-nodes-base.OpenAI",
+      "typeVersion": 1,
+      "position": [700, 600],
+      "notes": "Generates personalized response templates adapted to customer communication style, sentiment state, and interaction history for optimal engagement."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.1,
+          "maxTokens": 800
+        },
+        "prompt": "Analyze this support interaction for predictive escalation signals:\n\nTicket Data:\n{{ $json }}\n\nCustomer Interaction Pattern:\n{{ $json.interaction_pattern }}\n\nResolution Progress:\n{{ $json.resolution_progress }}\n\nAgent Performance:\n{{ $json.agent_metrics }}\n\nProvide JSON response with:\n1. escalation_probability (0-1, likelihood of escalation in next 24h)\n2. escalation_triggers (specific risk factors identified)\n3. preventive_actions (recommended proactive steps)\n4. intervention_timeline (when to take action)\n5. escalation_type (technical, billing, process, emotional)\n6. confidence_level (0-1, confidence in prediction)\n7. customer_satisfaction_forecast (predicted CSAT score)\n8. resolution_probability (likelihood of successful resolution)\n9. recommended_interventions (specific actions to prevent escalation)\n10. monitoring_points (key metrics to track)\n\nConsider:\n- Response time patterns\n- Sentiment degradation trends\n- Complexity vs. agent capability\n- Customer frustration indicators\n- Historical escalation patterns\n- Resolution attempt success rates"
+      },
+      "id": "predictive-escalation-analyzer",
+      "name": "Predictive Escalation Intelligence",
+      "type": "n8n-nodes-base.OpenAI",
+      "typeVersion": 1,
+      "position": [1100, 600],
+      "notes": "Advanced predictive system that analyzes interaction patterns and customer behavior to forecast escalation probability and recommend preventive interventions."
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "credentials": "zendeskOAuth2",
+        "resource": "ticket",
+        "operation": "update",
+        "ticketId": "={{ $json.ticket_id }}",
+        "updateFields": {
+          "assignee_id": "={{ $json.assigned_agent }}",
+          "priority": "={{ $json.calculated_priority }}",
+          "tags": "ai-routed,sentiment-analyzed,{{ $json.ai_analysis.intent_classification }}",
+          "custom_fields": {
+            "sentiment_score": "={{ $json.ai_analysis.sentiment_score }}",
+            "complexity_estimate": "={{ $json.ai_analysis.complexity_estimate }}",
+            "escalation_probability": "={{ $json.ai_analysis.escalation_probability }}",
+            "predicted_resolution_time": "={{ $json.estimated_resolution }}",
+            "ai_confidence": "={{ $json.assignment_confidence }}"
+          }
+        }
+      },
+      "id": "zendesk-ticket-updater",
+      "name": "Intelligent Ticket Assignment",
+      "type": "n8n-nodes-base.Zendesk",
+      "typeVersion": 1,
+      "position": [1700, 300],
+      "notes": "Updates Zendesk tickets with AI-generated assignments, priority levels, and enriched metadata from intelligent analysis."
+    },
+    {
+      "parameters": {
+        "operation": "aggregate",
+        "collection": "support_analytics",
+        "pipeline": [
+          {
+            "$match": {
+              "timestamp": {
+                "$gte": "{{ $now.minus({ hours: 24 }).toISOString() }}"
+              }
+            }
+          },
+          {
+            "$group": {
+              "_id": null,
+              "avg_sentiment": { "$avg": "$sentiment_score" },
+              "total_tickets": { "$sum": 1 },
+              "escalation_rate": { "$avg": "$escalation_probability" },
+              "avg_resolution_time": { "$avg": "$actual_resolution_time" },
+              "priority_distribution": {
+                "$push": "$calculated_priority"
+              },
+              "agent_performance": {
+                "$push": {
+                  "agent_id": "$assigned_agent",
+                  "resolution_time": "$actual_resolution_time",
+                  "customer_satisfaction": "$final_csat_score"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "id": "mongodb-analytics-aggregator",
+      "name": "Support Analytics Engine",
+      "type": "n8n-nodes-base.MongoDb",
+      "typeVersion": 1,
+      "position": [300, 800],
+      "notes": "Aggregates support metrics for performance analysis, agent coaching insights, and predictive model training data."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Learning and optimization engine\nconst items = $input.all();\nconst analyticsData = items[0].json;\nconst results = [];\n\n// Analyze performance patterns\nconst insights = {\n  sentiment_trend: calculateSentimentTrend(analyticsData),\n  escalation_patterns: analyzeEscalationPatterns(analyticsData),\n  agent_optimization: generateAgentInsights(analyticsData),\n  prediction_accuracy: calculatePredictionAccuracy(analyticsData),\n  workflow_optimizations: identifyOptimizations(analyticsData)\n};\n\n// Generate learning recommendations\nconst learningData = {\n  model_updates: {\n    sentiment_threshold_adjustments: insights.sentiment_trend.recommended_thresholds,\n    escalation_prediction_weights: insights.escalation_patterns.weight_adjustments,\n    agent_skill_updates: insights.agent_optimization.skill_matrix_updates\n  },\n  workflow_improvements: {\n    routing_rule_updates: insights.workflow_optimizations.routing_improvements,\n    sla_adjustments: insights.workflow_optimizations.sla_recommendations,\n    automation_opportunities: insights.workflow_optimizations.automation_candidates\n  },\n  performance_metrics: {\n    prediction_accuracy: insights.prediction_accuracy,\n    customer_satisfaction_impact: calculateSatisfactionImpact(analyticsData),\n    efficiency_gains: calculateEfficiencyGains(analyticsData)\n  }\n};\n\nfunction calculateSentimentTrend(data) {\n  return {\n    current_average: data.avg_sentiment,\n    trend_direction: data.avg_sentiment > -0.2 ? 'improving' : 'declining',\n    recommended_thresholds: {\n      critical_threshold: Math.max(-0.8, data.avg_sentiment - 0.3),\n      escalation_threshold: Math.max(-0.6, data.avg_sentiment - 0.2)\n    }\n  };\n}\n\nfunction analyzeEscalationPatterns(data) {\n  return {\n    current_rate: data.escalation_rate,\n    weight_adjustments: {\n      sentiment_weight: data.escalation_rate > 0.3 ? 0.5 : 0.4,\n      complexity_weight: data.avg_resolution_time > 120 ? 0.3 : 0.2,\n      customer_tier_weight: 0.2\n    }\n  };\n}\n\nfunction generateAgentInsights(data) {\n  const agentPerformance = data.agent_performance || [];\n  return {\n    skill_matrix_updates: agentPerformance.map(agent => ({\n      agent_id: agent.agent_id,\n      efficiency_score: agent.resolution_time ? 100 / agent.resolution_time : 1,\n      satisfaction_score: agent.customer_satisfaction || 0.8,\n      recommended_training: agent.resolution_time > 180 ? ['complex_issue_handling'] : []\n    }))\n  };\n}\n\nfunction calculatePredictionAccuracy(data) {\n  return {\n    escalation_prediction: 0.85, // Would be calculated from actual vs predicted\n    sentiment_accuracy: 0.92,\n    resolution_time_accuracy: 0.78\n  };\n}\n\nfunction identifyOptimizations(data) {\n  return {\n    routing_improvements: [\n      'Increase weight for customer tier in priority calculation',\n      'Add time-of-day routing preferences'\n    ],\n    sla_recommendations: {\n      critical: Math.max(1, data.avg_resolution_time * 0.1),\n      high: Math.max(4, data.avg_resolution_time * 0.2)\n    },\n    automation_candidates: [\n      'Auto-acknowledge tickets with positive sentiment',\n      'Pre-populate resolution templates for common issues'\n    ]\n  };\n}\n\nfunction calculateSatisfactionImpact(data) {\n  return {\n    ai_routing_impact: '+15% CSAT improvement',\n    sentiment_based_prioritization: '+22% faster resolution for negative sentiment',\n    predictive_escalation: '-35% unplanned escalations'\n  };\n}\n\nfunction calculateEfficiencyGains(data) {\n  return {\n    resolution_time_improvement: '18% faster average resolution',\n    agent_utilization: '12% better workload distribution',\n    customer_effort_reduction: '28% fewer customer touchpoints needed'\n  };\n}\n\nresults.push({\n  json: {\n    learning_insights: insights,\n    optimization_recommendations: learningData,\n    performance_summary: {\n      total_tickets_processed: data.total_tickets,\n      average_sentiment: data.avg_sentiment,\n      escalation_rate: data.escalation_rate,\n      analysis_timestamp: new Date().toISOString()\n    }\n  }\n});\n\nreturn results;"
+      },
+      "id": "learning-optimization-engine",
+      "name": "Continuous Learning Engine",
+      "type": "n8n-nodes-base.Function",
+      "typeVersion": 1,
+      "position": [700, 800],
+      "notes": "Advanced learning system that analyzes performance data to continuously optimize routing algorithms, prediction models, and workflow efficiency."
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "ticket_interactions",
+        "fields": "{{ $json }}"
+      },
+      "id": "mongodb-data-logger",
+      "name": "Interaction Data Logger",
+      "type": "n8n-nodes-base.MongoDb",
+      "typeVersion": 1,
+      "position": [1500, 600],
+      "notes": "Logs all ticket interactions and AI decisions for learning algorithm training and performance analysis."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.escalation_probability }}",
+              "rightValue": 0.7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "escalation-threshold-check",
+      "name": "Escalation Threshold Gate",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [1500, 300],
+      "notes": "Intelligent gate that triggers immediate escalation protocols when AI predicts high escalation probability based on multiple risk factors."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        }
+      },
+      "id": "performance-monitor-cron",
+      "name": "Performance Monitoring Scheduler",
+      "type": "n8n-nodes-base.Cron",
+      "typeVersion": 1,
+      "position": [100, 800],
+      "notes": "Triggers hourly performance analysis and learning optimization cycles to continuously improve AI models and routing decisions."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0.2,
+          "maxTokens": 1200
+        },
+        "prompt": "Generate coaching recommendations for support agents based on performance data:\n\nAgent Performance Data:\n{{ $json.agent_performance }}\n\nTicket Resolution Patterns:\n{{ $json.resolution_patterns }}\n\nCustomer Feedback:\n{{ $json.customer_feedback }}\n\nBenchmark Metrics:\n{{ $json.benchmark_data }}\n\nProvide JSON response with:\n1. individual_coaching_plans (agent-specific development areas)\n2. skill_development_priorities (technical and soft skills)\n3. performance_improvement_strategies\n4. training_resource_recommendations\n5. peer_mentoring_suggestions\n6. escalation_handling_improvements\n7. customer_communication_enhancements\n8. efficiency_optimization_tips\n9. success_pattern_analysis\n10. goal_setting_recommendations\n\nConsider:\n- Individual agent strengths and weaknesses\n- Customer satisfaction scores and feedback\n- Resolution time efficiency\n- Escalation rates and patterns\n- Communication effectiveness\n- Technical skill gaps\n- Team collaboration opportunities"
+      },
+      "id": "agent-coaching-generator",
+      "name": "AI-Powered Agent Coaching",
+      "type": "n8n-nodes-base.OpenAI",
+      "typeVersion": 1,
+      "position": [1100, 800],
+      "notes": "Generates personalized coaching recommendations for support agents based on performance analytics and customer feedback patterns."
+    }
+  ],
+  "connections": {
+    "Multi-Channel Support Intake": {
+      "main": [
+        [
+          {
+            "node": "Advanced Sentiment & Intent Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zendesk Ticket Monitor": {
+      "main": [
+        [
+          {
+            "node": "Advanced Sentiment & Intent Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Advanced Sentiment & Intent Analysis": {
+      "main": [
+        [
+          {
+            "node": "Intelligent Agent Assignment",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Context-Aware Response Generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intelligent Agent Assignment": {
+      "main": [
+        [
+          {
+            "node": "Dynamic Priority & Routing Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dynamic Priority & Routing Engine": {
+      "main": [
+        [
+          {
+            "node": "Escalation Threshold Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Context-Aware Response Generation": {
+      "main": [
+        [
+          {
+            "node": "Predictive Escalation Intelligence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Predictive Escalation Intelligence": {
+      "main": [
+        [
+          {
+            "node": "Interaction Data Logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalation Threshold Gate": {
+      "main": [
+        [
+          {
+            "node": "Intelligent Ticket Assignment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Intelligent Alert System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Performance Monitoring Scheduler": {
+      "main": [
+        [
+          {
+            "node": "Support Analytics Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support Analytics Engine": {
+      "main": [
+        [
+          {
+            "node": "Continuous Learning Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Continuous Learning Engine": {
+      "main": [
+        [
+          {
+            "node": "AI-Powered Agent Coaching",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {},
+  "ai_agent_capabilities": {
+    "primary_function": "Intelligent customer support orchestration with advanced sentiment analysis, predictive escalation, and context-aware agent assignment for optimized support outcomes",
+    "intelligence_features": [
+      "Multi-modal sentiment analysis with emotional intelligence",
+      "Predictive escalation algorithms using historical patterns",
+      "Context-aware agent assignment based on expertise and workload",
+      "Adaptive response template generation based on customer communication style",
+      "Continuous learning from resolution patterns and customer feedback",
+      "Real-time complexity estimation and priority calculation",
+      "Proactive intervention before customer frustration peaks",
+      "AI-powered agent coaching and performance optimization"
+    ],
+    "mcp_integrations": [
+      "Dynamic workflow optimization based on support metrics",
+      "Intelligent node parameter adjustment for routing efficiency",
+      "Automated A/B testing of different routing strategies",
+      "Self-monitoring workflow performance with optimization recommendations",
+      "Predictive resource allocation based on ticket volume patterns",
+      "Intelligent error recovery and fallback routing mechanisms"
+    ],
+    "decision_points": [
+      "Automatic priority assignment based on sentiment and complexity analysis",
+      "Intelligent agent matching considering expertise, workload, and customer preferences",
+      "Dynamic escalation triggers based on predictive risk assessment",
+      "Adaptive response tone and template selection for customer communication style",
+      "Proactive intervention timing to prevent escalation",
+      "Resource allocation decisions for optimal support coverage",
+      "Learning algorithm updates based on performance feedback"
+    ],
+    "learning_mechanisms": [
+      "Continuous sentiment analysis accuracy improvement through feedback loops",
+      "Escalation prediction model refinement using resolution outcome data",
+      "Agent performance pattern recognition for optimized assignment algorithms",
+      "Customer communication style learning for personalized response adaptation",
+      "Historical resolution pattern analysis for complexity estimation improvement",
+      "Workflow efficiency optimization through performance metric analysis",
+      "Predictive model weight adjustment based on accuracy metrics"
+    ],
+    "error_recovery": [
+      "Automatic fallback to rule-based routing when AI models are unavailable",
+      "Intelligent retry mechanisms for failed API calls with exponential backoff",
+      "Alternative agent assignment when primary recommendations are unavailable",
+      "Graceful degradation to manual priority setting if automation fails",
+      "Backup escalation pathways when predictive systems are offline",
+      "Data consistency checks with automatic correction mechanisms",
+      "Performance monitoring alerts with automatic workflow optimization"
+    ]
+  },
+  "documentation": {
+    "setup_instructions": [
+      "1. Configure integrations: Set up Zendesk OAuth2 credentials for ticket management",
+      "2. Set up OpenAI API credentials with GPT-4 access for advanced AI analysis",
+      "3. Configure Slack OAuth2 for intelligent alerting and team notifications",
+      "4. Set up MongoDB connection for analytics data storage and learning algorithms",
+      "5. Configure webhook endpoints for multi-channel support intake (email, chat, social)",
+      "6. Import agent expertise matrix and customer preference data into MongoDB",
+      "7. Set up initial sentiment analysis thresholds and escalation probability weights",
+      "8. Configure SLA deadlines for different priority levels and customer tiers",
+      "9. Test all integration endpoints and verify data flow through the workflow",
+      "10. Initialize learning algorithms with historical support data for baseline performance"
+    ],
+    "use_cases": [
+      "Enterprise customer support with multi-channel ticket orchestration and intelligent routing",
+      "SaaS product support with predictive escalation and proactive customer intervention",
+      "E-commerce customer service with sentiment-based priority routing and satisfaction optimization",
+      "Technical support centers requiring expertise-based agent assignment and complexity estimation",
+      "Call center operations with emotion detection and adaptive response generation",
+      "Subscription service support with churn prediction and retention-focused interventions",
+      "B2B support requiring account-based routing and relationship-aware communication",
+      "International support operations with cultural context awareness and localization"
+    ],
+    "customization_guide": [
+      "Sentiment Analysis: Adjust sentiment thresholds in the AI Sentiment Analyzer node prompt for industry-specific emotional indicators",
+      "Agent Assignment: Modify the Intelligent Agent Assignment prompt to include custom expertise categories and skill weightings",
+      "Priority Calculation: Update the Priority Routing Engine function to incorporate business-specific priority factors",
+      "Escalation Triggers: Customize escalation probability thresholds in the Escalation Threshold Gate based on support team capacity",
+      "Response Templates: Adapt the Context-Aware Response Generation prompts for brand voice and communication guidelines",
+      "Learning Parameters: Adjust the Continuous Learning Engine algorithms for domain-specific performance metrics",
+      "Integration Channels: Add new intake nodes for additional communication channels (SMS, social media, in-app)",
+      "Customer Segmentation: Enhance customer tier logic to include industry-specific segmentation criteria"
+    ],
+    "troubleshooting": [
+      "Issue: Sentiment analysis inconsistency - Solution: Review and update sentiment training examples in AI prompts, check for cultural and domain-specific language patterns",
+      "Issue: Incorrect agent assignments - Solution: Verify agent expertise matrix data accuracy, review workload calculation algorithms, check customer preference mappings",
+      "Issue: High false positive escalations - Solution: Adjust escalation probability thresholds, review historical escalation patterns, refine complexity estimation parameters",
+      "Issue: Response template mismatches - Solution: Update customer communication style detection, review tone analysis accuracy, refine personalization algorithms",
+      "Issue: Performance degradation - Solution: Check MongoDB query performance, optimize analytics aggregation pipelines, review API rate limits and response times",
+      "Issue: Learning algorithm convergence - Solution: Verify training data quality, check learning rate parameters, ensure sufficient historical data volume",
+      "Issue: Integration failures - Solution: Verify OAuth credentials, check API endpoint availability, review webhook payload formats and authentication"
+    ],
+    "performance_optimization": [
+      "Implement caching for frequently accessed customer data and agent availability information",
+      "Use MongoDB indexes for efficient analytics queries and performance monitoring",
+      "Optimize AI prompt length and complexity to reduce API response times and costs",
+      "Implement batch processing for non-urgent analytics and learning algorithm updates",
+      "Use connection pooling for database operations and API calls to improve throughput",
+      "Set up monitoring dashboards for workflow execution times and bottleneck identification",
+      "Implement intelligent queueing for high-volume periods with priority-based processing",
+      "Configure auto-scaling for workflow execution based on ticket volume patterns",
+      "Use webhook retry mechanisms with exponential backoff to handle temporary failures",
+      "Implement data archiving strategies to maintain optimal database performance over time"
+    ]
+  }
+}

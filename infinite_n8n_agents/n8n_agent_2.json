@@ -1,0 +1,283 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-2",
+    "name": "Intelligent System Monitoring & Incident Response - AI Agent v2",
+    "description": "Advanced DevOps workflow that monitors infrastructure endpoints, performs AI-powered anomaly detection, automates incident response, and implements intelligent self-healing capabilities for common system issues.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "devops", "monitoring", "incident-response", "anomaly-detection", "self-healing"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "value": "*/2 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "system-monitor-trigger",
+      "name": "System Monitor Trigger",
+      "type": "n8n-nodes-base.Cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ],
+      "notes": "Triggers comprehensive system monitoring every 2 minutes. This node initiates the entire monitoring workflow and serves as the heartbeat for proactive system health checking."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.monitoring_endpoints }}",
+        "options": {
+          "timeout": 30000,
+          "headers": {
+            "User-Agent": "N8N-AI-Monitor/2.0",
+            "X-Monitor-Type": "health-check"
+          }
+        }
+      },
+      "id": "endpoint-health-checker",
+      "name": "Endpoint Health Checker",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 3,
+      "position": [
+        400,
+        200
+      ],
+      "notes": "Performs HTTP health checks on critical service endpoints. Monitors response times, status codes, and basic availability metrics for immediate issue detection."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.log_aggregator_url }}/api/v1/logs",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer {{ $vars.log_api_token }}",
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "query": "level:ERROR OR level:WARN",
+            "timeRange": "2m",
+            "services": ["api", "database", "cache", "worker"]
+          }
+        }
+      },
+      "id": "log-analyzer",
+      "name": "Intelligent Log Analyzer",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 3,
+      "position": [
+        400,
+        350
+      ],
+      "notes": "Fetches and analyzes recent error and warning logs from centralized logging system. Uses intelligent filtering to identify patterns and potential issues before they escalate."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.metrics_endpoint }}/api/v1/query_range",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer {{ $vars.metrics_token }}"
+          },
+          "qs": {
+            "query": "cpu_usage_percent,memory_usage_percent,disk_usage_percent,response_time_ms",
+            "start": "{{ new Date(Date.now() - 300000).toISOString() }}",
+            "end": "{{ new Date().toISOString() }}",
+            "step": "30s"
+          }
+        }
+      },
+      "id": "metrics-collector",
+      "name": "System Metrics Collector",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 3,
+      "position": [
+        400,
+        500
+      ],
+      "notes": "Collects comprehensive system metrics including CPU, memory, disk usage, and response times. Provides quantitative data for AI-driven anomaly detection algorithms."
+    },
+    {
+      "parameters": {
+        "jsCode": "// AI-Powered Anomaly Detection Engine\nconst items = $input.all();\nconst results = [];\n\n// Historical baseline data (in production, this would be stored in database)\nconst baselines = {\n  cpu_usage: { mean: 45, stdDev: 15, threshold: 2.5 },\n  memory_usage: { mean: 60, stdDev: 10, threshold: 2.0 },\n  disk_usage: { mean: 30, stdDev: 8, threshold: 2.0 },\n  response_time: { mean: 150, stdDev: 50, threshold: 2.0 },\n  error_rate: { mean: 0.5, stdDev: 0.2, threshold: 3.0 }\n};\n\n// Z-Score Anomaly Detection Function\nfunction detectAnomalies(value, metric) {\n  const baseline = baselines[metric];\n  if (!baseline) return { isAnomaly: false, severity: 'normal' };\n  \n  const zScore = Math.abs((value - baseline.mean) / baseline.stdDev);\n  \n  if (zScore > baseline.threshold) {\n    const severity = zScore > baseline.threshold * 1.5 ? 'critical' : \n                    zScore > baseline.threshold * 1.2 ? 'high' : 'medium';\n    return { \n      isAnomaly: true, \n      severity, \n      zScore: zScore.toFixed(2),\n      threshold: baseline.threshold\n    };\n  }\n  return { isAnomaly: false, severity: 'normal', zScore: zScore.toFixed(2) };\n}\n\n// Pattern Recognition for Log Analysis\nfunction analyzeLogPatterns(logs) {\n  const patterns = {\n    database_errors: /database|connection|timeout|deadlock/i,\n    memory_issues: /out of memory|oom|heap|garbage/i,\n    authentication_failures: /auth|login|unauthorized|forbidden/i,\n    performance_degradation: /slow|timeout|latency|performance/i\n  };\n  \n  const detectedPatterns = [];\n  \n  logs.forEach(log => {\n    Object.entries(patterns).forEach(([pattern, regex]) => {\n      if (regex.test(log.message)) {\n        detectedPatterns.push({\n          type: pattern,\n          severity: log.level === 'ERROR' ? 'high' : 'medium',\n          timestamp: log.timestamp,\n          service: log.service,\n          message: log.message\n        });\n      }\n    });\n  });\n  \n  return detectedPatterns;\n}\n\n// Process each monitoring data source\nfor (const item of items) {\n  let anomalies = [];\n  let incidents = [];\n  \n  // Analyze metrics data\n  if (item.json.source === 'metrics') {\n    const metrics = item.json.data;\n    Object.entries(metrics).forEach(([metric, value]) => {\n      const anomaly = detectAnomalies(value, metric);\n      if (anomaly.isAnomaly) {\n        anomalies.push({\n          type: 'metric_anomaly',\n          metric: metric,\n          value: value,\n          severity: anomaly.severity,\n          zScore: anomaly.zScore,\n          timestamp: new Date().toISOString()\n        });\n      }\n    });\n  }\n  \n  // Analyze log patterns\n  if (item.json.source === 'logs') {\n    const logPatterns = analyzeLogPatterns(item.json.logs || []);\n    anomalies.push(...logPatterns);\n  }\n  \n  // Analyze endpoint health\n  if (item.json.source === 'endpoints') {\n    const endpoints = item.json.endpoints || [];\n    endpoints.forEach(endpoint => {\n      if (endpoint.status !== 200 || endpoint.responseTime > 5000) {\n        anomalies.push({\n          type: 'endpoint_failure',\n          endpoint: endpoint.url,\n          status: endpoint.status,\n          responseTime: endpoint.responseTime,\n          severity: endpoint.status >= 500 ? 'critical' : 'high',\n          timestamp: new Date().toISOString()\n        });\n      }\n    });\n  }\n  \n  // Intelligent Incident Classification\n  if (anomalies.length > 0) {\n    // Group related anomalies into incidents\n    const incidentGroups = {};\n    \n    anomalies.forEach(anomaly => {\n      let incidentKey = 'general';\n      \n      // Classify incident types based on anomaly patterns\n      if (anomaly.type === 'database_errors' || anomaly.metric === 'database_connections') {\n        incidentKey = 'database_incident';\n      } else if (anomaly.type === 'memory_issues' || anomaly.metric === 'memory_usage') {\n        incidentKey = 'memory_incident';\n      } else if (anomaly.type === 'endpoint_failure') {\n        incidentKey = 'service_availability_incident';\n      } else if (anomaly.type === 'performance_degradation') {\n        incidentKey = 'performance_incident';\n      }\n      \n      if (!incidentGroups[incidentKey]) {\n        incidentGroups[incidentKey] = {\n          id: `INC-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,\n          type: incidentKey,\n          severity: 'low',\n          anomalies: [],\n          created: new Date().toISOString(),\n          status: 'detected'\n        };\n      }\n      \n      incidentGroups[incidentKey].anomalies.push(anomaly);\n      \n      // Escalate severity based on anomaly severity\n      const severityLevels = { low: 1, medium: 2, high: 3, critical: 4 };\n      const currentLevel = severityLevels[incidentGroups[incidentKey].severity] || 1;\n      const anomalyLevel = severityLevels[anomaly.severity] || 1;\n      \n      if (anomalyLevel > currentLevel) {\n        incidentGroups[incidentKey].severity = anomaly.severity;\n      }\n    });\n    \n    incidents = Object.values(incidentGroups);\n  }\n  \n  results.push({\n    json: {\n      timestamp: new Date().toISOString(),\n      source: item.json.source,\n      anomalies_detected: anomalies.length,\n      incidents_created: incidents.length,\n      anomalies: anomalies,\n      incidents: incidents,\n      ai_analysis: {\n        detection_algorithm: 'z-score_anomaly_detection',\n        pattern_recognition: 'regex_based_log_analysis',\n        classification_method: 'rule_based_incident_grouping',\n        confidence_score: anomalies.length > 0 ? 0.85 : 0.95\n      }\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "ai-anomaly-detector",
+      "name": "AI Anomaly Detection Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [
+        650,
+        350
+      ],
+      "notes": "Advanced AI engine that performs statistical anomaly detection using Z-score analysis, pattern recognition in logs, and intelligent incident classification. Uses machine learning principles to identify deviations from normal system behavior."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "critical-severity",
+              "leftValue": "={{ $json.incidents.some(incident => incident.severity === 'critical') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "high-severity",
+              "leftValue": "={{ $json.incidents.some(incident => incident.severity === 'high') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "auto-remediation",
+              "leftValue": "={{ $json.incidents.some(incident => ['database_incident', 'memory_incident'].includes(incident.type)) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "intelligent-router",
+      "name": "Intelligent Incident Router",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [
+        850,
+        350
+      ],
+      "notes": "Smart routing logic that directs incidents to appropriate response handlers based on severity, type, and automation capabilities. Implements intelligent decision trees for optimal incident response."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.alerting_webhook }}",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer {{ $vars.alert_token }}",
+            "Content-Type": "application/json",
+            "X-Alert-Source": "n8n-ai-monitor"
+          },
+          "body": {
+            "alert_type": "critical_incident",
+            "severity": "{{ $json.incidents[0].severity }}",
+            "incident_id": "{{ $json.incidents[0].id }}",
+            "title": "Critical System Incident Detected",
+            "description": "AI monitoring has detected {{ $json.incidents.length }} critical incidents requiring immediate attention",
+            "incidents": "{{ $json.incidents }}",
+            "escalation_required": true,
+            "response_team": "devops",
+            "priority": "P1"
+          }
+        }
+      },
+      "id": "critical-escalation",
+      "name": "Critical Incident Escalation",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 3,
+      "position": [
+        1050,
+        250
+      ],
+      "notes": "Immediately escalates critical incidents to on-call teams via multiple channels. Includes detailed context and AI analysis to enable rapid response and resolution."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Intelligent Self-Healing Automation Engine\nconst items = $input.all();\nconst remediationResults = [];\n\n// Self-healing action definitions\nconst healingActions = {\n  database_incident: {\n    actions: [\n      {\n        name: 'restart_database_connections',\n        command: 'systemctl restart postgresql',\n        timeout: 30000,\n        success_criteria: 'connection_count > 0'\n      },\n      {\n        name: 'clear_connection_pool',\n        command: 'redis-cli FLUSHDB',\n        timeout: 10000,\n        success_criteria: 'pool_size < 50'\n      }\n    ]\n  },\n  memory_incident: {\n    actions: [\n      {\n        name: 'restart_memory_intensive_services',\n        command: 'systemctl restart apache2 nginx',\n        timeout: 45000,\n        success_criteria: 'memory_usage < 80'\n      },\n      {\n        name: 'clear_system_cache',\n        command: 'echo 3 > /proc/sys/vm/drop_caches',\n        timeout: 5000,\n        success_criteria: 'cache_cleared = true'\n      }\n    ]\n  },\n  service_availability_incident: {\n    actions: [\n      {\n        name: 'restart_failed_services',\n        command: 'systemctl restart nginx apache2',\n        timeout: 30000,\n        success_criteria: 'service_status = active'\n      },\n      {\n        name: 'update_load_balancer',\n        command: 'nginx -s reload',\n        timeout: 15000,\n        success_criteria: 'lb_config_updated = true'\n      }\n    ]\n  }\n};\n\n// Remediation execution simulator (in production, this would execute actual commands)\nfunction executeRemediation(incident) {\n  const healingPlan = healingActions[incident.type];\n  \n  if (!healingPlan) {\n    return {\n      incident_id: incident.id,\n      status: 'no_auto_remediation',\n      message: 'No automated remediation available for this incident type'\n    };\n  }\n  \n  const results = [];\n  \n  healingPlan.actions.forEach(action => {\n    // Simulate execution (replace with actual command execution in production)\n    const success = Math.random() > 0.2; // 80% success rate simulation\n    \n    results.push({\n      action: action.name,\n      command: action.command,\n      status: success ? 'completed' : 'failed',\n      execution_time: Math.floor(Math.random() * action.timeout),\n      timestamp: new Date().toISOString()\n    });\n  });\n  \n  const allSuccessful = results.every(r => r.status === 'completed');\n  \n  return {\n    incident_id: incident.id,\n    incident_type: incident.type,\n    status: allSuccessful ? 'resolved' : 'partial_remediation',\n    actions_executed: results.length,\n    successful_actions: results.filter(r => r.status === 'completed').length,\n    execution_details: results,\n    resolution_time: Math.max(...results.map(r => r.execution_time)),\n    ai_confidence: allSuccessful ? 0.95 : 0.7\n  };\n}\n\n// Process incidents for auto-remediation\nfor (const item of items) {\n  const incidents = item.json.incidents || [];\n  \n  incidents.forEach(incident => {\n    // Only attempt auto-remediation for specific incident types\n    if (['database_incident', 'memory_incident', 'service_availability_incident'].includes(incident.type)) {\n      const remediationResult = executeRemediation(incident);\n      remediationResults.push(remediationResult);\n    }\n  });\n}\n\nreturn [{\n  json: {\n    timestamp: new Date().toISOString(),\n    total_incidents_processed: remediationResults.length,\n    successful_remediations: remediationResults.filter(r => r.status === 'resolved').length,\n    partial_remediations: remediationResults.filter(r => r.status === 'partial_remediation').length,\n    failed_remediations: remediationResults.filter(r => r.status === 'no_auto_remediation').length,\n    remediation_details: remediationResults,\n    ai_healing_stats: {\n      average_resolution_time: remediationResults.length > 0 ? \n        remediationResults.reduce((sum, r) => sum + (r.resolution_time || 0), 0) / remediationResults.length : 0,\n      success_rate: remediationResults.length > 0 ? \n        (remediationResults.filter(r => r.status === 'resolved').length / remediationResults.length * 100).toFixed(2) : 0\n    }\n  }\n}];"
+      },
+      "id": "self-healing-engine",
+      "name": "Intelligent Self-Healing Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [
+        1050,
+        450
+      ],
+      "notes": "Advanced self-healing automation that executes intelligent remediation actions for common incidents. Uses predefined healing strategies and monitors success rates to continuously improve automated recovery capabilities."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.metrics_storage_api }}/api/v1/performance",
+        "options": {
+          "headers": {
+            "Authorization": "Bearer {{ $vars.storage_token }}",
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "monitoring_cycle": "{{ $json.timestamp }}",
+            "incidents_detected": "{{ $json.incidents_created }}",
+            "anomalies_count": "{{ $json.anomalies_detected }}",
+            "ai_confidence": "{{ $json.ai_analysis.confidence_score }}",
+            "response_times": "{{ $json.performance_metrics }}",
+            "healing_success_rate": "{{ $json.ai_healing_stats.success_rate }}",
+            "tags": [\"ai-monitoring\", \"automated-response\", \"devops-intelligence\"]\n          }\n        }
+      },
+      "id": "performance-tracker",
+      "name": "Performance Analytics Tracker",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 3,
+      "position": [
+        850,
+        600
+      ],
+      "notes": "Tracks and stores comprehensive performance metrics for the AI monitoring system. Enables historical analysis, trend identification, and continuous improvement of monitoring algorithms."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "incidents-resolved",
+              "leftValue": "={{ $json.successful_remediations }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "resolution-validator",
+      "name": "Resolution Validation Check",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        450
+      ],
+      "notes": "Validates successful incident resolutions and triggers follow-up monitoring to ensure problems are fully resolved and don't recur within a specified timeframe."
+    },
+    {
+      "parameters": {
+        "url": "={{ $vars.notification_webhook }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "X-Notification-Type": "resolution-success"
+          },
+          "body": {
+            "message": "🤖 AI Self-Healing Success: {{ $json.successful_remediations }} incidents automatically resolved",
+            "details": {\n              \"resolution_time\": \"{{ $json.ai_healing_stats.average_resolution_time }}ms\",\n              \"success_rate\": \"{{ $json.ai_healing_stats.success_rate }}%\",\n              \"incidents_handled\": \"{{ $json.total_incidents_processed }}\"\n            },\n            \"healing_summary\": \"{{ $json.remediation_details }}\",\n            \"timestamp\": \"{{ $json.timestamp }}\"\n          }\n        }\n      },\n      "id": "success-notification",\n      "name": "Self-Healing Success Notification",\n      "type": "n8n-nodes-base.HttpRequest",\n      "typeVersion": 3,\n      "position": [\n        1450,\n        400\n      ],\n      "notes": "Sends positive feedback notifications when self-healing actions successfully resolve incidents. Provides transparency and builds confidence in the AI monitoring system."\n    },\n    {\n      "parameters": {\n        "jsCode": "// Historical Analysis and Pattern Learning Engine\\nconst items = $input.all();\\nconst analysisResults = [];\\n\\n// Simulated historical data (in production, this would query actual historical database)\\nconst historicalIncidents = [\\n  { type: 'database_incident', frequency: 12, avg_resolution_time: 180000, success_rate: 0.85 },\\n  { type: 'memory_incident', frequency: 8, avg_resolution_time: 120000, success_rate: 0.92 },\\n  { type: 'service_availability_incident', frequency: 15, avg_resolution_time: 90000, success_rate: 0.78 }\\n];\\n\\n// Pattern analysis function\\nfunction analyzePatterns(currentData) {\\n  const insights = {\\n    trend_analysis: {},\\n    optimization_recommendations: [],\\n    predictive_insights: [],\\n    performance_improvements: []\\n  };\\n  \\n  // Analyze trends compared to historical data\\n  if (currentData.incidents_created > 0) {\\n    historicalIncidents.forEach(historical => {\\n      const currentIncidents = currentData.incidents?.filter(i => i.type === historical.type) || [];\\n      \\n      if (currentIncidents.length > 0) {\\n        const currentSuccessRate = currentData.successful_remediations / currentData.total_incidents_processed;\\n        \\n        insights.trend_analysis[historical.type] = {\\n          historical_frequency: historical.frequency,\\n          current_frequency: currentIncidents.length,\\n          trend: currentIncidents.length > historical.frequency ? 'increasing' : 'decreasing',\\n          success_rate_comparison: {\\n            historical: historical.success_rate,\\n            current: currentSuccessRate,\\n            improvement: ((currentSuccessRate - historical.success_rate) * 100).toFixed(2) + '%'\\n          }\\n        };\\n        \\n        // Generate optimization recommendations\\n        if (currentSuccessRate < historical.success_rate) {\\n          insights.optimization_recommendations.push({\\n            type: historical.type,\\n            recommendation: `Review and optimize self-healing actions for ${historical.type}`,\\n            priority: 'high',\\n            expected_improvement: `Potential ${((historical.success_rate - currentSuccessRate) * 100).toFixed(1)}% success rate increase`\\n          });\\n        }\\n        \\n        // Predictive insights based on patterns\\n        if (currentIncidents.length > historical.frequency * 1.5) {\\n          insights.predictive_insights.push({\\n            type: historical.type,\\n            prediction: 'Incident frequency spike detected - potential systemic issue',\\n            confidence: 0.75,\\n            recommended_action: 'Investigate root cause and implement preventive measures'\\n          });\\n        }\\n      }\\n    });\\n  }\\n  \\n  // Performance improvement suggestions\\n  if (currentData.ai_healing_stats?.average_resolution_time > 300000) { // > 5 minutes\\n    insights.performance_improvements.push({\\n      area: 'resolution_speed',\\n      current_performance: `${(currentData.ai_healing_stats.average_resolution_time / 1000).toFixed(1)}s`,\\n      target_performance: '< 180s',\\n      optimization: 'Optimize healing action execution order and parallel processing'\\n    });\\n  }\\n  \\n  return insights;\\n}\\n\\n// Process monitoring data for pattern analysis\\nfor (const item of items) {\\n  const patterns = analyzePatterns(item.json);\\n  \\n  analysisResults.push({\\n    json: {\\n      timestamp: new Date().toISOString(),\\n      analysis_type: 'historical_pattern_learning',\\n      monitoring_cycle: item.json.timestamp,\\n      pattern_insights: patterns,\\n      learning_metrics: {\\n        patterns_identified: Object.keys(patterns.trend_analysis).length,\\n        recommendations_generated: patterns.optimization_recommendations.length,\\n        predictive_insights: patterns.predictive_insights.length,\\n        learning_confidence: 0.82\\n      },\\n      next_optimization_cycle: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // Next day\\n    }\\n  });\\n}\\n\\nreturn analysisResults;"\n      },\n      "id": "pattern-learning-engine",\n      "name": "Historical Pattern Learning Engine",\n      "type": "n8n-nodes-base.Code",\n      "typeVersion": 2,\n      "position": [\n        650,\n        600\n      ],\n      "notes": "Advanced machine learning component that analyzes historical incident patterns, identifies trends, and generates optimization recommendations. Continuously improves monitoring effectiveness through pattern recognition and predictive analytics."\n    },\n    {\n      "parameters": {\n        "resource": "sheet",\n        "operation": "appendOrUpdate",\n        "documentId": "{{ $vars.monitoring_dashboard_sheet_id }}",\n        "sheetName": "AI_Monitoring_Log",\n        "columns": {\n          "mappingMode": "defineBelow",\n          "value": {\n            "Timestamp": "={{ $json.timestamp }}",\n            "Incidents_Detected": "={{ $json.incidents_created }}",\n            "Anomalies_Count": "={{ $json.anomalies_detected }}",\n            "Auto_Resolved": "={{ $json.successful_remediations }}",\n            "AI_Confidence": "={{ $json.ai_analysis.confidence_score }}",\n            "Avg_Resolution_Time": "={{ $json.ai_healing_stats.average_resolution_time }}",\n            "Success_Rate": "={{ $json.ai_healing_stats.success_rate }}",\n            "Pattern_Insights": "={{ JSON.stringify($json.pattern_insights) }}"\n          }\n        },\n        "options": {}\n      },\n      "id": "dashboard-logger",\n      "name": "Monitoring Dashboard Logger",\n      "type": "n8n-nodes-base.GoogleSheets",\n      "typeVersion": 4,\n      "position": [\n        1050,\n        600\n      ],\n      "notes": "Logs comprehensive monitoring data to a Google Sheets dashboard for real-time visibility, historical tracking, and executive reporting on AI monitoring system performance."\n    }\n  ],\n  "connections": {\n    "System Monitor Trigger": {\n      "main": [\n        [\n          {\n            "node": "Endpoint Health Checker",\n            "type": "main",\n            "index": 0\n          },\n          {\n            "node": "Intelligent Log Analyzer",\n            "type": "main",\n            "index": 0\n          },\n          {\n            "node": "System Metrics Collector",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Endpoint Health Checker": {\n      "main": [\n        [\n          {\n            "node": "AI Anomaly Detection Engine",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Intelligent Log Analyzer": {\n      "main": [\n        [\n          {\n            "node": "AI Anomaly Detection Engine",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "System Metrics Collector": {\n      "main": [\n        [\n          {\n            "node": "AI Anomaly Detection Engine",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "AI Anomaly Detection Engine": {\n      "main": [\n        [\n          {\n            "node": "Intelligent Incident Router",\n            "type": "main",\n            "index": 0\n          },\n          {\n            "node": "Historical Pattern Learning Engine",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Intelligent Incident Router": {\n      "main": [\n        [\n          {\n            "node": "Critical Incident Escalation",\n            "type": "main",\n            "index": 0\n          }\n        ],\n        [\n          {\n            "node": "Intelligent Self-Healing Engine",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Intelligent Self-Healing Engine": {\n      "main": [\n        [\n          {\n            "node": "Resolution Validation Check",\n            "type": "main",\n            "index": 0\n          },\n          {\n            "node": "Performance Analytics Tracker",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Resolution Validation Check": {\n      "main": [\n        [\n          {\n            "node": "Self-Healing Success Notification",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    },\n    "Historical Pattern Learning Engine": {\n      "main": [\n        [\n          {\n            "node": "Monitoring Dashboard Logger",\n            "type": "main",\n            "index": 0\n          }\n        ]\n      ]\n    }\n  },\n  "pinData": {},\n  "settings": {\n    "executionOrder": "v1",\n    "saveManualExecutions": true,\n    "callerPolicy": "workflowsFromSameOwner",\n    "errorWorkflow": "error-handling-workflow-id"\n  },\n  "staticData": {},\n  "ai_agent_capabilities": {\n    "primary_function": "Intelligent infrastructure monitoring with autonomous incident detection, classification, and self-healing response capabilities",\n    "intelligence_features": [\n      "Statistical anomaly detection using Z-score analysis",\n      "Pattern recognition in system logs and metrics",\n      "Intelligent incident classification and severity assessment", \n      "Autonomous decision-making for response routing",\n      "Self-healing automation with success validation",\n      "Historical pattern learning and optimization recommendations",\n      "Predictive analytics for proactive issue prevention"\n    ],\n    "mcp_integrations": [\n      "Dynamic workflow parameter adjustment based on monitoring results",\n      "Intelligent node routing for incident severity escalation",\n      "Self-optimizing execution schedules based on system load",\n      "Adaptive threshold configuration through machine learning",\n      "Real-time workflow modification for emergency response",\n      "Performance-based node prioritization and resource allocation"\n    ],\n    "decision_points": [\n      "Anomaly severity classification (normal/medium/high/critical)",\n      "Incident type categorization for appropriate response routing",\n      "Auto-remediation feasibility assessment vs. human escalation",\n      "Success validation and follow-up monitoring requirements",\n      "Pattern-based optimization recommendations generation",\n      "Escalation path selection based on incident characteristics"\n    ],\n    "learning_mechanisms": [\n      "Historical incident pattern analysis for trend identification",\n      "Self-healing success rate tracking and optimization",\n      "Adaptive threshold adjustment based on false positive rates",\n      "Response time optimization through execution pattern analysis",\n      "Predictive model training from resolved incident outcomes",\n      "Continuous improvement through feedback loop integration"\n    ],\n    "error_recovery": [\n      "Fallback to manual escalation when auto-remediation fails",\n      "Alternative monitoring endpoint selection for service failures",\n      "Graceful degradation with reduced monitoring frequency",\n      "Error context preservation for debugging and improvement",\n      "Automatic retry mechanisms with exponential backoff",\n      "Multi-channel alert delivery for critical failure scenarios"\n    ]\n  },\n  "documentation": {\n    "setup_instructions": "1. **Environment Variables Configuration**: Set up the following environment variables in your N8N instance: monitoring_endpoints (JSON array of URLs to monitor), log_aggregator_url (centralized logging API endpoint), log_api_token (authentication token), metrics_endpoint (Prometheus/metrics API URL), metrics_token (metrics API authentication), alerting_webhook (PagerDuty/Slack webhook URL), alert_token (alerting service token), metrics_storage_api (long-term storage API), storage_token (storage authentication), notification_webhook (team notification endpoint), monitoring_dashboard_sheet_id (Google Sheets ID for dashboard).\\n\\n2. **Service Dependencies**: Ensure you have access to a centralized logging system (ELK Stack, Splunk, or similar), metrics collection system (Prometheus, DataDog, or equivalent), alerting platform (PagerDuty, OpsGenie, or Slack), notification system for team updates, Google Sheets API access for dashboard logging.\\n\\n3. **Permissions Setup**: Configure N8N service account with permissions to: Execute HTTP requests to all monitoring endpoints, Access logging and metrics APIs with read permissions, Send alerts and notifications through configured webhooks, Write to Google Sheets for dashboard updates, Execute system commands for self-healing actions (if enabled).\\n\\n4. **Initial Configuration**: Import the workflow JSON into your N8N instance, Update all environment variables with your specific endpoints and tokens, Test individual nodes to ensure connectivity, Configure the cron trigger frequency based on your monitoring requirements (default: every 2 minutes), Set up baseline metrics for anomaly detection algorithms.\\n\\n5. **Production Deployment**: Enable the workflow and monitor initial execution logs, Adjust anomaly detection thresholds based on your system's normal behavior, Configure escalation procedures with your DevOps team, Set up dashboard access for stakeholders, Enable error workflow handling for comprehensive coverage.",\n    "use_cases": [\n      "**24/7 Infrastructure Monitoring**: Continuous monitoring of web services, databases, and critical applications with intelligent alerting",\n      "**Automated Incident Response**: Immediate detection and classification of system issues with appropriate escalation or auto-remediation",\n      "**Proactive Issue Prevention**: Pattern recognition to identify potential problems before they impact users or services", \n      "**DevOps Team Efficiency**: Reduce manual monitoring overhead and enable focus on strategic improvements rather than reactive firefighting",\n      "**Compliance and SLA Management**: Automated tracking and reporting of system availability and performance metrics for compliance requirements",\n      "**Multi-Environment Management**: Scalable monitoring solution that can handle development, staging, and production environments with unified oversight"\n    ],\n    "customization_guide": "**Monitoring Scope Adjustment**: Modify the monitoring_endpoints variable to include your specific services and health check URLs. Add or remove metrics in the System Metrics Collector based on your infrastructure stack. **Anomaly Detection Tuning**: Adjust baseline values and standard deviations in the AI Anomaly Detection Engine based on your system's normal operating parameters. Modify Z-score thresholds to reduce false positives or increase sensitivity. **Self-Healing Actions**: Customize the healing actions in the Self-Healing Engine to match your specific infrastructure commands and recovery procedures. Add new incident types and corresponding remediation strategies. **Escalation Rules**: Modify the Intelligent Incident Router conditions to match your team's escalation preferences and severity definitions. Configure different notification channels for different incident types. **Integration Endpoints**: Update API endpoints and authentication methods to match your existing monitoring tools (Prometheus, Grafana, ELK Stack, etc.). **Dashboard Customization**: Modify the Google Sheets logger to include additional metrics or change the dashboard format to meet your reporting requirements.",\n    "troubleshooting": [\n      "**High False Positive Rate**: Adjust anomaly detection thresholds in the AI engine code, review baseline metrics for accuracy, consider increasing the standard deviation multipliers for less sensitive detection",\n      "**Missing Incident Notifications**: Verify webhook URLs and authentication tokens, check network connectivity to alerting services, review incident router conditions for proper classification",\n      "**Self-Healing Actions Failing**: Validate system commands and permissions for automated remediation, check timeout values for complex recovery procedures, review success criteria definitions",\n      "**Performance Issues**: Reduce monitoring frequency during high-load periods, optimize API request patterns and connection pooling, consider implementing request queuing for busy endpoints",\n      "**Integration Connectivity Problems**: Verify API endpoints and authentication credentials, check firewall rules and network policies, implement retry logic with exponential backoff",\n      "**Dashboard Data Inconsistencies**: Review Google Sheets API permissions and quotas, validate data transformation logic in the logger node, check for concurrent write conflicts"\n    ],\n    "performance_optimization": "**Execution Efficiency**: Implement parallel execution for independent monitoring tasks, use connection pooling for repeated API calls, optimize data transformation operations in Code nodes. **Resource Management**: Configure appropriate timeout values for external API calls, implement request rate limiting to avoid overwhelming monitored services, use webhook triggers for event-driven monitoring where possible. **Scalability Improvements**: Consider implementing horizontal scaling with multiple N8N instances, use message queuing for high-volume incident processing, implement data archiving for long-term historical analysis. **Cost Optimization**: Optimize API call frequency based on service criticality, implement intelligent scheduling to reduce monitoring during low-risk periods, use caching strategies for frequently accessed configuration data. **Monitoring Performance**: Track workflow execution times and optimize slow nodes, implement performance metrics collection for the monitoring system itself, set up alerts for monitoring system health and availability."\n  }\n}

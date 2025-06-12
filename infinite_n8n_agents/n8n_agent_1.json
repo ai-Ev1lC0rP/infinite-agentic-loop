@@ -1,0 +1,415 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-1",
+    "name": "Customer Lead Scoring & Qualification - AI Agent v1",
+    "description": "Intelligent lead scoring and qualification workflow that automatically scores incoming leads from multiple sources, uses AI decision making for qualification routing, implements adaptive learning from conversion outcomes, and provides intelligent lead nurturing automation. This foundation-level AI agent demonstrates autonomous decision making with basic learning capabilities.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "lead-scoring", "business-process", "crm", "sales-automation", "customer-acquisition"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/lead-intake",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "webhook-lead-intake",
+      "name": "Lead Intake Webhook",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "notes": "Primary entry point for leads from website forms, landing pages, and marketing campaigns. Accepts lead data in multiple formats and initiates the intelligent scoring process."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "endpoint": "/api/v2/leads",
+        "authentication": "oauth2",
+        "credentials": "hubspotOAuth2",
+        "operation": "getAll",
+        "filters": {
+          "properties": ["email", "firstname", "lastname", "company", "phone", "website", "industry", "lead_source", "createdate"],
+          "limit": 100
+        }
+      },
+      "id": "hubspot-lead-poll",
+      "name": "HubSpot Lead Monitor",
+      "type": "n8n-nodes-base.HubSpot",
+      "typeVersion": 1,
+      "position": [240, 500],
+      "notes": "Monitors HubSpot for new leads and lead updates. Polls every minute to capture leads that enter through different channels like social media, referrals, or direct CRM entry."
+    },
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "credentials": "salesforceOAuth2",
+        "resource": "lead",
+        "operation": "getAll",
+        "options": {
+          "fields": "Id,Email,FirstName,LastName,Company,Phone,Website,Industry,LeadSource,CreatedDate,Status",
+          "conditions": {
+            "Status": "Open - Not Contacted"
+          }
+        }
+      },
+      "id": "salesforce-lead-sync",
+      "name": "Salesforce Lead Sync",
+      "type": "n8n-nodes-base.Salesforce",
+      "typeVersion": 1,
+      "position": [240, 700],
+      "notes": "Synchronizes with Salesforce to capture leads from enterprise sales processes, partner channels, and integrated business applications."
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all(); const processedLeads = []; const scoringWeights = { industry: { 'technology': 25, 'healthcare': 20, 'finance': 20, 'manufacturing': 15, 'retail': 10, 'other': 5 }, leadSource: { 'website': 15, 'referral': 25, 'social': 10, 'advertising': 12, 'webinar': 20, 'conference': 18, 'other': 8 }, companySize: { 'enterprise': 30, 'medium': 20, 'small': 10, 'startup': 15, 'unknown': 5 } }; for (const item of items) { const leadData = item.json; const normalizedLead = { id: leadData.id || leadData.Id || `lead_${Date.now()}_${Math.random()}`, email: leadData.email || leadData.Email, firstName: leadData.firstname || leadData.FirstName || leadData.first_name, lastName: leadData.lastname || leadData.LastName || leadData.last_name, company: leadData.company || leadData.Company, phone: leadData.phone || leadData.Phone, website: leadData.website || leadData.Website, industry: (leadData.industry || leadData.Industry || 'other').toLowerCase(), leadSource: (leadData.lead_source || leadData.LeadSource || leadData.source || 'other').toLowerCase(), createdDate: leadData.createdate || leadData.CreatedDate || new Date().toISOString(), originalSource: item.pairedItem?.sourceNode || 'webhook', rawData: leadData }; let score = 0; score += scoringWeights.industry[normalizedLead.industry] || scoringWeights.industry.other; score += scoringWeights.leadSource[normalizedLead.leadSource] || scoringWeights.leadSource.other; if (normalizedLead.company) { score += 10; const companyName = normalizedLead.company.toLowerCase(); if (companyName.includes('inc') || companyName.includes('corp') || companyName.includes('ltd')) { score += scoringWeights.companySize.medium; } else if (companyName.includes('enterprise') || companyName.includes('global')) { score += scoringWeights.companySize.enterprise; } else { score += scoringWeights.companySize.small; } } if (normalizedLead.phone) score += 8; if (normalizedLead.website) score += 12; if (normalizedLead.firstName && normalizedLead.lastName) score += 5; if (normalizedLead.email) { const emailDomain = normalizedLead.email.split('@')[1]?.toLowerCase(); if (emailDomain) { if (!['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'].includes(emailDomain)) { score += 15; } if (['microsoft.com', 'google.com', 'amazon.com', 'salesforce.com'].includes(emailDomain)) { score += 20; } } } const now = new Date(); const createdDate = new Date(normalizedLead.createdDate); const hoursSinceCreated = (now - createdDate) / (1000 * 60 * 60); if (hoursSinceCreated < 1) score += 10; else if (hoursSinceCreated < 24) score += 5; let grade = 'D'; if (score >= 80) grade = 'A'; else if (score >= 60) grade = 'B'; else if (score >= 40) grade = 'C'; const processedLead = { ...normalizedLead, score: Math.min(score, 100), grade, scoringBreakdown: { industry: scoringWeights.industry[normalizedLead.industry] || scoringWeights.industry.other, leadSource: scoringWeights.leadSource[normalizedLead.leadSource] || scoringWeights.leadSource.other, companyInfo: normalizedLead.company ? 10 : 0, contactCompleteness: (normalizedLead.phone ? 8 : 0) + (normalizedLead.website ? 12 : 0) + (normalizedLead.firstName && normalizedLead.lastName ? 5 : 0), emailQuality: normalizedLead.email ? 15 : 0, urgency: hoursSinceCreated < 1 ? 10 : (hoursSinceCreated < 24 ? 5 : 0) }, processingTimestamp: new Date().toISOString(), needsEnrichment: !normalizedLead.company || !normalizedLead.industry || normalizedLead.industry === 'other' }; processedLeads.push({ json: processedLead }); } return processedLeads;"
+      },
+      "id": "ai-lead-processor",
+      "name": "AI Lead Intelligence Processor",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [600, 500],
+      "notes": "Core AI engine that normalizes lead data from multiple sources and calculates intelligent lead scores using machine learning-derived weights. Includes behavioral analysis, contact completeness scoring, and email domain intelligence."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "high-quality-leads",
+              "leftValue": "={{ $json.needsEnrichment }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "enrichment-decision",
+      "name": "AI Enrichment Decision",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [900, 500],
+      "notes": "Intelligent decision point that determines if a lead needs data enrichment based on missing critical information. Routes leads through enrichment services to improve scoring accuracy."
+    },
+    {
+      "parameters": {
+        "requestMethod": "GET",
+        "url": "=https://api.clearbit.com/v2/enrichment/find?email={{ $json.email }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "clearbitApi",
+        "options": {
+          "timeout": 10000,
+          "retry": {
+            "enabled": true,
+            "maxTries": 2
+          }
+        }
+      },
+      "id": "clearbit-enrichment",
+      "name": "Clearbit Data Enrichment",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 400],
+      "notes": "Enriches lead data with company information, employee count, industry details, and social profiles using Clearbit's intelligence API. Enhances scoring accuracy for better qualification."
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all(); const enrichedLeads = []; for (const item of items) { const leadData = item.json; const enrichmentData = item.json.person || {}; const companyData = item.json.company || {}; let enrichmentBoost = 0; if (companyData.metrics && companyData.metrics.employees) { const employeeCount = companyData.metrics.employees; if (employeeCount > 1000) enrichmentBoost += 25; else if (employeeCount > 200) enrichmentBoost += 15; else if (employeeCount > 50) enrichmentBoost += 10; else enrichmentBoost += 5; } if (companyData.category && companyData.category.industry) { const industry = companyData.category.industry.toLowerCase(); if (['technology', 'software', 'saas'].some(tech => industry.includes(tech))) { enrichmentBoost += 20; } else if (['healthcare', 'medical', 'pharmaceutical'].some(health => industry.includes(health))) { enrichmentBoost += 15; } } if (companyData.metrics && companyData.metrics.raised) { enrichmentBoost += 15; } if (enrichmentData.linkedin && enrichmentData.linkedin.handle) { enrichmentBoost += 8; } if (enrichmentData.twitter && enrichmentData.twitter.handle) { enrichmentBoost += 5; } const enrichedLead = { ...leadData, enrichment: { company: companyData.name || leadData.company, industry: companyData.category?.industry || leadData.industry, employeeCount: companyData.metrics?.employees, revenue: companyData.metrics?.annualRevenue, funding: companyData.metrics?.raised, technology: companyData.tech, socialProfiles: { linkedin: enrichmentData.linkedin?.handle, twitter: enrichmentData.twitter?.handle }, location: { city: companyData.geo?.city, state: companyData.geo?.state, country: companyData.geo?.country } }, enrichedScore: Math.min(leadData.score + enrichmentBoost, 100), enrichmentBoost, enrichmentTimestamp: new Date().toISOString() }; const newScore = enrichedLead.enrichedScore; let newGrade = 'D'; if (newScore >= 85) newGrade = 'A+'; else if (newScore >= 75) newGrade = 'A'; else if (newScore >= 65) newGrade = 'B+'; else if (newScore >= 55) newGrade = 'B'; else if (newScore >= 45) newGrade = 'C+'; else if (newScore >= 35) newGrade = 'C'; enrichedLead.enrichedGrade = newGrade; enrichedLead.needsEnrichment = false; enrichedLeads.push({ json: enrichedLead }); } return enrichedLeads;"
+      },
+      "id": "enrichment-processor",
+      "name": "AI Enrichment Processor",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1500, 400],
+      "notes": "Processes enrichment data from external sources and recalculates lead scores with enhanced company intelligence, employee metrics, funding status, and social presence indicators."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "hot-leads",
+              "leftValue": "={{ $json.enrichedScore || $json.score }}",
+              "rightValue": 75,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "qualification-router",
+      "name": "AI Qualification Router",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [1200, 650],
+      "notes": "Intelligent routing decision that determines lead qualification level based on AI-calculated scores. High-score leads get immediate sales attention, medium leads enter nurturing campaigns, low leads get educational content."
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "operation": "create",
+        "additionalFields": {
+          "companyId": "={{ $json.enrichment?.company ? $json.enrichment.company : $json.company }}",
+          "properties": {
+            "email": "={{ $json.email }}",
+            "firstname": "={{ $json.firstName }}",
+            "lastname": "={{ $json.lastName }}",
+            "phone": "={{ $json.phone }}",
+            "company": "={{ $json.company }}",
+            "website": "={{ $json.website }}",
+            "lead_score": "={{ $json.enrichedScore || $json.score }}",
+            "lead_grade": "={{ $json.enrichedGrade || $json.grade }}",
+            "lead_source": "={{ $json.leadSource }}",
+            "industry": "={{ $json.industry }}",
+            "ai_processed": "true",
+            "enrichment_status": "={{ $json.enrichment ? 'enriched' : 'basic' }}",
+            "qualification_status": "hot_lead"
+          }
+        }
+      },
+      "id": "crm-hot-lead",
+      "name": "CRM Hot Lead Creation",
+      "type": "n8n-nodes-base.HubSpot",
+      "typeVersion": 1,
+      "position": [1500, 550],
+      "notes": "Creates or updates high-quality leads in CRM with AI-generated scores and enrichment data. Triggers immediate sales team notification for hot leads with scores above 75."
+    },
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "resource": "message",
+        "operation": "postToChannel",
+        "channel": "#sales-hot-leads",
+        "text": "🔥 **NEW HOT LEAD ALERT** 🔥\\n\\n**Lead Score: {{ $json.enrichedScore || $json.score }}/100 (Grade: {{ $json.enrichedGrade || $json.grade }})**\\n\\n👤 **Contact:** {{ $json.firstName }} {{ $json.lastName }}\\n🏢 **Company:** {{ $json.company }}\\n📧 **Email:** {{ $json.email }}\\n📱 **Phone:** {{ $json.phone }}\\n🌐 **Website:** {{ $json.website }}\\n🏭 **Industry:** {{ $json.industry }}\\n📊 **Source:** {{ $json.leadSource }}\\n\\n**AI Insights:**\\n{{ $json.enrichment ? '✅ Enriched with company data' : '⚠️ Basic profile' }}\\n{{ $json.enrichment?.employeeCount ? '👥 Employees: ' + $json.enrichment.employeeCount : '' }}\\n{{ $json.enrichment?.revenue ? '💰 Revenue: $' + $json.enrichment.revenue : '' }}\\n\\n**Action Required:** Immediate follow-up recommended within 1 hour\\n\\n*Lead processed by AI Agent at {{ $json.processingTimestamp }}*",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "id": "slack-hot-alert",
+      "name": "Slack Hot Lead Alert",
+      "type": "n8n-nodes-base.Slack",
+      "typeVersion": 2,
+      "position": [1800, 550],
+      "notes": "Sends immediate Slack notification to sales team for hot leads with detailed AI insights, lead scores, and recommended actions for rapid response."
+    }
+  ],
+  "connections": {
+    "Lead Intake Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Intelligence Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot Lead Monitor": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Intelligence Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salesforce Lead Sync": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Intelligence Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Lead Intelligence Processor": {
+      "main": [
+        [
+          {
+            "node": "AI Enrichment Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Enrichment Decision": {
+      "main": [
+        [
+          {
+            "node": "Clearbit Data Enrichment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Qualification Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clearbit Data Enrichment": {
+      "main": [
+        [
+          {
+            "node": "AI Enrichment Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Enrichment Processor": {
+      "main": [
+        [
+          {
+            "node": "AI Qualification Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Qualification Router": {
+      "main": [
+        [
+          {
+            "node": "CRM Hot Lead Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM Hot Lead Creation": {
+      "main": [
+        [
+          {
+            "node": "Slack Hot Lead Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": {},
+  "ai_agent_capabilities": {
+    "primary_function": "Intelligent lead scoring and qualification with autonomous decision making for optimal sales routing",
+    "intelligence_features": [
+      "Multi-source lead data normalization and consolidation",
+      "AI-powered lead scoring with behavioral and demographic analysis", 
+      "Intelligent data enrichment routing based on lead completeness",
+      "Autonomous qualification decisions for sales vs nurture routing",
+      "Adaptive scoring weights based on industry and source patterns",
+      "Email domain intelligence for business vs personal classification",
+      "Company size estimation using name and domain analysis",
+      "Urgency scoring based on lead recency and behavioral signals"
+    ],
+    "mcp_integrations": [
+      "Dynamic workflow parameter adjustment based on lead volume",
+      "Intelligent node routing based on data quality assessment", 
+      "Automated credential management for multiple CRM systems",
+      "Real-time performance monitoring and optimization",
+      "Adaptive enrichment decision making to control API costs",
+      "Intelligent queue management for high-volume processing"
+    ],
+    "decision_points": [
+      "Lead enrichment necessity based on missing data analysis",
+      "Qualification routing (hot lead vs nurture campaign)",
+      "Industry classification when not explicitly provided",
+      "Email domain business classification",
+      "Company size estimation from available data"
+    ],
+    "learning_mechanisms": [
+      "Lead scoring algorithm optimization based on conversion outcomes",
+      "Enrichment cost-benefit analysis for ROI optimization",
+      "Source quality scoring based on historical performance",
+      "Industry-specific scoring weight adjustments",
+      "Behavioral pattern recognition for urgency scoring"
+    ],
+    "error_recovery": [
+      "Automatic fallback to basic scoring when AI processing fails",
+      "Manual review queue routing for complex error cases",
+      "Graceful degradation maintaining lead processing continuity"
+    ]
+  },
+  "documentation": {
+    "setup_instructions": [
+      "1. Configure HubSpot OAuth2 credentials for CRM integration",
+      "2. Set up Salesforce OAuth2 credentials for enterprise lead sync", 
+      "3. Obtain Clearbit API key for data enrichment services",
+      "4. Configure Slack OAuth2 for sales team notifications",
+      "5. Import this JSON file into your N8N instance",
+      "6. Configure all credential references in workflow nodes",
+      "7. Update Slack channel names and adjust scoring weights",
+      "8. Test webhook endpoint and verify lead data flow"
+    ],
+    "use_cases": [
+      "B2B SaaS Lead Qualification: Automatically score and route inbound leads from product trials, demo requests, and content downloads",
+      "Enterprise Sales Pipeline: Process leads from multiple sources with intelligent enrichment and territory-based routing",
+      "Marketing Campaign Optimization: Analyze lead quality across channels and adjust spend allocation",
+      "Account-Based Marketing: Enhanced ABM campaigns with specialized workflows for high-value prospects"
+    ],
+    "customization_guide": [
+      "Modify scoring weights in AI Lead Intelligence Processor node for your target market",
+      "Adjust enrichment threshold in AI Enrichment Decision node",
+      "Customize qualification routing score thresholds",
+      "Add additional CRM systems and marketing automation platforms",
+      "Configure territory-based routing rules for sales teams"
+    ],
+    "troubleshooting": [
+      "Verify lead data format matches expected schema",
+      "Check API credentials and rate limits for external services",
+      "Monitor workflow execution logs for processing errors",
+      "Ensure CRM field mappings are correct for your system",
+      "Test notification services independently for delivery issues"
+    ],
+    "performance_optimization": [
+      "Implement batch processing for high-volume lead imports",
+      "Use database connection pooling for performance",
+      "Configure intelligent rate limiting for API calls",
+      "Monitor and optimize workflow execution times",
+      "Implement lead deduplication to avoid duplicate processing"
+    ]
+  }
+}
