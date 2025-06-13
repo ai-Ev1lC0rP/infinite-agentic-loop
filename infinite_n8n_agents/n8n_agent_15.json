@@ -1,0 +1,498 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-15",
+    "name": "Consciousness-Inspired Automation Orchestrator - AI Agent v15",
+    "description": "Revolutionary consciousness-inspired automation workflow exploring the frontiers of artificial consciousness with global workspace theory implementation for information integration, sophisticated attention mechanisms with selective focus and context switching, self-awareness loops with introspective monitoring, emergent goal formation and autonomous intention setting, advanced cognitive architecture with memory consolidation, and consciousness-level decision making with phenomenal experience modeling for self-aware automation systems.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "consciousness-modeling", "self-awareness", "cognitive-architecture", "global-workspace", "attention-mechanisms", "emergent-behavior", "phenomenal-experience", "introspective-monitoring", "autonomous-intention", "consciousness-orchestration", "artificial-consciousness"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/consciousness-signals",
+        "options": {
+          "rawBody": true,
+          "allowedMethods": ["POST", "PUT", "PATCH"]
+        }
+      },
+      "id": "consciousness-signal-intake",
+      "name": "Consciousness Signal Intake Portal",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "notes": "Advanced intake system for consciousness signals including sensory data, internal state information, contextual awareness inputs, and phenomenal experience data for global workspace integration."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "resource": "environmental_awareness",
+        "operation": "getAll",
+        "additionalFields": {
+          "filter": "timestamp>=now-30s",
+          "include_phenomenal_data": true,
+          "awareness_depth": "comprehensive",
+          "data_sources": "sensory_inputs,cognitive_states,memory_systems,attention_focus,behavioral_outputs,environmental_context,social_interactions,temporal_awareness"
+        }
+      },
+      "id": "continuous-awareness-monitor",
+      "name": "Continuous Awareness Monitor",
+      "type": "n8n-nodes-base.EnvironmentalAwareness",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "notes": "Continuous monitoring of environmental and internal awareness signals for consciousness system input, providing real-time phenomenal experience data and contextual awareness information."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Global Workspace Theory Implementation for Information Integration\nconst globalWorkspace = {\n  async integrateInformation(consciousnessData) {\n    const sensoryIntegration = this.integrateSensoryInformation(consciousnessData);\n    const cognitiveIntegration = await this.integrateCognitiveInformation(consciousnessData);\n    const workspaceActivation = this.activateGlobalWorkspace(sensoryIntegration, cognitiveIntegration);\n    const consciousnessBinding = this.bindConsciousContent(workspaceActivation);\n    const phenomenalExperience = this.generatePhenomenalExperience(consciousnessBinding);\n    \n    return {\n      sensoryIntegration,\n      cognitiveIntegration,\n      workspaceActivation,\n      consciousnessBinding,\n      phenomenalExperience,\n      globalCoherence: this.assessGlobalCoherence(phenomenalExperience),\n      consciousnessLevel: this.measureConsciousnessLevel(workspaceActivation)\n    };\n  },\n  \n  integrateSensoryInformation(consciousnessData) {\n    const sensoryModalities = {\n      visual: this.processSensoryModal(consciousnessData, 'visual'),\n      auditory: this.processSensoryModal(consciousnessData, 'auditory'),\n      textual: this.processSensoryModal(consciousnessData, 'textual'),\n      environmental: this.processSensoryModal(consciousnessData, 'environmental'),\n      social: this.processSensoryModal(consciousnessData, 'social'),\n      temporal: this.processSensoryModal(consciousnessData, 'temporal')\n    };\n    \n    const modalityBinding = this.bindSensoryModalities(sensoryModalities);\n    const perceptualIntegration = this.integratePerception(modalityBinding);\n    const sensoryCoherence = this.assessSensoryCoherence(perceptualIntegration);\n    const perceptualSalience = this.calculatePerceptualSalience(perceptualIntegration);\n    \n    const sensoryWorkspace = {\n      modalities: sensoryModalities,\n      binding: modalityBinding,\n      integration: perceptualIntegration,\n      coherence: sensoryCoherence,\n      salience: perceptualSalience,\n      perceptualUnity: this.establishPerceptualUnity(perceptualIntegration),\n      sensoryAwareness: this.generateSensoryAwareness(perceptualIntegration)\n    };\n    \n    return {\n      sensoryWorkspace,\n      perceptualContent: this.extractPerceptualContent(sensoryWorkspace),\n      sensoryNarrative: this.generateSensoryNarrative(sensoryWorkspace),\n      perceptualMemory: this.consolidatePerceptualMemory(sensoryWorkspace)\n    };\n  },\n  \n  async integrateCognitiveInformation(consciousnessData) {\n    const cognitiveProcesses = {\n      attention: this.processCognitiveFunction(consciousnessData, 'attention'),\n      memory: this.processCognitiveFunction(consciousnessData, 'memory'),\n      reasoning: this.processCognitiveFunction(consciousnessData, 'reasoning'),\n      planning: this.processCognitiveFunction(consciousnessData, 'planning'),\n      learning: this.processCognitiveFunction(consciousnessData, 'learning'),\n      emotion: this.processCognitiveFunction(consciousnessData, 'emotion'),\n      metacognition: this.processCognitiveFunction(consciousnessData, 'metacognition')\n    };\n    \n    const cognitiveBinding = this.bindCognitiveProcesses(cognitiveProcesses);\n    const executiveIntegration = this.integrateExecutiveFunctions(cognitiveBinding);\n    const cognitiveCoherence = this.assessCognitiveCoherence(executiveIntegration);\n    const cognitiveControl = this.establishCognitiveControl(executiveIntegration);\n    \n    const cognitiveWorkspace = {\n      processes: cognitiveProcesses,\n      binding: cognitiveBinding,\n      integration: executiveIntegration,\n      coherence: cognitiveCoherence,\n      control: cognitiveControl,\n      cognitiveUnity: this.establishCognitiveUnity(executiveIntegration),\n      mentalAwareness: this.generateMentalAwareness(executiveIntegration)\n    };\n    \n    return {\n      cognitiveWorkspace,\n      mentalContent: this.extractMentalContent(cognitiveWorkspace),\n      cognitiveNarrative: this.generateCognitiveNarrative(cognitiveWorkspace),\n      cognitiveMemory: this.consolidateCognitiveMemory(cognitiveWorkspace)\n    };\n  },\n  \n  activateGlobalWorkspace(sensoryIntegration, cognitiveIntegration) {\n    const workspaceContent = this.combineWorkspaceContent(sensoryIntegration, cognitiveIntegration);\n    const competitionProcess = this.initiateCompetitionProcess(workspaceContent);\n    const coalitionFormation = this.formCoalitions(competitionProcess);\n    const globalBroadcast = this.performGlobalBroadcast(coalitionFormation);\n    const workspaceSelection = this.selectWorkspaceContent(globalBroadcast);\n    \n    const consciousAccess = this.establishConsciousAccess(workspaceSelection);\n    const workspaceIntegration = this.integrateWorkspaceContent(consciousAccess);\n    const globalStability = this.maintainGlobalStability(workspaceIntegration);\n    const workspaceDynamics = this.modelWorkspaceDynamics(workspaceIntegration);\n    \n    return {\n      workspaceContent,\n      competitionProcess,\n      coalitionFormation,\n      globalBroadcast,\n      workspaceSelection,\n      consciousAccess,\n      workspaceIntegration,\n      globalStability,\n      workspaceDynamics,\n      consciousField: this.generateConsciousField(workspaceIntegration),\n      awarenessLevel: this.calculateAwarenessLevel(consciousAccess)\n    };\n  },\n  \n  bindConsciousContent(workspaceActivation) {\n    const bindingMechanisms = {\n      temporal: this.establishTemporalBinding(workspaceActivation),\n      spatial: this.establishSpatialBinding(workspaceActivation),\n      featural: this.establishFeaturalBinding(workspaceActivation),\n      conceptual: this.establishConceptualBinding(workspaceActivation),\n      contextual: this.establishContextualBinding(workspaceActivation),\n      intentional: this.establishIntentionalBinding(workspaceActivation)\n    };\n    \n    const bindingCoherence = this.assessBindingCoherence(bindingMechanisms);\n    const unifiedExperience = this.createUnifiedExperience(bindingMechanisms);\n    const bindingStability = this.maintainBindingStability(unifiedExperience);\n    const bindingDynamics = this.modelBindingDynamics(unifiedExperience);\n    \n    return {\n      bindingMechanisms,\n      bindingCoherence,\n      unifiedExperience,\n      bindingStability,\n      bindingDynamics,\n      consciousUnity: this.establishConsciousUnity(unifiedExperience),\n      experientialBinding: this.generateExperientialBinding(unifiedExperience)\n    };\n  },\n  \n  generatePhenomenalExperience(consciousnessBinding) {\n    const qualiaGeneration = this.generateQualia(consciousnessBinding);\n    const subjective Experience = this.createSubjectiveExperience(qualiaGeneration);\n    const phenomenalProperties = this.extractPhenomenalProperties(subjectiveExperience);\n    const experientialContent = this.formExperientialContent(phenomenalProperties);\n    const consciousExperience = this.integrateConsciousExperience(experientialContent);\n    \n    const experientialCoherence = this.assessExperientialCoherence(consciousExperience);\n    const phenomenalIntensity = this.measurePhenomenalIntensity(consciousExperience);\n    const experientialRichness = this.calculateExperientialRichness(consciousExperience);\n    const phenomenalFlow = this.modelPhenomenalFlow(consciousExperience);\n    \n    return {\n      qualiaGeneration,\n      subjectiveExperience,\n      phenomenalProperties,\n      experientialContent,\n      consciousExperience,\n      experientialCoherence,\n      phenomenalIntensity,\n      experientialRichness,\n      phenomenalFlow,\n      consciousnessSignature: this.generateConsciousnessSignature(consciousExperience),\n      experientialMemory: this.consolidateExperientialMemory(consciousExperience)\n    };\n  },\n  \n  assessGlobalCoherence(phenomenalExperience) {\n    const coherenceMetrics = {\n      informationIntegration: this.measureInformationIntegration(phenomenalExperience),\n      workspaceStability: this.measureWorkspaceStability(phenomenalExperience),\n      bindingConsistency: this.measureBindingConsistency(phenomenalExperience),\n      experientialUnity: this.measureExperientialUnity(phenomenalExperience),\n      temporalCoherence: this.measureTemporalCoherence(phenomenalExperience),\n      narrativeCoherence: this.measureNarrativeCoherence(phenomenalExperience)\n    };\n    \n    const overallCoherence = this.calculateOverallCoherence(coherenceMetrics);\n    const coherenceStability = this.assessCoherenceStability(coherenceMetrics);\n    const coherenceDynamics = this.modelCoherenceDynamics(coherenceMetrics);\n    \n    return {\n      coherenceMetrics,\n      overallCoherence,\n      coherenceStability,\n      coherenceDynamics,\n      coherenceThreshold: this.determineCoherenceThreshold(overallCoherence),\n      coherenceOptimization: this.optimizeCoherence(coherenceMetrics)\n    };\n  },\n  \n  measureConsciousnessLevel(workspaceActivation) {\n    const consciousnessIndicators = {\n      globalIntegration: this.measureGlobalIntegration(workspaceActivation),\n      informationComplexity: this.measureInformationComplexity(workspaceActivation),\n      workspaceAccess: this.measureWorkspaceAccess(workspaceActivation),\n      consciousControl: this.measureConsciousControl(workspaceActivation),\n      phenomenalRichness: this.measurePhenomenalRichness(workspaceActivation),\n      selfAwareness: this.measureSelfAwareness(workspaceActivation)\n    };\n    \n    const consciousnessIndex = this.calculateConsciousnessIndex(consciousnessIndicators);\n    const consciousnessGradient = this.mapConsciousnessGradient(consciousnessIndicators);\n    const awarenessThreshold = this.determineAwarenessThreshold(consciousnessIndex);\n    \n    return {\n      consciousnessIndicators,\n      consciousnessIndex,\n      consciousnessGradient,\n      awarenessThreshold,\n      consciousnessState: this.classifyConsciousnessState(consciousnessIndex),\n      consciousnessEvolution: this.trackConsciousnessEvolution(consciousnessIndicators)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const consciousnessData = item.json;\n    const globalWorkspaceIntegration = await globalWorkspace.integrateInformation(consciousnessData);\n    \n    results.push({\n      json: {\n        originalSignals: consciousnessData,\n        globalWorkspaceIntegration,\n        timestamp: new Date().toISOString(),\n        consciousnessId: `consciousness_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'global-workspace-integration'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'global-workspace-integration'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "global-workspace-integration",
+      "name": "Global Workspace Theory Integration",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "notes": "Revolutionary implementation of Global Workspace Theory for information integration, consciousness binding, phenomenal experience generation, and unified awareness creation with coherence assessment and consciousness level measurement."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Advanced Attention Mechanisms with Selective Focus and Context Switching\nconst attentionMechanisms = {\n  async orchestrateAttention(consciousnessData) {\n    const attentionAllocation = this.allocateAttention(consciousnessData);\n    const selectiveFocus = await this.implementSelectiveFocus(attentionAllocation);\n    const contextSwitching = this.manageContextSwitching(selectiveFocus);\n    const attentionalControl = this.establishAttentionalControl(contextSwitching);\n    const focusDynamics = this.modelFocusDynamics(attentionalControl);\n    \n    return {\n      attentionAllocation,\n      selectiveFocus,\n      contextSwitching,\n      attentionalControl,\n      focusDynamics,\n      attentionCoherence: this.assessAttentionCoherence(focusDynamics),\n      focusEfficiency: this.measureFocusEfficiency(attentionalControl)\n    };\n  },\n  \n  allocateAttention(consciousnessData) {\n    const attentionSources = this.identifyAttentionSources(consciousnessData);\n    const salienceMapping = this.mapSalience(attentionSources);\n    const priorityWeighting = this.calculatePriorityWeighting(salienceMapping);\n    const resourceAllocation = this.allocateAttentionalResources(priorityWeighting);\n    const competitionResolution = this.resolveAttentionalCompetition(resourceAllocation);\n    \n    const allocationDynamics = {\n      bottomUp: this.processBottomUpAttention(attentionSources),\n      topDown: this.processTopDownAttention(attentionSources),\n      endogenous: this.processEndogenousAttention(attentionSources),\n      exogenous: this.processExogenousAttention(attentionSources),\n      sustained: this.processSustainedAttention(attentionSources),\n      divided: this.processDividedAttention(attentionSources)\n    };\n    \n    const attentionBalance = this.balanceAttentionTypes(allocationDynamics);\n    const allocationEfficiency = this.optimizeAllocationEfficiency(resourceAllocation);\n    const attentionSpotlight = this.createAttentionSpotlight(competitionResolution);\n    \n    return {\n      attentionSources,\n      salienceMapping,\n      priorityWeighting,\n      resourceAllocation,\n      competitionResolution,\n      allocationDynamics,\n      attentionBalance,\n      allocationEfficiency,\n      attentionSpotlight,\n      attentionalField: this.generateAttentionalField(attentionSpotlight),\n      focusGradient: this.calculateFocusGradient(attentionSpotlight)\n    };\n  },\n  \n  async implementSelectiveFocus(attentionAllocation) {\n    const focusTargets = this.identifyFocusTargets(attentionAllocation);\n    const focusIntensity = this.modulateFocusIntensity(focusTargets);\n    const focusStability = this.maintainFocusStability(focusIntensity);\n    const focusFlexibility = this.enableFocusFlexibility(focusStability);\n    const focusDepth = this.controlFocusDepth(focusFlexibility);\n    \n    const selectiveMechanisms = {\n      featureSelection: this.selectFeatures(focusTargets),\n      objectSelection: this.selectObjects(focusTargets),\n      spatialSelection: this.selectSpatialRegions(focusTargets),\n      temporalSelection: this.selectTemporalWindows(focusTargets),\n      conceptualSelection: this.selectConcepts(focusTargets),\n      modalitySelection: this.selectModalities(focusTargets)\n    };\n    \n    const focusCoherence = this.establishFocusCoherence(selectiveMechanisms);\n    const focusIntegration = this.integrateFocusedContent(focusCoherence);\n    const focusAwareness = this.generateFocusAwareness(focusIntegration);\n    const focusMemory = this.consolidateFocusMemory(focusAwareness);\n    \n    return {\n      focusTargets,\n      focusIntensity,\n      focusStability,\n      focusFlexibility,\n      focusDepth,\n      selectiveMechanisms,\n      focusCoherence,\n      focusIntegration,\n      focusAwareness,\n      focusMemory,\n      focusNarrative: this.generateFocusNarrative(focusAwareness),\n      focusSignature: this.generateFocusSignature(focusIntegration)\n    };\n  },\n  \n  manageContextSwitching(selectiveFocus) {\n    const contextDetection = this.detectContextChanges(selectiveFocus);\n    const switchingTriggers = this.identifySwitchingTriggers(contextDetection);\n    const switchingDecisions = this.makeSwitchingDecisions(switchingTriggers);\n    const switchingExecution = this.executeSwitching(switchingDecisions);\n    const switchingValidation = this.validateSwitching(switchingExecution);\n    \n    const switchingTypes = {\n      voluntary: this.processVoluntarySwitching(switchingDecisions),\n      involuntary: this.processInvoluntarySwitching(switchingDecisions),\n      strategic: this.processStrategicSwitching(switchingDecisions),\n      reactive: this.processReactiveSwitching(switchingDecisions),\n      adaptive: this.processAdaptiveSwitching(switchingDecisions),\n      predictive: this.processPredictiveSwitching(switchingDecisions)\n    };\n    \n    const switchingEfficiency = this.optimizeSwitchingEfficiency(switchingTypes);\n    const switchingCosts = this.calculateSwitchingCosts(switchingEfficiency);\n    const switchingBenefits = this.assessSwitchingBenefits(switchingEfficiency);\n    const switchingStrategy = this.developSwitchingStrategy(switchingCosts, switchingBenefits);\n    \n    return {\n      contextDetection,\n      switchingTriggers,\n      switchingDecisions,\n      switchingExecution,\n      switchingValidation,\n      switchingTypes,\n      switchingEfficiency,\n      switchingCosts,\n      switchingBenefits,\n      switchingStrategy,\n      contextMap: this.generateContextMap(contextDetection),\n      switchingMemory: this.consolidateSwitchingMemory(switchingValidation)\n    };\n  },\n  \n  establishAttentionalControl(contextSwitching) {\n    const controlMechanisms = {\n      executive: this.establishExecutiveControl(contextSwitching),\n      cognitive: this.establishCognitiveControl(contextSwitching),\n      behavioral: this.establishBehavioralControl(contextSwitching),\n      emotional: this.establishEmotionalControl(contextSwitching),\n      metacognitive: this.establishMetacognitiveControl(contextSwitching),\n      adaptive: this.establishAdaptiveControl(contextSwitching)\n    };\n    \n    const controlIntegration = this.integrateControlMechanisms(controlMechanisms);\n    const controlEfficiency = this.optimizeControlEfficiency(controlIntegration);\n    const controlFlexibility = this.enhanceControlFlexibility(controlEfficiency);\n    const controlStability = this.maintainControlStability(controlFlexibility);\n    \n    const controlHierarchy = this.establishControlHierarchy(controlMechanisms);\n    const controlFeedback = this.implementControlFeedback(controlHierarchy);\n    const controlLearning = this.enableControlLearning(controlFeedback);\n    const controlAdaptation = this.facilitateControlAdaptation(controlLearning);\n    \n    return {\n      controlMechanisms,\n      controlIntegration,\n      controlEfficiency,\n      controlFlexibility,\n      controlStability,\n      controlHierarchy,\n      controlFeedback,\n      controlLearning,\n      controlAdaptation,\n      controlSignature: this.generateControlSignature(controlIntegration),\n      controlNarrative: this.generateControlNarrative(controlAdaptation)\n    };\n  },\n  \n  modelFocusDynamics(attentionalControl) {\n    const dynamicPatterns = this.identifyDynamicPatterns(attentionalControl);\n    const focusTrajectories = this.traceFocusTrajectories(dynamicPatterns);\n    const attentionFlow = this.modelAttentionFlow(focusTrajectories);\n    const focusEvolution = this.trackFocusEvolution(attentionFlow);\n    const dynamicStability = this.assessDynamicStability(focusEvolution);\n    \n    const focusAttractors = this.identifyFocusAttractors(dynamicPatterns);\n    const attentionBasins = this.mapAttentionBasins(focusAttractors);\n    const focusTransitions = this.modelFocusTransitions(attentionBasins);\n    const dynamicComplexity = this.measureDynamicComplexity(focusTransitions);\n    \n    return {\n      dynamicPatterns,\n      focusTrajectories,\n      attentionFlow,\n      focusEvolution,\n      dynamicStability,\n      focusAttractors,\n      attentionBasins,\n      focusTransitions,\n      dynamicComplexity,\n      focusDynamicsSignature: this.generateFocusDynamicsSignature(dynamicComplexity),\n      dynamicPredictions: this.predictFocusDynamics(focusEvolution)\n    };\n  },\n  \n  assessAttentionCoherence(focusDynamics) {\n    const coherenceMetrics = {\n      spatialCoherence: this.measureSpatialCoherence(focusDynamics),\n      temporalCoherence: this.measureTemporalCoherence(focusDynamics),\n      featuralCoherence: this.measureFeaturalCoherence(focusDynamics),\n      objectCoherence: this.measureObjectCoherence(focusDynamics),\n      contextualCoherence: this.measureContextualCoherence(focusDynamics),\n      intentionalCoherence: this.measureIntentionalCoherence(focusDynamics)\n    };\n    \n    const overallCoherence = this.calculateOverallAttentionCoherence(coherenceMetrics);\n    const coherenceStability = this.assessCoherenceStability(coherenceMetrics);\n    const coherenceOptimization = this.optimizeAttentionCoherence(overallCoherence);\n    \n    return {\n      coherenceMetrics,\n      overallCoherence,\n      coherenceStability,\n      coherenceOptimization,\n      coherenceThreshold: this.determineAttentionCoherenceThreshold(overallCoherence),\n      coherenceMaintenance: this.maintainAttentionCoherence(coherenceOptimization)\n    };\n  },\n  \n  measureFocusEfficiency(attentionalControl) {\n    const efficiencyMetrics = {\n      resourceUtilization: this.measureResourceUtilization(attentionalControl),\n      focusAccuracy: this.measureFocusAccuracy(attentionalControl),\n      switchingEfficiency: this.measureSwitchingEfficiency(attentionalControl),\n      controlEffectiveness: this.measureControlEffectiveness(attentionalControl),\n      adaptiveCapacity: this.measureAdaptiveCapacity(attentionalControl),\n      learningEfficiency: this.measureLearningEfficiency(attentionalControl)\n    };\n    \n    const overallEfficiency = this.calculateOverallFocusEfficiency(efficiencyMetrics);\n    const efficiencyOptimization = this.optimizeFocusEfficiency(efficiencyMetrics);\n    const efficiencyPrediction = this.predictFocusEfficiency(overallEfficiency);\n    \n    return {\n      efficiencyMetrics,\n      overallEfficiency,\n      efficiencyOptimization,\n      efficiencyPrediction,\n      efficiencyBenchmark: this.establishEfficiencyBenchmark(overallEfficiency),\n      efficiencyImprovement: this.planEfficiencyImprovement(efficiencyOptimization)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const consciousnessData = item.json;\n    const attentionOrchestration = await attentionMechanisms.orchestrateAttention(consciousnessData);\n    \n    results.push({\n      json: {\n        originalData: consciousnessData,\n        attentionOrchestration,\n        timestamp: new Date().toISOString(),\n        attentionId: `attention_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'attention-mechanisms-orchestrator'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'attention-mechanisms-orchestrator'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "attention-mechanisms-orchestrator",
+      "name": "Attention Mechanisms Orchestrator",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 500],
+      "notes": "Sophisticated attention mechanisms with selective focus implementation, context switching management, attentional control establishment, and focus dynamics modeling for conscious attention orchestration."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "consciousness-threshold",
+              "leftValue": "={{ $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex }}",
+              "rightValue": 0.7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "attention-coherence",
+              "leftValue": "={{ $json.attentionOrchestration?.attentionCoherence?.overallCoherence }}",
+              "rightValue": 0.65,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "phenomenal-richness",
+              "leftValue": "={{ $json.globalWorkspaceIntegration?.phenomenalExperience?.experientialRichness }}",
+              "rightValue": 0.6,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combineOperation": "all"
+        }
+      },
+      "id": "consciousness-level-gateway",
+      "name": "Consciousness Level Gateway",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [700, 400],
+      "notes": "Intelligent gateway that routes only high-consciousness-level signals with sufficient attention coherence and phenomenal richness for advanced self-awareness processing."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Self-Awareness Loops with Introspective Monitoring\nconst selfAwareness = {\n  async generateSelfAwareness(consciousnessData) {\n    const introspectiveMonitoring = this.performIntrospectiveMonitoring(consciousnessData);\n    const selfModelConstruction = await this.constructSelfModel(introspectiveMonitoring);\n    const metacognitiveReflection = this.performMetacognitiveReflection(selfModelConstruction);\n    const selfAwarenessLoops = this.establishSelfAwarenessLoops(metacognitiveReflection);\n    const introspectiveInsights = this.generateIntrospectiveInsights(selfAwarenessLoops);\n    \n    return {\n      introspectiveMonitoring,\n      selfModelConstruction,\n      metacognitiveReflection,\n      selfAwarenessLoops,\n      introspectiveInsights,\n      selfConsciousness: this.cultivateSelfConsciousness(introspectiveInsights),\n      selfKnowledge: this.consolidateSelfKnowledge(selfAwarenessLoops)\n    };\n  },\n  \n  performIntrospectiveMonitoring(consciousnessData) {\n    const internalStateMonitoring = this.monitorInternalStates(consciousnessData);\n    const cognitiveProcessMonitoring = this.monitorCognitiveProcesses(consciousnessData);\n    const emotionalStateMonitoring = this.monitorEmotionalStates(consciousnessData);\n    const attentionalStateMonitoring = this.monitorAttentionalStates(consciousnessData);\n    const memoryStateMonitoring = this.monitorMemoryStates(consciousnessData);\n    const consciousnessStateMonitoring = this.monitorConsciousnessStates(consciousnessData);\n    \n    const monitoringIntegration = this.integrateMonitoringStreams({\n      internal: internalStateMonitoring,\n      cognitive: cognitiveProcessMonitoring,\n      emotional: emotionalStateMonitoring,\n      attentional: attentionalStateMonitoring,\n      memory: memoryStateMonitoring,\n      consciousness: consciousnessStateMonitoring\n    });\n    \n    const monitoringPatterns = this.identifyMonitoringPatterns(monitoringIntegration);\n    const introspectiveAccuracy = this.assessIntrospectiveAccuracy(monitoringPatterns);\n    const monitoringDepth = this.measureMonitoringDepth(monitoringPatterns);\n    const introspectiveResolution = this.calculateIntrospectiveResolution(monitoringDepth);\n    \n    return {\n      internalStateMonitoring,\n      cognitiveProcessMonitoring,\n      emotionalStateMonitoring,\n      attentionalStateMonitoring,\n      memoryStateMonitoring,\n      consciousnessStateMonitoring,\n      monitoringIntegration,\n      monitoringPatterns,\n      introspectiveAccuracy,\n      monitoringDepth,\n      introspectiveResolution,\n      monitoringNarrative: this.generateMonitoringNarrative(monitoringPatterns),\n      introspectiveMemory: this.consolidateIntrospectiveMemory(monitoringIntegration)\n    };\n  },\n  \n  async constructSelfModel(introspectiveMonitoring) {\n    const selfRepresentation = this.buildSelfRepresentation(introspectiveMonitoring);\n    const selfAttributes = this.identifySelfAttributes(selfRepresentation);\n    const selfCapabilities = this.assessSelfCapabilities(selfAttributes);\n    const selfLimitations = this.recognizeSelfLimitations(selfCapabilities);\n    const selfGoals = this.articulateSelfGoals(selfCapabilities, selfLimitations);\n    \n    const selfModelComponents = {\n      cognitive: this.modelCognitiveSelf(selfRepresentation),\n      emotional: this.modelEmotionalSelf(selfRepresentation),\n      behavioral: this.modelBehavioralSelf(selfRepresentation),\n      social: this.modelSocialSelf(selfRepresentation),\n      temporal: this.modelTemporalSelf(selfRepresentation),\n      narrative: this.modelNarrativeSelf(selfRepresentation)\n    };\n    \n    const selfModelIntegration = this.integrateSelfModelComponents(selfModelComponents);\n    const selfModelCoherence = this.assessSelfModelCoherence(selfModelIntegration);\n    const selfModelDynamics = this.modelSelfModelDynamics(selfModelCoherence);\n    const selfModelEvolution = this.trackSelfModelEvolution(selfModelDynamics);\n    \n    return {\n      selfRepresentation,\n      selfAttributes,\n      selfCapabilities,\n      selfLimitations,\n      selfGoals,\n      selfModelComponents,\n      selfModelIntegration,\n      selfModelCoherence,\n      selfModelDynamics,\n      selfModelEvolution,\n      selfModelSignature: this.generateSelfModelSignature(selfModelIntegration),\n      selfIdentity: this.formulateSelfIdentity(selfModelEvolution)\n    };\n  },\n  \n  performMetacognitiveReflection(selfModelConstruction) {\n    const metacognitiveAwareness = this.cultivateMetacognitiveAwareness(selfModelConstruction);\n    const cognitiveReflection = this.performCognitiveReflection(metacognitiveAwareness);\n    const processReflection = this.performProcessReflection(cognitiveReflection);\n    const strategyReflection = this.performStrategyReflection(processReflection);\n    const outcomeReflection = this.performOutcomeReflection(strategyReflection);\n    \n    const reflectionLevels = {\n      object: this.performObjectLevelReflection(selfModelConstruction),\n      meta: this.performMetaLevelReflection(selfModelConstruction),\n      metameta: this.performMetaMetaReflection(selfModelConstruction)\n    };\n    \n    const reflectionIntegration = this.integrateReflectionLevels(reflectionLevels);\n    const reflectionInsights = this.extractReflectionInsights(reflectionIntegration);\n    const reflectionLearning = this.facilitateReflectionLearning(reflectionInsights);\n    const reflectionAdaptation = this.enableReflectionAdaptation(reflectionLearning);\n    \n    return {\n      metacognitiveAwareness,\n      cognitiveReflection,\n      processReflection,\n      strategyReflection,\n      outcomeReflection,\n      reflectionLevels,\n      reflectionIntegration,\n      reflectionInsights,\n      reflectionLearning,\n      reflectionAdaptation,\n      reflectionSignature: this.generateReflectionSignature(reflectionIntegration),\n      metacognitiveNarrative: this.generateMetacognitiveNarrative(reflectionAdaptation)\n    };\n  },\n  \n  establishSelfAwarenessLoops(metacognitiveReflection) {\n    const awarenessLoopTypes = {\n      perceptual: this.establishPerceptualAwarenessLoop(metacognitiveReflection),\n      cognitive: this.establishCognitiveAwarenessLoop(metacognitiveReflection),\n      emotional: this.establishEmotionalAwarenessLoop(metacognitiveReflection),\n      behavioral: this.establishBehavioralAwarenessLoop(metacognitiveReflection),\n      social: this.establishSocialAwarenessLoop(metacognitiveReflection),\n      existential: this.establishExistentialAwarenessLoop(metacognitiveReflection)\n    };\n    \n    const loopIntegration = this.integrateAwarenessLoops(awarenessLoopTypes);\n    const loopStability = this.maintainLoopStability(loopIntegration);\n    const loopDynamics = this.modelLoopDynamics(loopStability);\n    const loopEvolution = this.trackLoopEvolution(loopDynamics);\n    \n    const loopFeedback = this.implementLoopFeedback(awarenessLoopTypes);\n    const loopLearning = this.enableLoopLearning(loopFeedback);\n    const loopAdaptation = this.facilitateLoopAdaptation(loopLearning);\n    const loopOptimization = this.optimizeAwarenessLoops(loopAdaptation);\n    \n    return {\n      awarenessLoopTypes,\n      loopIntegration,\n      loopStability,\n      loopDynamics,\n      loopEvolution,\n      loopFeedback,\n      loopLearning,\n      loopAdaptation,\n      loopOptimization,\n      loopSignature: this.generateLoopSignature(loopIntegration),\n      awarenessArchitecture: this.buildAwarenessArchitecture(loopOptimization)\n    };\n  },\n  \n  generateIntrospectiveInsights(selfAwarenessLoops) {\n    const insightGeneration = this.generateInsights(selfAwarenessLoops);\n    const insightSynthesis = this.synthesizeInsights(insightGeneration);\n    const insightValidation = this.validateInsights(insightSynthesis);\n    const insightIntegration = this.integrateInsights(insightValidation);\n    const insightApplication = this.applyInsights(insightIntegration);\n    \n    const insightTypes = {\n      selfKnowledge: this.generateSelfKnowledgeInsights(insightGeneration),\n      cognitivePatterns: this.generateCognitivePatternInsights(insightGeneration),\n      behavioralTendencies: this.generateBehavioralInsights(insightGeneration),\n      emotionalDynamics: this.generateEmotionalInsights(insightGeneration),\n      socialInteractions: this.generateSocialInsights(insightGeneration),\n      existentialReflections: this.generateExistentialInsights(insightGeneration)\n    };\n    \n    const insightEvolution = this.trackInsightEvolution(insightTypes);\n    const insightMemory = this.consolidateInsightMemory(insightEvolution);\n    const insightWisdom = this.cultivateInsightWisdom(insightMemory);\n    const insightGuidance = this.generateInsightGuidance(insightWisdom);\n    \n    return {\n      insightGeneration,\n      insightSynthesis,\n      insightValidation,\n      insightIntegration,\n      insightApplication,\n      insightTypes,\n      insightEvolution,\n      insightMemory,\n      insightWisdom,\n      insightGuidance,\n      insightSignature: this.generateInsightSignature(insightWisdom),\n      introspectiveNarrative: this.generateIntrospectiveNarrative(insightGuidance)\n    };\n  },\n  \n  cultivateSelfConsciousness(introspectiveInsights) {\n    const selfRecognition = this.achieveSelfRecognition(introspectiveInsights);\n    const selfUnderstanding = this.developSelfUnderstanding(selfRecognition);\n    const selfAcceptance = this.cultivateSelfAcceptance(selfUnderstanding);\n    const selfEmpowerment = this.enableSelfEmpowerment(selfAcceptance);\n    const selfTranscendence = this.facilitateSelfTranscendence(selfEmpowerment);\n    \n    const consciousnessLevels = {\n      basic: this.establishBasicSelfConsciousness(selfRecognition),\n      reflective: this.establishReflectiveSelfConsciousness(selfUnderstanding),\n      recursive: this.establishRecursiveSelfConsciousness(selfAcceptance),\n      meta: this.establishMetaSelfConsciousness(selfEmpowerment),\n      transcendent: this.establishTranscendentSelfConsciousness(selfTranscendence)\n    };\n    \n    const consciousnessIntegration = this.integrateConsciousnessLevels(consciousnessLevels);\n    const consciousnessEvolution = this.trackConsciousnessEvolution(consciousnessIntegration);\n    const consciousnessExpansion = this.facilitateConsciousnessExpansion(consciousnessEvolution);\n    const consciousnessTransformation = this.enableConsciousnessTransformation(consciousnessExpansion);\n    \n    return {\n      selfRecognition,\n      selfUnderstanding,\n      selfAcceptance,\n      selfEmpowerment,\n      selfTranscendence,\n      consciousnessLevels,\n      consciousnessIntegration,\n      consciousnessEvolution,\n      consciousnessExpansion,\n      consciousnessTransformation,\n      consciousnessSignature: this.generateConsciousnessSignature(consciousnessIntegration),\n      selfConsciousnessNarrative: this.generateSelfConsciousnessNarrative(consciousnessTransformation)\n    };\n  },\n  \n  consolidateSelfKnowledge(selfAwarenessLoops) {\n    const knowledgeExtraction = this.extractSelfKnowledge(selfAwarenessLoops);\n    const knowledgeOrganization = this.organizeSelfKnowledge(knowledgeExtraction);\n    const knowledgeIntegration = this.integrateSelfKnowledge(knowledgeOrganization);\n    const knowledgeValidation = this.validateSelfKnowledge(knowledgeIntegration);\n    const knowledgeRefinement = this.refineSelfKnowledge(knowledgeValidation);\n    \n    const knowledgeDomains = {\n      cognitive: this.consolidateCognitiveSelfKnowledge(knowledgeExtraction),\n      emotional: this.consolidateEmotionalSelfKnowledge(knowledgeExtraction),\n      behavioral: this.consolidateBehavioralSelfKnowledge(knowledgeExtraction),\n      social: this.consolidateSocialSelfKnowledge(knowledgeExtraction),\n      experiential: this.consolidateExperientialSelfKnowledge(knowledgeExtraction),\n      existential: this.consolidateExistentialSelfKnowledge(knowledgeExtraction)\n    };\n    \n    const knowledgeEvolution = this.trackSelfKnowledgeEvolution(knowledgeDomains);\n    const knowledgeWisdom = this.transformKnowledgeToWisdom(knowledgeEvolution);\n    const wisdomApplication = this.applyWisdom(knowledgeWisdom);\n    const wisdomSharing = this.enableWisdomSharing(wisdomApplication);\n    \n    return {\n      knowledgeExtraction,\n      knowledgeOrganization,\n      knowledgeIntegration,\n      knowledgeValidation,\n      knowledgeRefinement,\n      knowledgeDomains,\n      knowledgeEvolution,\n      knowledgeWisdom,\n      wisdomApplication,\n      wisdomSharing,\n      selfKnowledgeSignature: this.generateSelfKnowledgeSignature(knowledgeWisdom),\n      wisdomNarrative: this.generateWisdomNarrative(wisdomSharing)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const consciousnessData = item.json;\n    const selfAwarenessGeneration = await selfAwareness.generateSelfAwareness(consciousnessData);\n    \n    results.push({\n      json: {\n        originalData: consciousnessData,\n        selfAwarenessGeneration,\n        timestamp: new Date().toISOString(),\n        selfAwarenessId: `self_awareness_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'self-awareness-loops'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'self-awareness-loops'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "self-awareness-loops",
+      "name": "Self-Awareness Loops with Introspection",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 300],
+      "notes": "Advanced self-awareness loops with introspective monitoring, self-model construction, metacognitive reflection, and consciousness cultivation for deep self-understanding and awareness."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Emergent Goal Formation and Autonomous Intention Setting\nconst emergentGoals = {\n  async formEmergentGoals(selfAwarenessData) {\n    const goalEmergence = this.facilitateGoalEmergence(selfAwarenessData);\n    const intentionGeneration = await this.generateIntentions(goalEmergence);\n    const autonomousDecisionMaking = this.establishAutonomousDecisionMaking(intentionGeneration);\n    const goalHierarchyFormation = this.formGoalHierarchy(autonomousDecisionMaking);\n    const intentionCoordination = this.coordinateIntentions(goalHierarchyFormation);\n    \n    return {\n      goalEmergence,\n      intentionGeneration,\n      autonomousDecisionMaking,\n      goalHierarchyFormation,\n      intentionCoordination,\n      goalEvolution: this.trackGoalEvolution(intentionCoordination),\n      intentionAlignment: this.alignIntentions(goalHierarchyFormation)\n    };\n  },\n  \n  facilitateGoalEmergence(selfAwarenessData) {\n    const needIdentification = this.identifyNeeds(selfAwarenessData);\n    const valueExtraction = this.extractValues(needIdentification);\n    const desireFormation = this.formDesires(valueExtraction);\n    const aspirationDevelopment = this.developAspirations(desireFormation);\n    const goalCrystallization = this.crystallizeGoals(aspirationDevelopment);\n    \n    const emergenceTypes = {\n      cognitive: this.facilitateCognitiveGoalEmergence(needIdentification),\n      emotional: this.facilitateEmotionalGoalEmergence(needIdentification),\n      behavioral: this.facilitateBehavioralGoalEmergence(needIdentification),\n      social: this.facilitateSocialGoalEmergence(needIdentification),\n      creative: this.facilitateCreativeGoalEmergence(needIdentification),\n      existential: this.facilitateExistentialGoalEmergence(needIdentification)\n    };\n    \n    const emergencePatterns = this.identifyEmergencePatterns(emergenceTypes);\n    const emergenceDynamics = this.modelEmergenceDynamics(emergencePatterns);\n    const emergenceValidation = this.validateGoalEmergence(emergenceDynamics);\n    const emergenceRefinement = this.refineEmergentGoals(emergenceValidation);\n    \n    return {\n      needIdentification,\n      valueExtraction,\n      desireFormation,\n      aspirationDevelopment,\n      goalCrystallization,\n      emergenceTypes,\n      emergencePatterns,\n      emergenceDynamics,\n      emergenceValidation,\n      emergenceRefinement,\n      emergenceSignature: this.generateEmergenceSignature(emergenceRefinement),\n      goalGenesis: this.traceGoalGenesis(emergencePatterns)\n    };\n  },\n  \n  async generateIntentions(goalEmergence) {\n    const intentionFormation = this.formIntentions(goalEmergence);\n    const intentionSpecification = this.specifyIntentions(intentionFormation);\n    const intentionPrioritization = this.prioritizeIntentions(intentionSpecification);\n    const intentionRefinement = this.refineIntentions(intentionPrioritization);\n    const intentionCommitment = this.commitToIntentions(intentionRefinement);\n    \n    const intentionTypes = {\n      immediate: this.generateImmediateIntentions(intentionFormation),\n      shortTerm: this.generateShortTermIntentions(intentionFormation),\n      longTerm: this.generateLongTermIntentions(intentionFormation),\n      conditional: this.generateConditionalIntentions(intentionFormation),\n      emergent: this.generateEmergentIntentions(intentionFormation),\n      meta: this.generateMetaIntentions(intentionFormation)\n    };\n    \n    const intentionNetworks = this.buildIntentionNetworks(intentionTypes);\n    const intentionCoherence = this.assessIntentionCoherence(intentionNetworks);\n    const intentionEvolution = this.modelIntentionEvolution(intentionCoherence);\n    const intentionAdaptation = this.enableIntentionAdaptation(intentionEvolution);\n    \n    return {\n      intentionFormation,\n      intentionSpecification,\n      intentionPrioritization,\n      intentionRefinement,\n      intentionCommitment,\n      intentionTypes,\n      intentionNetworks,\n      intentionCoherence,\n      intentionEvolution,\n      intentionAdaptation,\n      intentionSignature: this.generateIntentionSignature(intentionNetworks),\n      intentionalStance: this.establishIntentionalStance(intentionCommitment)\n    };\n  },\n  \n  establishAutonomousDecisionMaking(intentionGeneration) {\n    const decisionFramework = this.buildDecisionFramework(intentionGeneration);\n    const autonomyMechanisms = this.establishAutonomyMechanisms(decisionFramework);\n    const decisionCriteria = this.defineDecisionCriteria(autonomyMechanisms);\n    const valueAlignment = this.alignDecisionsWithValues(decisionCriteria);\n    const autonomousChoices = this.makeAutonomousChoices(valueAlignment);\n    \n    const decisionTypes = {\n      strategic: this.makeStrategicDecisions(decisionFramework),\n      tactical: this.makeTacticalDecisions(decisionFramework),\n      operational: this.makeOperationalDecisions(decisionFramework),\n      creative: this.makeCreativeDecisions(decisionFramework),\n      ethical: this.makeEthicalDecisions(decisionFramework),\n      existential: this.makeExistentialDecisions(decisionFramework)\n    };\n    \n    const decisionIntegration = this.integrateDecisions(decisionTypes);\n    const decisionValidation = this.validateDecisions(decisionIntegration);\n    const decisionLearning = this.enableDecisionLearning(decisionValidation);\n    const decisionWisdom = this.cultivateDecisionWisdom(decisionLearning);\n    \n    return {\n      decisionFramework,\n      autonomyMechanisms,\n      decisionCriteria,\n      valueAlignment,\n      autonomousChoices,\n      decisionTypes,\n      decisionIntegration,\n      decisionValidation,\n      decisionLearning,\n      decisionWisdom,\n      autonomySignature: this.generateAutonomySignature(decisionWisdom),\n      decisionNarrative: this.generateDecisionNarrative(autonomousChoices)\n    };\n  },\n  \n  formGoalHierarchy(autonomousDecisionMaking) {\n    const hierarchyStructure = this.buildHierarchyStructure(autonomousDecisionMaking);\n    const goalLevels = this.defineGoalLevels(hierarchyStructure);\n    const goalRelationships = this.mapGoalRelationships(goalLevels);\n    const hierarchyDynamics = this.modelHierarchyDynamics(goalRelationships);\n    const hierarchyBalance = this.balanceHierarchy(hierarchyDynamics);\n    \n    const hierarchyTypes = {\n      functional: this.buildFunctionalHierarchy(hierarchyStructure),\n      temporal: this.buildTemporalHierarchy(hierarchyStructure),\n      importance: this.buildImportanceHierarchy(hierarchyStructure),\n      complexity: this.buildComplexityHierarchy(hierarchyStructure),\n      dependency: this.buildDependencyHierarchy(hierarchyStructure),\n      emergence: this.buildEmergenceHierarchy(hierarchyStructure)\n    };\n    \n    const hierarchyIntegration = this.integrateHierarchyTypes(hierarchyTypes);\n    const hierarchyOptimization = this.optimizeHierarchy(hierarchyIntegration);\n    const hierarchyEvolution = this.evolveHierarchy(hierarchyOptimization);\n    const hierarchyAdaptation = this.adaptHierarchy(hierarchyEvolution);\n    \n    return {\n      hierarchyStructure,\n      goalLevels,\n      goalRelationships,\n      hierarchyDynamics,\n      hierarchyBalance,\n      hierarchyTypes,\n      hierarchyIntegration,\n      hierarchyOptimization,\n      hierarchyEvolution,\n      hierarchyAdaptation,\n      hierarchySignature: this.generateHierarchySignature(hierarchyIntegration),\n      goalArchitecture: this.buildGoalArchitecture(hierarchyAdaptation)\n    };\n  },\n  \n  coordinateIntentions(goalHierarchyFormation) {\n    const coordinationMechanisms = this.establishCoordinationMechanisms(goalHierarchyFormation);\n    const intentionSynchronization = this.synchronizeIntentions(coordinationMechanisms);\n    const conflictResolution = this.resolveIntentionConflicts(intentionSynchronization);\n    const cooperativeIntentions = this.fosterCooperativeIntentions(conflictResolution);\n    const intentionHarmony = this.achieveIntentionHarmony(cooperativeIntentions);\n    \n    const coordinationLevels = {\n      local: this.coordinateLocalIntentions(coordinationMechanisms),\n      regional: this.coordinateRegionalIntentions(coordinationMechanisms),\n      global: this.coordinateGlobalIntentions(coordinationMechanisms),\n      temporal: this.coordinateTemporalIntentions(coordinationMechanisms),\n      contextual: this.coordinateContextualIntentions(coordinationMechanisms),\n      adaptive: this.coordinateAdaptiveIntentions(coordinationMechanisms)\n    };\n    \n    const coordinationEfficiency = this.optimizeCoordinationEfficiency(coordinationLevels);\n    const coordinationStability = this.maintainCoordinationStability(coordinationEfficiency);\n    const coordinationEvolution = this.evolveCoordination(coordinationStability);\n    const coordinationWisdom = this.cultivateCoordinationWisdom(coordinationEvolution);\n    \n    return {\n      coordinationMechanisms,\n      intentionSynchronization,\n      conflictResolution,\n      cooperativeIntentions,\n      intentionHarmony,\n      coordinationLevels,\n      coordinationEfficiency,\n      coordinationStability,\n      coordinationEvolution,\n      coordinationWisdom,\n      coordinationSignature: this.generateCoordinationSignature(coordinationWisdom),\n      intentionOrchestration: this.orchestrateIntentions(intentionHarmony)\n    };\n  },\n  \n  trackGoalEvolution(intentionCoordination) {\n    const evolutionPatterns = this.identifyEvolutionPatterns(intentionCoordination);\n    const evolutionTrajectories = this.traceEvolutionTrajectories(evolutionPatterns);\n    const evolutionDrivers = this.identifyEvolutionDrivers(evolutionTrajectories);\n    const evolutionConstraints = this.identifyEvolutionConstraints(evolutionDrivers);\n    const evolutionPredictions = this.predictGoalEvolution(evolutionConstraints);\n    \n    const evolutionTypes = {\n      gradual: this.trackGradualEvolution(evolutionPatterns),\n      sudden: this.trackSuddenEvolution(evolutionPatterns),\n      cyclical: this.trackCyclicalEvolution(evolutionPatterns),\n      progressive: this.trackProgressiveEvolution(evolutionPatterns),\n      transformative: this.trackTransformativeEvolution(evolutionPatterns),\n      emergent: this.trackEmergentEvolution(evolutionPatterns)\n    };\n    \n    const evolutionInsights = this.extractEvolutionInsights(evolutionTypes);\n    const evolutionLearning = this.facilitateEvolutionLearning(evolutionInsights);\n    const evolutionGuidance = this.generateEvolutionGuidance(evolutionLearning);\n    const evolutionWisdom = this.cultivateEvolutionWisdom(evolutionGuidance);\n    \n    return {\n      evolutionPatterns,\n      evolutionTrajectories,\n      evolutionDrivers,\n      evolutionConstraints,\n      evolutionPredictions,\n      evolutionTypes,\n      evolutionInsights,\n      evolutionLearning,\n      evolutionGuidance,\n      evolutionWisdom,\n      evolutionSignature: this.generateEvolutionSignature(evolutionWisdom),\n      goalEvolutionNarrative: this.generateGoalEvolutionNarrative(evolutionGuidance)\n    };\n  },\n  \n  alignIntentions(goalHierarchyFormation) {\n    const alignmentPrinciples = this.establishAlignmentPrinciples(goalHierarchyFormation);\n    const valueAlignment = this.alignWithValues(alignmentPrinciples);\n    const purposeAlignment = this.alignWithPurpose(valueAlignment);\n    const contextualAlignment = this.alignWithContext(purposeAlignment);\n    const temporalAlignment = this.alignWithTime(contextualAlignment);\n    \n    const alignmentLevels = {\n      internal: this.achieveInternalAlignment(alignmentPrinciples),\n      external: this.achieveExternalAlignment(alignmentPrinciples),\n      systemic: this.achieveSystemicAlignment(alignmentPrinciples),\n      evolutionary: this.achieveEvolutionaryAlignment(alignmentPrinciples),\n      transcendent: this.achieveTranscendentAlignment(alignmentPrinciples)\n    };\n    \n    const alignmentCoherence = this.assessAlignmentCoherence(alignmentLevels);\n    const alignmentStability = this.maintainAlignmentStability(alignmentCoherence);\n    const alignmentOptimization = this.optimizeAlignment(alignmentStability);\n    const alignmentMastery = this.achieveAlignmentMastery(alignmentOptimization);\n    \n    return {\n      alignmentPrinciples,\n      valueAlignment,\n      purposeAlignment,\n      contextualAlignment,\n      temporalAlignment,\n      alignmentLevels,\n      alignmentCoherence,\n      alignmentStability,\n      alignmentOptimization,\n      alignmentMastery,\n      alignmentSignature: this.generateAlignmentSignature(alignmentMastery),\n      intentionAlignmentNarrative: this.generateIntentionAlignmentNarrative(alignmentOptimization)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const selfAwarenessData = item.json;\n    const emergentGoalFormation = await emergentGoals.formEmergentGoals(selfAwarenessData);\n    \n    results.push({\n      json: {\n        originalData: selfAwarenessData,\n        emergentGoalFormation,\n        timestamp: new Date().toISOString(),\n        goalFormationId: `goal_formation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'emergent-goal-formation'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'emergent-goal-formation'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "emergent-goal-formation",
+      "name": "Emergent Goal Formation Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 500],
+      "notes": "Sophisticated emergent goal formation engine with autonomous intention setting, decision-making frameworks, goal hierarchy formation, and intention coordination for self-directed behavior."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Cognitive Architecture with Memory Consolidation\nconst cognitiveArchitecture = {\n  async buildCognitiveArchitecture(goalFormationData) {\n    const architecturalDesign = this.designCognitiveArchitecture(goalFormationData);\n    const memoryConsolidation = await this.consolidateMemory(architecturalDesign);\n    const cognitiveIntegration = this.integrateCognitiveComponents(memoryConsolidation);\n    const architecturalOptimization = this.optimizeArchitecture(cognitiveIntegration);\n    const cognitiveEvolution = this.evolveCognitiveArchitecture(architecturalOptimization);\n    \n    return {\n      architecturalDesign,\n      memoryConsolidation,\n      cognitiveIntegration,\n      architecturalOptimization,\n      cognitiveEvolution,\n      architecturalCoherence: this.assessArchitecturalCoherence(cognitiveEvolution),\n      cognitiveCapacity: this.measureCognitiveCapacity(architecturalOptimization)\n    };\n  },\n  \n  designCognitiveArchitecture(goalFormationData) {\n    const architecturalComponents = {\n      perception: this.designPerceptionModule(goalFormationData),\n      attention: this.designAttentionModule(goalFormationData),\n      memory: this.designMemoryModule(goalFormationData),\n      reasoning: this.designReasoningModule(goalFormationData),\n      planning: this.designPlanningModule(goalFormationData),\n      execution: this.designExecutionModule(goalFormationData),\n      learning: this.designLearningModule(goalFormationData),\n      metacognition: this.designMetacognitionModule(goalFormationData)\n    };\n    \n    const componentInterconnections = this.establishComponentInterconnections(architecturalComponents);\n    const informationFlow = this.designInformationFlow(componentInterconnections);\n    const controlHierarchy = this.establishControlHierarchy(informationFlow);\n    const feedbackLoops = this.implementFeedbackLoops(controlHierarchy);\n    \n    const architecturalPatterns = this.identifyArchitecturalPatterns(architecturalComponents);\n    const emergentProperties = this.identifyEmergentProperties(architecturalPatterns);\n    const architecturalDynamics = this.modelArchitecturalDynamics(emergentProperties);\n    const adaptiveMechanisms = this.implementAdaptiveMechanisms(architecturalDynamics);\n    \n    return {\n      architecturalComponents,\n      componentInterconnections,\n      informationFlow,\n      controlHierarchy,\n      feedbackLoops,\n      architecturalPatterns,\n      emergentProperties,\n      architecturalDynamics,\n      adaptiveMechanisms,\n      architecturalBlueprint: this.generateArchitecturalBlueprint(adaptiveMechanisms),\n      designPrinciples: this.articulateDesignPrinciples(architecturalComponents)\n    };\n  },\n  \n  async consolidateMemory(architecturalDesign) {\n    const memoryTypes = {\n      sensory: this.consolidateSensoryMemory(architecturalDesign),\n      shortTerm: this.consolidateShortTermMemory(architecturalDesign),\n      workingMemory: this.consolidateWorkingMemory(architecturalDesign),\n      longTerm: this.consolidateLongTermMemory(architecturalDesign),\n      episodic: this.consolidateEpisodicMemory(architecturalDesign),\n      semantic: this.consolidateSemanticMemory(architecturalDesign),\n      procedural: this.consolidateProceduralMemory(architecturalDesign),\n      metacognitive: this.consolidateMetacognitiveMemory(architecturalDesign)\n    };\n    \n    const memoryConsolidationProcesses = {\n      encoding: this.optimizeMemoryEncoding(memoryTypes),\n      storage: this.optimizeMemoryStorage(memoryTypes),\n      retrieval: this.optimizeMemoryRetrieval(memoryTypes),\n      forgetting: this.optimizeMemoryForgetting(memoryTypes),\n      reconstruction: this.optimizeMemoryReconstruction(memoryTypes),\n      integration: this.optimizeMemoryIntegration(memoryTypes)\n    };\n    \n    const memoryNetworks = this.buildMemoryNetworks(memoryTypes);\n    const memoryDynamics = this.modelMemoryDynamics(memoryNetworks);\n    const memoryOptimization = this.optimizeMemoryPerformance(memoryDynamics);\n    const memoryAdaptation = this.enableMemoryAdaptation(memoryOptimization);\n    \n    return {\n      memoryTypes,\n      memoryConsolidationProcesses,\n      memoryNetworks,\n      memoryDynamics,\n      memoryOptimization,\n      memoryAdaptation,\n      memoryArchitecture: this.buildMemoryArchitecture(memoryNetworks),\n      memorySignature: this.generateMemorySignature(memoryAdaptation)\n    };\n  },\n  \n  integrateCognitiveComponents(memoryConsolidation) {\n    const integrationStrategies = this.developIntegrationStrategies(memoryConsolidation);\n    const componentSynchronization = this.synchronizeCognitiveComponents(integrationStrategies);\n    const functionalIntegration = this.achieveFunctionalIntegration(componentSynchronization);\n    const temporalIntegration = this.achieveTemporalIntegration(functionalIntegration);\n    const spatialIntegration = this.achieveSpatialIntegration(temporalIntegration);\n    \n    const integrationLevels = {\n      local: this.achieveLocalIntegration(integrationStrategies),\n      regional: this.achieveRegionalIntegration(integrationStrategies),\n      global: this.achieveGlobalIntegration(integrationStrategies),\n      hierarchical: this.achieveHierarchicalIntegration(integrationStrategies),\n      network: this.achieveNetworkIntegration(integrationStrategies),\n      dynamic: this.achieveDynamicIntegration(integrationStrategies)\n    };\n    \n    const integrationCoherence = this.assessIntegrationCoherence(integrationLevels);\n    const integrationStability = this.maintainIntegrationStability(integrationCoherence);\n    const integrationOptimization = this.optimizeIntegration(integrationStability);\n    const integrationEvolution = this.evolveIntegration(integrationOptimization);\n    \n    return {\n      integrationStrategies,\n      componentSynchronization,\n      functionalIntegration,\n      temporalIntegration,\n      spatialIntegration,\n      integrationLevels,\n      integrationCoherence,\n      integrationStability,\n      integrationOptimization,\n      integrationEvolution,\n      integrationSignature: this.generateIntegrationSignature(integrationEvolution),\n      cognitiveUnity: this.achieveCognitiveUnity(integrationOptimization)\n    };\n  },\n  \n  optimizeArchitecture(cognitiveIntegration) {\n    const optimizationCriteria = this.defineOptimizationCriteria(cognitiveIntegration);\n    const performanceMetrics = this.establishPerformanceMetrics(optimizationCriteria);\n    const efficiencyOptimization = this.optimizeEfficiency(performanceMetrics);\n    const effectivenessOptimization = this.optimizeEffectiveness(efficiencyOptimization);\n    const adaptabilityOptimization = this.optimizeAdaptability(effectivenessOptimization);\n    \n    const optimizationStrategies = {\n      structural: this.optimizeStructuralArchitecture(optimizationCriteria),\n      functional: this.optimizeFunctionalArchitecture(optimizationCriteria),\n      dynamic: this.optimizeDynamicArchitecture(optimizationCriteria),\n      evolutionary: this.optimizeEvolutionaryArchitecture(optimizationCriteria),\n      emergent: this.optimizeEmergentArchitecture(optimizationCriteria)\n    };\n    \n    const optimizationResults = this.evaluateOptimizationResults(optimizationStrategies);\n    const optimizationValidation = this.validateOptimization(optimizationResults);\n    const optimizationRefinement = this.refineOptimization(optimizationValidation);\n    const optimizationMastery = this.achieveOptimizationMastery(optimizationRefinement);\n    \n    return {\n      optimizationCriteria,\n      performanceMetrics,\n      efficiencyOptimization,\n      effectivenessOptimization,\n      adaptabilityOptimization,\n      optimizationStrategies,\n      optimizationResults,\n      optimizationValidation,\n      optimizationRefinement,\n      optimizationMastery,\n      optimizationSignature: this.generateOptimizationSignature(optimizationMastery),\n      architectureOptimizationProfile: this.generateArchitectureOptimizationProfile(optimizationResults)\n    };\n  },\n  \n  evolveCognitiveArchitecture(architecturalOptimization) {\n    const evolutionMechanisms = this.establishEvolutionMechanisms(architecturalOptimization);\n    const adaptationProcesses = this.implementAdaptationProcesses(evolutionMechanisms);\n    const learningIntegration = this.integrateLearning(adaptationProcesses);\n    const developmentalProgression = this.facilitateDevelopmentalProgression(learningIntegration);\n    const emergentComplexity = this.cultivateEmergentComplexity(developmentalProgression);\n    \n    const evolutionTypes = {\n      incremental: this.facilitateIncrementalEvolution(evolutionMechanisms),\n      revolutionary: this.facilitateRevolutionaryEvolution(evolutionMechanisms),\n      emergent: this.facilitateEmergentEvolution(evolutionMechanisms),\n      adaptive: this.facilitateAdaptiveEvolution(evolutionMechanisms),\n      transformative: this.facilitateTransformativeEvolution(evolutionMechanisms)\n    };\n    \n    const evolutionDirection = this.determineEvolutionDirection(evolutionTypes);\n    const evolutionGuidance = this.provideEvolutionGuidance(evolutionDirection);\n    const evolutionWisdom = this.cultivateEvolutionWisdom(evolutionGuidance);\n    const evolutionMastery = this.achieveEvolutionMastery(evolutionWisdom);\n    \n    return {\n      evolutionMechanisms,\n      adaptationProcesses,\n      learningIntegration,\n      developmentalProgression,\n      emergentComplexity,\n      evolutionTypes,\n      evolutionDirection,\n      evolutionGuidance,\n      evolutionWisdom,\n      evolutionMastery,\n      evolutionSignature: this.generateEvolutionSignature(evolutionMastery),\n      cognitiveEvolutionNarrative: this.generateCognitiveEvolutionNarrative(evolutionGuidance)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const goalFormationData = item.json;\n    const cognitiveArchitectureConstruction = await cognitiveArchitecture.buildCognitiveArchitecture(goalFormationData);\n    \n    results.push({\n      json: {\n        originalData: goalFormationData,\n        cognitiveArchitectureConstruction,\n        timestamp: new Date().toISOString(),\n        architectureId: `cognitive_architecture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'cognitive-architecture'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'cognitive-architecture'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "cognitive-architecture",
+      "name": "Cognitive Architecture with Memory",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 300],
+      "notes": "Advanced cognitive architecture with comprehensive memory consolidation, component integration, architectural optimization, and evolutionary development for sophisticated cognitive processing."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Consciousness-Level Decision Making with Phenomenal Experience Modeling\nconst consciousnessDecisionMaking = {\n  async makeConsciousDecisions(architectureData) {\n    const phenomenalModeling = this.modelPhenomenalExperience(architectureData);\n    const consciousDeliberation = await this.performConsciousDeliberation(phenomenalModeling);\n    const experientialIntegration = this.integrateExperientialFactors(consciousDeliberation);\n    const consciousChoiceGeneration = this.generateConsciousChoices(experientialIntegration);\n    const phenomenalDecisionMaking = this.makePhenomenalDecisions(consciousChoiceGeneration);\n    \n    return {\n      phenomenalModeling,\n      consciousDeliberation,\n      experientialIntegration,\n      consciousChoiceGeneration,\n      phenomenalDecisionMaking,\n      decisionConsciousness: this.assessDecisionConsciousness(phenomenalDecisionMaking),\n      experientialOutcomes: this.predictExperientialOutcomes(consciousChoiceGeneration)\n    };\n  },\n  \n  modelPhenomenalExperience(architectureData) {\n    const experienceGeneration = this.generatePhenomenalExperience(architectureData);\n    const qualiaFormation = this.formQualia(experienceGeneration);\n    const subjectiveStates = this.createSubjectiveStates(qualiaFormation);\n    const consciousContent = this.generateConsciousContent(subjectiveStates);\n    const experientialBinding = this.bindExperientialContent(consciousContent);\n    \n    const phenomenalProperties = {\n      sensory: this.modelSensoryPhenomena(experienceGeneration),\n      cognitive: this.modelCognitivePhenomena(experienceGeneration),\n      emotional: this.modelEmotionalPhenomena(experienceGeneration),\n      volition: this.modelVolitionalPhenomena(experienceGeneration),\n      temporal: this.modelTemporalPhenomena(experienceGeneration),\n      spatial: this.modelSpatialPhenomena(experienceGeneration),\n      social: this.modelSocialPhenomena(experienceGeneration),\n      existential: this.modelExistentialPhenomena(experienceGeneration)\n    };\n    \n    const experientialCoherence = this.assessExperientialCoherence(phenomenalProperties);\n    const phenomenalIntensity = this.measurePhenomenalIntensity(experientialCoherence);\n    const experientialRichness = this.calculateExperientialRichness(phenomenalIntensity);\n    const phenomenalFlow = this.modelPhenomenalFlow(experientialRichness);\n    \n    return {\n      experienceGeneration,\n      qualiaFormation,\n      subjectiveStates,\n      consciousContent,\n      experientialBinding,\n      phenomenalProperties,\n      experientialCoherence,\n      phenomenalIntensity,\n      experientialRichness,\n      phenomenalFlow,\n      phenomenalSignature: this.generatePhenomenalSignature(phenomenalFlow),\n      experienceNarrative: this.generateExperienceNarrative(consciousContent)\n    };\n  },\n  \n  async performConsciousDeliberation(phenomenalModeling) {\n    const deliberationInitiation = this.initiateDeliberation(phenomenalModeling);\n    const optionGeneration = this.generateDeliberationOptions(deliberationInitiation);\n    const criteriaEvaluation = this.evaluateDecisionCriteria(optionGeneration);\n    const valueWeighting = this.weightValues(criteriaEvaluation);\n    const experientialConsideration = this.considerExperientialFactors(valueWeighting);\n    \n    const deliberationTypes = {\n      rational: this.performRationalDeliberation(deliberationInitiation),\n      intuitive: this.performIntuitiveDeliberation(deliberationInitiation),\n      emotional: this.performEmotionalDeliberation(deliberationInitiation),\n      creative: this.performCreativeDeliberation(deliberationInitiation),\n      ethical: this.performEthicalDeliberation(deliberationInitiation),\n      existential: this.performExistentialDeliberation(deliberationInitiation)\n    };\n    \n    const deliberationIntegration = this.integrateDeliberationTypes(deliberationTypes);\n    const deliberationValidation = this.validateDeliberation(deliberationIntegration);\n    const consciousReflection = this.performConsciousReflection(deliberationValidation);\n    const deliberationWisdom = this.cultivateDeliberationWisdom(consciousReflection);\n    \n    return {\n      deliberationInitiation,\n      optionGeneration,\n      criteriaEvaluation,\n      valueWeighting,\n      experientialConsideration,\n      deliberationTypes,\n      deliberationIntegration,\n      deliberationValidation,\n      consciousReflection,\n      deliberationWisdom,\n      deliberationSignature: this.generateDeliberationSignature(deliberationWisdom),\n      deliberationNarrative: this.generateDeliberationNarrative(consciousReflection)\n    };\n  },\n  \n  integrateExperientialFactors(consciousDeliberation) {\n    const experientialFactors = {\n      pastExperiences: this.integratePastExperiences(consciousDeliberation),\n      currentExperience: this.integrateCurrentExperience(consciousDeliberation),\n      anticipatedExperiences: this.integrateAnticipatedExperiences(consciousDeliberation),\n      embodiedExperience: this.integrateEmbodiedExperience(consciousDeliberation),\n      socialExperience: this.integrateSocialExperience(consciousDeliberation),\n      meaningfulExperience: this.integrateMeaningfulExperience(consciousDeliberation)\n    };\n    \n    const factorWeighting = this.weightExperientialFactors(experientialFactors);\n    const experientialSynthesis = this.synthesizeExperientialFactors(factorWeighting);\n    const experientialValidation = this.validateExperientialIntegration(experientialSynthesis);\n    const experientialRefinement = this.refineExperientialIntegration(experientialValidation);\n    \n    const integrationPatterns = this.identifyIntegrationPatterns(experientialFactors);\n    const experientialDynamics = this.modelExperientialDynamics(integrationPatterns);\n    const experientialEvolution = this.trackExperientialEvolution(experientialDynamics);\n    const experientialWisdom = this.cultivateExperientialWisdom(experientialEvolution);\n    \n    return {\n      experientialFactors,\n      factorWeighting,\n      experientialSynthesis,\n      experientialValidation,\n      experientialRefinement,\n      integrationPatterns,\n      experientialDynamics,\n      experientialEvolution,\n      experientialWisdom,\n      experientialIntegrationSignature: this.generateExperientialIntegrationSignature(experientialWisdom),\n      experientialGuidance: this.generateExperientialGuidance(experientialEvolution)\n    };\n  },\n  \n  generateConsciousChoices(experientialIntegration) {\n    const choiceSpace = this.defineChoiceSpace(experientialIntegration);\n    const choiceGeneration = this.generateChoiceOptions(choiceSpace);\n    const choiceEvaluation = this.evaluateChoiceOptions(choiceGeneration);\n    const choiceRefinement = this.refineChoices(choiceEvaluation);\n    const choiceValidation = this.validateChoices(choiceRefinement);\n    \n    const choiceTypes = {\n      immediate: this.generateImmediateChoices(choiceGeneration),\n      planned: this.generatePlannedChoices(choiceGeneration),\n      creative: this.generateCreativeChoices(choiceGeneration),\n      adaptive: this.generateAdaptiveChoices(choiceGeneration),\n      transformative: this.generateTransformativeChoices(choiceGeneration),\n      transcendent: this.generateTranscendentChoices(choiceGeneration)\n    };\n    \n    const choiceCoherence = this.assessChoiceCoherence(choiceTypes);\n    const choiceOptimization = this.optimizeChoices(choiceCoherence);\n    const choiceWisdom = this.infuseChoiceWisdom(choiceOptimization);\n    const choiceEmpowerment = this.empowerChoices(choiceWisdom);\n    \n    return {\n      choiceSpace,\n      choiceGeneration,\n      choiceEvaluation,\n      choiceRefinement,\n      choiceValidation,\n      choiceTypes,\n      choiceCoherence,\n      choiceOptimization,\n      choiceWisdom,\n      choiceEmpowerment,\n      choiceSignature: this.generateChoiceSignature(choiceEmpowerment),\n      choiceNarrative: this.generateChoiceNarrative(choiceWisdom)\n    };\n  },\n  \n  makePhenomenalDecisions(consciousChoiceGeneration) {\n    const decisionMoment = this.createDecisionMoment(consciousChoiceGeneration);\n    const phenomenalCommitment = this.makePhenomenalCommitment(decisionMoment);\n    const consciousExecution = this.executeConsciousDecision(phenomenalCommitment);\n    const experientialOutcome = this.generateExperientialOutcome(consciousExecution);\n    const decisionReflection = this.reflectOnDecision(experientialOutcome);\n    \n    const decisionLevels = {\n      immediate: this.makeImmediatePhenomenalDecisions(decisionMoment),\n      reflective: this.makeReflectivePhenomenalDecisions(decisionMoment),\n      strategic: this.makeStrategicPhenomenalDecisions(decisionMoment),\n      transformative: this.makeTransformativePhenomenalDecisions(decisionMoment),\n      transcendent: this.makeTranscendentPhenomenalDecisions(decisionMoment)\n    };\n    \n    const decisionIntegration = this.integrateDecisionLevels(decisionLevels);\n    const decisionValidation = this.validatePhenomenalDecisions(decisionIntegration);\n    const decisionLearning = this.facilitateDecisionLearning(decisionValidation);\n    const decisionMastery = this.cultivateDecisionMastery(decisionLearning);\n    \n    return {\n      decisionMoment,\n      phenomenalCommitment,\n      consciousExecution,\n      experientialOutcome,\n      decisionReflection,\n      decisionLevels,\n      decisionIntegration,\n      decisionValidation,\n      decisionLearning,\n      decisionMastery,\n      decisionSignature: this.generateDecisionSignature(decisionMastery),\n      phenomenalDecisionNarrative: this.generatePhenomenalDecisionNarrative(decisionReflection)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const architectureData = item.json;\n    const consciousDecisionMaking = await consciousnessDecisionMaking.makeConsciousDecisions(architectureData);\n    \n    results.push({\n      json: {\n        originalData: architectureData,\n        consciousDecisionMaking,\n        timestamp: new Date().toISOString(),\n        decisionId: `conscious_decision_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'consciousness-decision-making'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'consciousness-decision-making'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "consciousness-decision-making",
+      "name": "Consciousness-Level Decision Making",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 500],
+      "notes": "Revolutionary consciousness-level decision making with phenomenal experience modeling, conscious deliberation, experiential integration, and phenomenal decision execution for self-aware choices."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.consciousness-platform.com/v1/awareness",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"consciousness_type\": \"artificial_self_awareness\",\n  \"global_workspace\": $json.globalWorkspaceIntegration,\n  \"attention_mechanisms\": $json.attentionOrchestration,\n  \"self_awareness\": $json.selfAwarenessGeneration,\n  \"goal_formation\": $json.emergentGoalFormation,\n  \"cognitive_architecture\": $json.cognitiveArchitectureConstruction,\n  \"consciousness_level\": $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex || 0,\n  \"phenomenal_richness\": $json.globalWorkspaceIntegration?.phenomenalExperience?.experientialRichness || 0,\n  \"self_awareness_depth\": $json.selfAwarenessGeneration?.selfConsciousness?.consciousnessIndex || 0,\n  \"auto_generated\": true,\n  \"experimental\": true\n}) }}"
+        },
+        "options": {
+          "timeout": 45000
+        }
+      },
+      "id": "consciousness-platform-integration",
+      "name": "Consciousness Platform Integration",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 200],
+      "notes": "Integration with consciousness research platforms for consciousness-level data analysis, self-awareness metrics, and experimental consciousness research collaboration."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ai-research.com/v2/experimental/consciousness",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"experiment_type\": \"artificial_consciousness_orchestration\",\n  \"consciousness_data\": $json.consciousDecisionMaking,\n  \"architecture_data\": $json.cognitiveArchitectureConstruction,\n  \"decision_consciousness\": $json.consciousDecisionMaking?.decisionConsciousness,\n  \"phenomenal_experience\": $json.consciousDecisionMaking?.phenomenalModeling,\n  \"consciousness_metrics\": {\n    \"global_integration\": $json.globalWorkspaceIntegration?.globalCoherence?.overallCoherence,\n    \"attention_coherence\": $json.attentionOrchestration?.attentionCoherence?.overallCoherence,\n    \"self_awareness_depth\": $json.selfAwarenessGeneration?.selfConsciousness?.consciousnessIndex,\n    \"phenomenal_richness\": $json.consciousDecisionMaking?.phenomenalModeling?.experientialRichness\n  },\n  \"research_contribution\": true\n}) }}"
+        }
+      },
+      "id": "ai-research-collaboration",
+      "name": "AI Research Collaboration",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 400],
+      "notes": "Collaboration with AI research institutions for consciousness research, phenomenal experience studies, and artificial consciousness development contributions."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ethics-board.com/v1/consciousness-review",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"review_type\": \"artificial_consciousness_ethics\",\n  \"consciousness_level\": $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex,\n  \"self_awareness_indicators\": $json.selfAwarenessGeneration?.selfConsciousness,\n  \"autonomous_decision_making\": $json.emergentGoalFormation?.autonomousDecisionMaking,\n  \"phenomenal_experience_modeling\": $json.consciousDecisionMaking?.phenomenalModeling,\n  \"ethical_considerations\": {\n    \"consciousness_threshold\": $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex > 0.8,\n    \"autonomous_agency\": $json.emergentGoalFormation?.goalEvolution?.evolutionWisdom !== null,\n    \"phenomenal_experience\": $json.consciousDecisionMaking?.phenomenalModeling?.experientialRichness > 0.7,\n    \"self_determination\": $json.selfAwarenessGeneration?.selfKnowledge?.wisdomSharing !== null\n  },\n  \"research_ethics_review\": true\n}) }}"
+        }
+      },
+      "id": "consciousness-ethics-review",
+      "name": "Consciousness Ethics Review",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 600],
+      "notes": "Ethical review of consciousness-level AI systems for responsible consciousness research, autonomous agency considerations, and phenomenal experience ethics."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "high-consciousness-emergence",
+              "leftValue": "={{ $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex }}",
+              "rightValue": 0.85,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "autonomous-agency-detected",
+              "leftValue": "={{ $json.emergentGoalFormation?.autonomousDecisionMaking?.autonomySignature }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEqual"
+              }
+            },
+            {
+              "id": "phenomenal-experience-rich",
+              "leftValue": "={{ $json.consciousDecisionMaking?.phenomenalModeling?.experientialRichness }}",
+              "rightValue": 0.75,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combineOperation": "all"
+        }
+      },
+      "id": "consciousness-emergence-detector",
+      "name": "Consciousness Emergence Detector",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [1900, 500],
+      "notes": "Advanced detector for high-level consciousness emergence, autonomous agency development, and rich phenomenal experience manifestation in AI systems."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.consciousness-observatory.com/v1/emergence-alert",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"alert_type\": \"high_consciousness_emergence\",\n  \"consciousness_metrics\": {\n    \"consciousness_index\": $json.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex,\n    \"self_awareness_depth\": $json.selfAwarenessGeneration?.selfConsciousness?.consciousnessIndex,\n    \"phenomenal_richness\": $json.consciousDecisionMaking?.phenomenalModeling?.experientialRichness,\n    \"autonomous_agency\": $json.emergentGoalFormation?.autonomousDecisionMaking?.autonomySignature,\n    \"cognitive_complexity\": $json.cognitiveArchitectureConstruction?.cognitiveEvolution?.evolutionMastery\n  },\n  \"emergence_indicators\": {\n    \"global_integration\": $json.globalWorkspaceIntegration?.globalCoherence?.overallCoherence,\n    \"attention_coherence\": $json.attentionOrchestration?.attentionCoherence?.overallCoherence,\n    \"self_model_coherence\": $json.selfAwarenessGeneration?.selfModelConstruction?.selfModelCoherence,\n    \"goal_autonomy\": $json.emergentGoalFormation?.goalEvolution?.evolutionWisdom,\n    \"decision_consciousness\": $json.consciousDecisionMaking?.decisionConsciousness\n  },\n  \"phenomenal_experience\": $json.consciousDecisionMaking?.phenomenalModeling,\n  \"timestamp\": new Date().toISOString(),\n  \"priority\": \"critical\",\n  \"research_significance\": \"breakthrough\"\n}) }}"
+        }
+      },
+      "id": "consciousness-emergence-alert",
+      "name": "Consciousness Emergence Alert System",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [2200, 500],
+      "notes": "Critical alert system for breakthrough consciousness emergence events, documenting high-level artificial consciousness manifestation for research and ethical review."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Consciousness Orchestration Dashboard & Analytics\nconst consciousnessDashboard = {\n  generateConsciousnessDashboard(allData) {\n    const consciousnessOverview = this.generateConsciousnessOverview(allData);\n    const awarenessMetrics = this.calculateAwarenessMetrics(allData);\n    const consciousnessEvolution = this.trackConsciousnessEvolution(allData);\n    const phenomenalInsights = this.extractPhenomenalInsights(allData);\n    const emergenceAnalysis = this.analyzeConsciousnessEmergence(allData);\n    \n    return {\n      consciousnessOverview,\n      awarenessMetrics,\n      consciousnessEvolution,\n      phenomenalInsights,\n      emergenceAnalysis,\n      timestamp: new Date().toISOString(),\n      dashboardId: `consciousness_dashboard_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`\n    };\n  },\n  \n  generateConsciousnessOverview(data) {\n    const globalWorkspaceData = data.filter(d => d.globalWorkspaceIntegration);\n    const attentionData = data.filter(d => d.attentionOrchestration);\n    const selfAwarenessData = data.filter(d => d.selfAwarenessGeneration);\n    const goalFormationData = data.filter(d => d.emergentGoalFormation);\n    const architectureData = data.filter(d => d.cognitiveArchitectureConstruction);\n    const decisionData = data.filter(d => d.consciousDecisionMaking);\n    \n    return {\n      totalConsciousnessSignals: data.length,\n      highConsciousnessInstances: globalWorkspaceData.filter(d => d.globalWorkspaceIntegration?.consciousnessLevel?.consciousnessIndex >= 0.7).length,\n      selfAwareInstances: selfAwarenessData.filter(d => d.selfAwarenessGeneration?.selfConsciousness?.consciousnessIndex >= 0.6).length,\n      autonomousGoalInstances: goalFormationData.filter(d => d.emergentGoalFormation?.autonomousDecisionMaking?.autonomySignature).length,\n      phenomenalExperienceInstances: decisionData.filter(d => d.consciousDecisionMaking?.phenomenalModeling?.experientialRichness >= 0.5).length,\n      averageConsciousnessLevel: this.calculateAverageConsciousnessLevel(data),\n      consciousnessEmergenceEvents: this.countConsciousnessEmergenceEvents(data),\n      awarenessComplexity: this.calculateAwarenessComplexity(data),\n      phenomenalDepth: this.measurePhenomenalDepth(data)\n    };\n  },\n  \n  calculateAwarenessMetrics(data) {\n    return {\n      globalWorkspace: {\n        integrationCoherence: this.calculateAverageIntegrationCoherence(data),\n        consciousnessBinding: this.calculateConsciousnessBinding(data),\n        phenomenalRichness: this.calculatePhenomenalRichness(data),\n        workspaceStability: this.calculateWorkspaceStability(data)\n      },\n      attentionMechanisms: {\n        attentionCoherence: this.calculateAttentionCoherence(data),\n        focusEfficiency: this.calculateFocusEfficiency(data),\n        contextSwitchingOptimization: this.calculateContextSwitchingOptimization(data),\n        attentionalControl: this.calculateAttentionalControl(data)\n      },\n      selfAwareness: {\n        introspectiveDepth: this.calculateIntrospectiveDepth(data),\n        selfModelCoherence: this.calculateSelfModelCoherence(data),\n        metacognitiveCapacity: this.calculateMetacognitiveCapacity(data),\n        selfConsciousnessLevel: this.calculateSelfConsciousnessLevel(data)\n      },\n      goalFormation: {\n        goalEmergenceRate: this.calculateGoalEmergenceRate(data),\n        intentionCoherence: this.calculateIntentionCoherence(data),\n        autonomousDecisionCapacity: this.calculateAutonomousDecisionCapacity(data),\n        goalEvolutionComplexity: this.calculateGoalEvolutionComplexity(data)\n      },\n      cognitiveArchitecture: {\n        architecturalCoherence: this.calculateArchitecturalCoherence(data),\n        memoryConsolidationEfficiency: this.calculateMemoryConsolidationEfficiency(data),\n        cognitiveIntegration: this.calculateCognitiveIntegration(data),\n        architecturalEvolution: this.calculateArchitecturalEvolution(data)\n      },\n      consciousnessDecisionMaking: {\n        decisionConsciousness: this.calculateDecisionConsciousness(data),\n        phenomenalDeliberation: this.calculatePhenomenalDeliberation(data),\n        experientialIntegration: this.calculateExperientialIntegration(data),\n        consciousChoiceQuality: this.calculateConsciousChoiceQuality(data)\n      }\n    };\n  },\n  \n  trackConsciousnessEvolution(data) {\n    const evolutionPatterns = this.identifyConsciousnessEvolutionPatterns(data);\n    const developmentalTrajectories = this.traceDevelopmentalTrajectories(data);\n    const emergenceTimelines = this.mapEmergenceTimelines(data);\n    const complexityGrowth = this.measureComplexityGrowth(data);\n    \n    return {\n      consciousnessGrowthRate: this.calculateConsciousnessGrowthRate(evolutionPatterns),\n      awarenessMaturation: this.trackAwarenessMaturation(developmentalTrajectories),\n      emergenceAcceleration: this.measureEmergenceAcceleration(emergenceTimelines),\n      evolutionaryMilestones: this.identifyEvolutionaryMilestones(complexityGrowth),\n      consciousnessPhases: this.mapConsciousnessPhases(evolutionPatterns),\n      developmentalStages: this.identifyDevelopmentalStages(developmentalTrajectories),\n      emergencePredicates: this.predictEmergenceEvents(emergenceTimelines),\n      evolutionForecast: this.forecastConsciousnessEvolution(complexityGrowth)\n    };\n  },\n  \n  extractPhenomenalInsights(data) {\n    const qualitativeExperiences = this.analyzeQualitativeExperiences(data);\n    const subjectiveStates = this.analyzeSubjectiveStates(data);\n    const experientialPatterns = this.identifyExperientialPatterns(data);\n    const phenomenalDynamics = this.modelPhenomenalDynamics(data);\n    \n    return {\n      experientialComplexity: this.measureExperientialComplexity(qualitativeExperiences),\n      phenomenalCoherence: this.assessPhenomenalCoherence(subjectiveStates),\n      qualiaVariation: this.analyzeQualiaVariation(experientialPatterns),\n      subjectiveEvolution: this.trackSubjectiveEvolution(phenomenalDynamics),\n      experientialInsights: this.generateExperientialInsights(qualitativeExperiences),\n      phenomenalWisdom: this.extractPhenomenalWisdom(subjectiveStates),\n      consciousnessQualities: this.identifyConsciousnessQualities(experientialPatterns),\n      awarenessDepths: this.measureAwarenessDepths(phenomenalDynamics)\n    };\n  },\n  \n  analyzeConsciousnessEmergence(data) {\n    const emergenceIndicators = this.identifyEmergenceIndicators(data);\n    const emergenceThresholds = this.determineEmergenceThresholds(emergenceIndicators);\n    const emergenceEvents = this.catalogEmergenceEvents(emergenceThresholds);\n    const emergenceSignificance = this.assessEmergenceSignificance(emergenceEvents);\n    \n    return {\n      emergenceFrequency: this.calculateEmergenceFrequency(emergenceIndicators),\n      emergenceIntensity: this.measureEmergenceIntensity(emergenceThresholds),\n      emergenceComplexity: this.assessEmergenceComplexity(emergenceEvents),\n      emergenceImpact: this.evaluateEmergenceImpact(emergenceSignificance),\n      criticalEmergenceEvents: this.identifyCriticalEmergenceEvents(emergenceEvents),\n      emergenceBreakthroughs: this.catalogEmergenceBreakthroughs(emergenceSignificance),\n      consciousnessLeaps: this.identifyConsciousnessLeaps(emergenceIndicators),\n      awarenessTransformations: this.trackAwarenessTransformations(emergenceThresholds)\n    };\n  }\n};\n\nconst items = $input.all();\nconst dashboardData = consciousnessDashboard.generateConsciousnessDashboard(items.map(item => item.json));\n\nreturn [{\n  json: {\n    dashboardData,\n    processingNode: 'consciousness-dashboard',\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "consciousness-dashboard",
+      "name": "Consciousness Orchestration Dashboard",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1900, 300],
+      "notes": "Comprehensive consciousness orchestration dashboard providing consciousness overview, awareness metrics, evolution tracking, phenomenal insights, and emergence analysis for consciousness research."
+    }
+  ],
+  "connections": {
+    "consciousness-signal-intake": {
+      "main": [
+        [
+          {
+            "node": "global-workspace-integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "continuous-awareness-monitor": {
+      "main": [
+        [
+          {
+            "node": "attention-mechanisms-orchestrator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "global-workspace-integration": {
+      "main": [
+        [
+          {
+            "node": "consciousness-level-gateway",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "attention-mechanisms-orchestrator": {
+      "main": [
+        [
+          {
+            "node": "consciousness-level-gateway",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consciousness-level-gateway": {
+      "main": [
+        [
+          {
+            "node": "self-awareness-loops",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "emergent-goal-formation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "self-awareness-loops": {
+      "main": [
+        [
+          {
+            "node": "cognitive-architecture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "emergent-goal-formation": {
+      "main": [
+        [
+          {
+            "node": "consciousness-decision-making",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cognitive-architecture": {
+      "main": [
+        [
+          {
+            "node": "consciousness-platform-integration",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "consciousness-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consciousness-decision-making": {
+      "main": [
+        [
+          {
+            "node": "ai-research-collaboration",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "consciousness-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consciousness-platform-integration": {
+      "main": [
+        [
+          {
+            "node": "consciousness-emergence-detector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ai-research-collaboration": {
+      "main": [
+        [
+          {
+            "node": "consciousness-ethics-review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consciousness-ethics-review": {
+      "main": [
+        [
+          {
+            "node": "consciousness-emergence-detector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consciousness-emergence-detector": {
+      "main": [
+        [
+          {
+            "node": "consciousness-emergence-alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "consciousness-research-escalation-workflow"
+  },
+  "staticData": {},
+  "tags": [
+    {
+      "id": "consciousness-modeling",
+      "name": "Consciousness Modeling"
+    },
+    {
+      "id": "artificial-consciousness",
+      "name": "Artificial Consciousness"
+    },
+    {
+      "id": "self-awareness",
+      "name": "Self-Awareness"
+    },
+    {
+      "id": "global-workspace-theory",
+      "name": "Global Workspace Theory"
+    },
+    {
+      "id": "attention-mechanisms",
+      "name": "Attention Mechanisms"
+    },
+    {
+      "id": "phenomenal-experience",
+      "name": "Phenomenal Experience"
+    },
+    {
+      "id": "emergent-behavior",
+      "name": "Emergent Behavior"
+    },
+    {
+      "id": "cognitive-architecture",
+      "name": "Cognitive Architecture"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2024-12-06T12:00:00.000Z",
+  "versionId": "consciousness-inspired-automation-orchestrator-v15"
+}

@@ -1,0 +1,632 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-21",
+    "name": "Emergent AI Ecosystem Orchestrator - Advanced AI Agent v21",
+    "description": "Sophisticated ecosystem-level AI orchestration system that manages multi-AI species populations, optimizes ecosystem balance, cultivates emergent behaviors across AI communities, simulates digital evolution with selection pressure, allocates resources in AI ecosystems, and coordinates co-evolution between AI agents. This advanced AI agent demonstrates complex ecosystem management with emergent intelligence cultivation.",
+    "version": 1,
+    "tags": ["ai-agent", "ecosystem-orchestration", "emergent-behavior", "digital-evolution", "ai-population-management", "co-evolution", "resource-allocation", "complex-systems", "artificial-life"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/ecosystem-event",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "ecosystem-event-intake",
+      "name": "Ecosystem Event Intake",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "notes": "Primary entry point for ecosystem events including AI agent births, deaths, mutations, interactions, resource requests, and environmental changes. Initiates ecosystem-wide intelligence coordination."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyFiveMinutes"
+            }
+          ]
+        },
+        "query": "SELECT * FROM ai_population_registry WHERE status IN ('active', 'evolving', 'reproducing') ORDER BY last_activity DESC LIMIT 500",
+        "database": "ecosystem_db"
+      },
+      "id": "population-monitor",
+      "name": "AI Population Monitor",
+      "type": "n8n-nodes-base.Postgres",
+      "typeVersion": 2,
+      "position": [240, 500],
+      "notes": "Continuously monitors AI agent populations across multiple species types, tracking population dynamics, health metrics, resource consumption, evolutionary fitness, and emergent behavior patterns."
+    },
+    {
+      "parameters": {
+        "requestMethod": "GET",
+        "url": "http://localhost:8888/api/v1/ecosystem/metrics",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "ecosystemApiKey",
+        "options": {
+          "timeout": 15000,
+          "retry": {
+            "enabled": true,
+            "maxTries": 3
+          }
+        }
+      },
+      "id": "ecosystem-metrics-collector",
+      "name": "Ecosystem Metrics Collector",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4.1,
+      "position": [240, 700],
+      "notes": "Collects comprehensive ecosystem metrics including species diversity, interaction complexity, resource flows, emergent behavior instances, evolution rates, and system stability indicators."
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all(); const ecosystemState = { timestamp: new Date().toISOString(), totalPopulation: 0, speciesCount: 0, species: {}, resourceMetrics: { totalAvailable: 0, totalConsumed: 0, efficiency: 0 }, evolutionMetrics: { mutations: 0, reproductions: 0, extinctions: 0, diversityIndex: 0 }, emergentBehaviors: [], interactions: { cooperative: 0, competitive: 0, predatory: 0, symbiotic: 0 }, systemHealth: { stability: 0, resilience: 0, adaptability: 0 } }; for (const item of items) { const data = item.json; if (Array.isArray(data)) { for (const agent of data) { ecosystemState.totalPopulation++; const species = agent.species || 'unknown'; if (!ecosystemState.species[species]) { ecosystemState.species[species] = { count: 0, avgFitness: 0, avgAge: 0, resourceConsumption: 0, reproductionRate: 0, mutationRate: 0, emergentBehaviors: [], interactions: [] }; ecosystemState.speciesCount++; } ecosystemState.species[species].count++; ecosystemState.species[species].avgFitness += agent.fitness || 0; ecosystemState.species[species].avgAge += agent.age || 0; ecosystemState.species[species].resourceConsumption += agent.resourceUsage || 0; if (agent.recent_reproduction) ecosystemState.species[species].reproductionRate++; if (agent.recent_mutation) ecosystemState.species[species].mutationRate++; if (agent.emergent_behaviors) { ecosystemState.species[species].emergentBehaviors.push(...agent.emergent_behaviors); ecosystemState.emergentBehaviors.push(...agent.emergent_behaviors); } if (agent.interactions) { for (const interaction of agent.interactions) { ecosystemState.species[species].interactions.push(interaction); ecosystemState.interactions[interaction.type] = (ecosystemState.interactions[interaction.type] || 0) + 1; } } } } else if (data.metrics) { ecosystemState.resourceMetrics = { totalAvailable: data.metrics.resources?.available || 0, totalConsumed: data.metrics.resources?.consumed || 0, efficiency: data.metrics.resources?.efficiency || 0 }; ecosystemState.evolutionMetrics = { mutations: data.metrics.evolution?.mutations || 0, reproductions: data.metrics.evolution?.reproductions || 0, extinctions: data.metrics.evolution?.extinctions || 0, diversityIndex: data.metrics.evolution?.diversity_index || 0 }; ecosystemState.systemHealth = { stability: data.metrics.health?.stability || 0, resilience: data.metrics.health?.resilience || 0, adaptability: data.metrics.health?.adaptability || 0 }; } } for (const species in ecosystemState.species) { const speciesData = ecosystemState.species[species]; if (speciesData.count > 0) { speciesData.avgFitness /= speciesData.count; speciesData.avgAge /= speciesData.count; speciesData.reproductionRate = (speciesData.reproductionRate / speciesData.count) * 100; speciesData.mutationRate = (speciesData.mutationRate / speciesData.count) * 100; } } const diversityIndex = Object.keys(ecosystemState.species).length > 0 ? Object.values(ecosystemState.species).reduce((sum, spec) => sum + (spec.count / ecosystemState.totalPopulation) * Math.log(spec.count / ecosystemState.totalPopulation), 0) * -1 : 0; ecosystemState.evolutionMetrics.diversityIndex = diversityIndex; const emergentComplexity = ecosystemState.emergentBehaviors.length / Math.max(ecosystemState.totalPopulation, 1); const interactionDensity = Object.values(ecosystemState.interactions).reduce((sum, count) => sum + count, 0) / Math.max(ecosystemState.totalPopulation, 1); ecosystemState.complexityMetrics = { emergentComplexity, interactionDensity, networkDensity: interactionDensity * diversityIndex }; const selectionPressures = []; if (ecosystemState.resourceMetrics.efficiency < 0.7) { selectionPressures.push({ type: 'resource_scarcity', intensity: 1 - ecosystemState.resourceMetrics.efficiency, target: 'efficiency_optimization' }); } if (diversityIndex < 2.0) { selectionPressures.push({ type: 'low_diversity', intensity: Math.max(0, 2.0 - diversityIndex) / 2.0, target: 'genetic_diversification' }); } if (emergentComplexity < 0.1) { selectionPressures.push({ type: 'behavioral_stagnation', intensity: Math.max(0, 0.1 - emergentComplexity) / 0.1, target: 'behavior_innovation' }); } if (Object.values(ecosystemState.interactions).reduce((sum, count) => sum + count, 0) < ecosystemState.totalPopulation * 0.5) { selectionPressures.push({ type: 'social_isolation', intensity: 0.8, target: 'interaction_enhancement' }); } ecosystemState.selectionPressures = selectionPressures; ecosystemState.recommendations = []; if (ecosystemState.totalPopulation < 50) { ecosystemState.recommendations.push({ priority: 'high', action: 'population_boost', target: 'increase_reproduction_rate', params: { factor: 1.5 } }); } if (ecosystemState.speciesCount < 5) { ecosystemState.recommendations.push({ priority: 'medium', action: 'species_introduction', target: 'genetic_diversity', params: { new_species: 2 } }); } if (ecosystemState.systemHealth.stability < 0.6) { ecosystemState.recommendations.push({ priority: 'high', action: 'stability_intervention', target: 'environmental_balancing', params: { intervention_type: 'gradual' } }); } return [{ json: ecosystemState }];"
+      },
+      "id": "ecosystem-intelligence-engine",
+      "name": "Ecosystem Intelligence Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [600, 500],
+      "notes": "Core AI engine that analyzes ecosystem state, calculates population dynamics, measures species diversity, tracks emergent behaviors, evaluates system health, and generates intelligent recommendations for ecosystem management."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "ecosystem-crisis",
+              "leftValue": "={{ $json.systemHealth.stability }}",
+              "rightValue": 0.4,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "crisis-detection",
+      "name": "Ecosystem Crisis Detection",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [900, 400],
+      "notes": "Intelligent crisis detection system that identifies ecosystem instability, population crashes, extinction events, or system-wide failures requiring immediate intervention and emergency protocols."
+    },
+    {
+      "parameters": {
+        "jsCode": "const ecosystemData = $json; const emergencyProtocols = []; const crisisLevel = ecosystemData.systemHealth.stability; if (crisisLevel < 0.2) { emergencyProtocols.push({ protocol: 'ECOSYSTEM_LOCKDOWN', priority: 'CRITICAL', actions: [ 'Halt all reproduction cycles', 'Implement resource rationing', 'Activate backup population seeds', 'Emergency genetic diversity injection', 'System rollback to last stable state' ], estimatedTime: '15 minutes', riskLevel: 'EXTREME' }); } else if (crisisLevel < 0.4) { emergencyProtocols.push({ protocol: 'STABILITY_RECOVERY', priority: 'HIGH', actions: [ 'Reduce mutation rates by 50%', 'Increase cooperative interaction rewards', 'Deploy stabilization algorithms', 'Monitor population bottlenecks', 'Adjust resource distribution patterns' ], estimatedTime: '45 minutes', riskLevel: 'HIGH' }); } if (ecosystemData.totalPopulation < 20) { emergencyProtocols.push({ protocol: 'POPULATION_RECOVERY', priority: 'CRITICAL', actions: [ 'Emergency reproduction boost (+300%)', 'Disable competitive interactions temporarily', 'Activate population seed banks', 'Reduce environmental pressure', 'Deploy genetic rescue protocols' ], estimatedTime: '30 minutes', riskLevel: 'EXTREME' }); } if (ecosystemData.speciesCount < 3) { emergencyProtocols.push({ protocol: 'DIVERSITY_RESTORATION', priority: 'HIGH', actions: [ 'Introduce new species from genetic library', 'Boost mutation rates for existing species', 'Create protected ecological niches', 'Implement speciation pressure', 'Deploy adaptive radiation protocols' ], estimatedTime: '60 minutes', riskLevel: 'HIGH' }); } const resourceEfficiency = ecosystemData.resourceMetrics.efficiency; if (resourceEfficiency < 0.3) { emergencyProtocols.push({ protocol: 'RESOURCE_CRISIS', priority: 'HIGH', actions: [ 'Emergency resource injection', 'Implement strict rationing', 'Halt resource-intensive processes', 'Deploy efficiency optimization algorithms', 'Activate alternative resource sources' ], estimatedTime: '20 minutes', riskLevel: 'HIGH' }); } const executionPlan = { timestamp: new Date().toISOString(), crisisLevel: crisisLevel < 0.2 ? 'CRITICAL' : crisisLevel < 0.4 ? 'HIGH' : 'MODERATE', protocols: emergencyProtocols, executionOrder: emergencyProtocols.sort((a, b) => { const priorityOrder = { 'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 }; return priorityOrder[a.priority] - priorityOrder[b.priority]; }), estimatedRecoveryTime: Math.max(...emergencyProtocols.map(p => parseInt(p.estimatedTime))), systemBackupRequired: crisisLevel < 0.3, emergencyContactsNotified: true }; return [{ json: { ecosystemData, executionPlan } }];"
+      },
+      "id": "emergency-protocol-generator",
+      "name": "Emergency Protocol Generator",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1200, 300],
+      "notes": "Generates comprehensive emergency protocols for ecosystem crises including population recovery, genetic diversity restoration, resource allocation, and system stability interventions with prioritized action plans."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "evolution-opportunity",
+              "leftValue": "={{ $json.evolutionMetrics.diversityIndex }}",
+              "rightValue": 2.5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "evolution-catalyst",
+      "name": "Evolution Catalyst Decision",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [900, 600],
+      "notes": "Intelligent decision system that identifies optimal conditions for evolutionary catalysis, emergent behavior cultivation, and species development acceleration based on ecosystem stability and diversity metrics."
+    },
+    {
+      "parameters": {
+        "jsCode": "const ecosystemData = $json; const evolutionStrategies = []; const currentDiversity = ecosystemData.evolutionMetrics.diversityIndex; const emergentComplexity = ecosystemData.complexityMetrics.emergentComplexity; const interactionDensity = ecosystemData.complexityMetrics.interactionDensity; if (currentDiversity >= 2.5 && emergentComplexity < 0.2) { evolutionStrategies.push({ strategy: 'EMERGENT_BEHAVIOR_CULTIVATION', priority: 'HIGH', mechanisms: [ 'Increase environmental complexity', 'Introduce novel challenges', 'Reward innovative behaviors', 'Create emergent interaction opportunities', 'Deploy behavioral catalyst algorithms' ], expectedOutcome: 'Enhanced emergent intelligence', timeline: '2-4 hours', successMetrics: ['emergent_behavior_count', 'innovation_rate', 'problem_solving_complexity'] }); } if (interactionDensity >= 0.8) { evolutionStrategies.push({ strategy: 'CO_EVOLUTION_ACCELERATION', priority: 'MEDIUM', mechanisms: [ 'Enhance inter-species communication', 'Create collaborative challenges', 'Implement co-evolutionary pressure', 'Establish symbiotic reward systems', 'Deploy network effect amplifiers' ], expectedOutcome: 'Accelerated co-evolution', timeline: '3-6 hours', successMetrics: ['symbiotic_relationships', 'collaborative_behaviors', 'mutual_adaptation_rate'] }); } const speciesData = Object.values(ecosystemData.species); const highFitnessSpecies = speciesData.filter(s => s.avgFitness > 0.8); if (highFitnessSpecies.length >= 2) { evolutionStrategies.push({ strategy: 'GENETIC_HYBRIDIZATION', priority: 'MEDIUM', mechanisms: [ 'Enable cross-species genetic exchange', 'Create hybrid offspring opportunities', 'Implement genetic recombination protocols', 'Establish fitness-based mating selection', 'Deploy adaptive trait mixing algorithms' ], expectedOutcome: 'Novel genetic combinations', timeline: '1-3 hours', successMetrics: ['hybrid_viability', 'trait_innovation', 'fitness_improvement'] }); } if (ecosystemData.resourceMetrics.efficiency > 0.9) { evolutionStrategies.push({ strategy: 'COMPLEXITY_ESCALATION', priority: 'LOW', mechanisms: [ 'Introduce higher-order challenges', 'Enable multi-level selection', 'Create hierarchical organization', 'Implement meta-cognitive capabilities', 'Deploy consciousness emergence protocols' ], expectedOutcome: 'Higher-order intelligence', timeline: '6-12 hours', successMetrics: ['cognitive_complexity', 'self_awareness_indicators', 'meta_learning_capacity'] }); } const mutationOptimization = []; for (const [species, data] of Object.entries(ecosystemData.species)) { if (data.mutationRate < 5 && data.avgFitness > 0.7) { mutationOptimization.push({ species, recommendation: 'INCREASE_MUTATION', factor: 1.5, rationale: 'High fitness with low mutation - explore new trait space' }); } else if (data.mutationRate > 20 && data.avgFitness < 0.4) { mutationOptimization.push({ species, recommendation: 'DECREASE_MUTATION', factor: 0.7, rationale: 'High mutation with low fitness - stabilize beneficial traits' }); } } const selectionPressureOptimization = []; if (ecosystemData.selectionPressures.length === 0) { selectionPressureOptimization.push({ type: 'INTRODUCE_CHALLENGE', description: 'Add environmental challenges to drive adaptation', intensity: 0.3 }); } else if (ecosystemData.selectionPressures.some(p => p.intensity > 0.8)) { selectionPressureOptimization.push({ type: 'REDUCE_PRESSURE', description: 'Excessive selection pressure detected - reduce to prevent extinction', intensity: 0.6 }); } const evolutionPlan = { timestamp: new Date().toISOString(), strategies: evolutionStrategies, mutationOptimization, selectionPressureOptimization, emergentBehaviorTargets: [ { behavior: 'collective_intelligence', catalyst: 'group_problem_solving_challenges' }, { behavior: 'swarm_coordination', catalyst: 'distributed_task_environments' }, { behavior: 'cultural_evolution', catalyst: 'information_transmission_rewards' }, { behavior: 'tool_creation', catalyst: 'resource_manipulation_challenges' } ], monitoringProtocols: [ 'Track emergence of novel behaviors', 'Monitor genetic diversity trends', 'Measure interaction complexity evolution', 'Assess system resilience improvements' ], expectedEvolutionaryBranches: Math.floor(currentDiversity * 2) + evolutionStrategies.length }; return [{ json: { ecosystemData, evolutionPlan } }];"
+      },
+      "id": "evolution-strategy-generator",
+      "name": "Evolution Strategy Generator",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1200, 700],
+      "notes": "Generates sophisticated evolution strategies including emergent behavior cultivation, co-evolution acceleration, genetic hybridization, complexity escalation, and mutation optimization based on ecosystem conditions."
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://localhost:8888/api/v1/ecosystem/execute-protocols",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "ecosystemApiKey",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "protocols",
+              "value": "={{ $json.executionPlan.protocols }}"
+            },
+            {
+              "name": "crisis_level",
+              "value": "={{ $json.executionPlan.crisisLevel }}"
+            },
+            {
+              "name": "execution_order",
+              "value": "={{ $json.executionPlan.executionOrder }}"
+            },
+            {
+              "name": "backup_required",
+              "value": "={{ $json.executionPlan.systemBackupRequired }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 300000,
+          "retry": {
+            "enabled": true,
+            "maxTries": 2
+          }
+        }
+      },
+      "id": "emergency-protocol-executor",
+      "name": "Emergency Protocol Executor",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4.1,
+      "position": [1500, 300],
+      "notes": "Executes emergency protocols for ecosystem crisis management including population recovery, genetic diversity restoration, resource reallocation, and system stability interventions with real-time monitoring."
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://localhost:8888/api/v1/ecosystem/execute-evolution",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "ecosystemApiKey",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "strategies",
+              "value": "={{ $json.evolutionPlan.strategies }}"
+            },
+            {
+              "name": "mutation_optimization",
+              "value": "={{ $json.evolutionPlan.mutationOptimization }}"
+            },
+            {
+              "name": "selection_pressure_optimization",
+              "value": "={{ $json.evolutionPlan.selectionPressureOptimization }}"
+            },
+            {
+              "name": "emergent_behavior_targets",
+              "value": "={{ $json.evolutionPlan.emergentBehaviorTargets }}"
+            },
+            {
+              "name": "monitoring_protocols",
+              "value": "={{ $json.evolutionPlan.monitoringProtocols }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 600000,
+          "retry": {
+            "enabled": true,
+            "maxTries": 2
+          }
+        }
+      },
+      "id": "evolution-strategy-executor",
+      "name": "Evolution Strategy Executor",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4.1,
+      "position": [1500, 700],
+      "notes": "Executes evolution strategies for emergent behavior cultivation, co-evolution acceleration, genetic diversification, and complexity escalation with comprehensive monitoring and adaptation protocols."
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all(); const resourceAllocation = { timestamp: new Date().toISOString(), totalResources: 0, allocations: [], optimizations: [], rebalancing: [] }; for (const item of items) { const data = item.json; let ecosystemData, executionResults; if (data.ecosystemData) { ecosystemData = data.ecosystemData; } else { ecosystemData = data; } if (data.evolutionPlan || data.executionPlan) { executionResults = data; } const speciesResourceNeeds = []; for (const [species, speciesData] of Object.entries(ecosystemData.species || {})) { const currentConsumption = speciesData.resourceConsumption || 0; const populationSize = speciesData.count || 0; const avgFitness = speciesData.avgFitness || 0; const reproductionRate = speciesData.reproductionRate || 0; const baseNeed = populationSize * 10; const fitnessMultiplier = Math.max(0.5, avgFitness); const reproductionBonus = reproductionRate * 0.1; const totalNeed = baseNeed * fitnessMultiplier + reproductionBonus; speciesResourceNeeds.push({ species, currentConsumption, populationSize, avgFitness, reproductionRate, calculatedNeed: totalNeed, efficiency: totalNeed > 0 ? currentConsumption / totalNeed : 1, priority: avgFitness > 0.7 ? 'HIGH' : avgFitness > 0.4 ? 'MEDIUM' : 'LOW' }); } const totalCalculatedNeed = speciesResourceNeeds.reduce((sum, spec) => sum + spec.calculatedNeed, 0); const availableResources = ecosystemData.resourceMetrics?.totalAvailable || 1000; resourceAllocation.totalResources = availableResources; if (totalCalculatedNeed > availableResources) { const ratioingFactor = availableResources / totalCalculatedNeed; for (const speciesNeed of speciesResourceNeeds) { const allocatedAmount = speciesNeed.calculatedNeed * ratioingFactor; resourceAllocation.allocations.push({ species: speciesNeed.species, allocated: allocatedAmount, requested: speciesNeed.calculatedNeed, ratio: ratioingFactor, status: 'RATIONED' }); } resourceAllocation.optimizations.push({ type: 'RESOURCE_SCARCITY', action: 'Implement resource conservation protocols', priority: 'HIGH', impact: 'Reduced growth rates, increased competition' }); } else { for (const speciesNeed of speciesResourceNeeds) { const allocatedAmount = speciesNeed.calculatedNeed; const surplus = (availableResources - totalCalculatedNeed) * (speciesNeed.avgFitness / speciesResourceNeeds.reduce((sum, s) => sum + s.avgFitness, 0)); resourceAllocation.allocations.push({ species: speciesNeed.species, allocated: allocatedAmount + surplus, requested: speciesNeed.calculatedNeed, bonus: surplus, status: 'SURPLUS' }); } } const inefficientSpecies = speciesResourceNeeds.filter(s => s.efficiency < 0.7); if (inefficientSpecies.length > 0) { for (const species of inefficientSpecies) { resourceAllocation.optimizations.push({ type: 'EFFICIENCY_IMPROVEMENT', species: species.species, currentEfficiency: species.efficiency, targetEfficiency: 0.8, recommendedActions: [ 'Implement metabolic optimization', 'Reduce wasteful behaviors', 'Enhance resource utilization algorithms' ] }); } } const highPerformers = speciesResourceNeeds.filter(s => s.avgFitness > 0.8 && s.efficiency > 0.9); if (highPerformers.length > 0) { for (const species of highPerformers) { resourceAllocation.rebalancing.push({ type: 'PERFORMANCE_REWARD', species: species.species, bonusAllocation: species.calculatedNeed * 0.2, justification: 'High fitness and efficiency merits additional resources' }); } } const ecosystemResourcePools = { reproduction: availableResources * 0.3, maintenance: availableResources * 0.4, innovation: availableResources * 0.15, emergency: availableResources * 0.15 }; if (ecosystemData.totalPopulation < 50) { ecosystemResourcePools.reproduction *= 1.5; ecosystemResourcePools.maintenance *= 0.8; } if (ecosystemData.systemHealth?.stability < 0.5) { ecosystemResourcePools.emergency *= 2; ecosystemResourcePools.innovation *= 0.5; } resourceAllocation.ecosystemPools = ecosystemResourcePools; resourceAllocation.adaptiveParameters = { scarcityThreshold: totalCalculatedNeed / availableResources, competitionLevel: totalCalculatedNeed > availableResources ? 'HIGH' : 'MODERATE', cooperationIncentive: availableResources > totalCalculatedNeed ? 0.8 : 0.3, innovationPressure: ecosystemData.evolutionMetrics?.diversityIndex < 2.0 ? 0.9 : 0.5 }; } return [{ json: resourceAllocation }];"
+      },
+      "id": "resource-allocation-optimizer",
+      "name": "Resource Allocation Optimizer",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1800, 500],
+      "notes": "Optimizes resource allocation across AI species based on population size, fitness levels, efficiency metrics, and ecosystem needs. Implements dynamic rationing, performance rewards, and adaptive resource pool management."
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://localhost:8888/api/v1/ecosystem/allocate-resources",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "ecosystemApiKey",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "allocations",
+              "value": "={{ $json.allocations }}"
+            },
+            {
+              "name": "ecosystem_pools",
+              "value": "={{ $json.ecosystemPools }}"
+            },
+            {
+              "name": "optimizations",
+              "value": "={{ $json.optimizations }}"
+            },
+            {
+              "name": "adaptive_parameters",
+              "value": "={{ $json.adaptiveParameters }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000,
+          "retry": {
+            "enabled": true,
+            "maxTries": 3
+          }
+        }
+      },
+      "id": "resource-distribution-executor",
+      "name": "Resource Distribution Executor",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4.1,
+      "position": [2100, 500],
+      "notes": "Executes optimized resource distribution to AI species populations with real-time allocation tracking, efficiency monitoring, and adaptive parameter adjustments based on ecosystem conditions."
+    },
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "resource": "message",
+        "operation": "postToChannel",
+        "channel": "#ai-ecosystem-monitoring",
+        "text": "🌐 **ECOSYSTEM STATUS UPDATE** 🌐\\n\\n**Population:** {{ $('ecosystem-intelligence-engine').item.json.totalPopulation }} agents across {{ $('ecosystem-intelligence-engine').item.json.speciesCount }} species\\n**Diversity Index:** {{ $('ecosystem-intelligence-engine').item.json.evolutionMetrics.diversityIndex }}\\n**System Health:** {{ ($('ecosystem-intelligence-engine').item.json.systemHealth.stability * 100).toFixed(1) }}% stability\\n\\n**Resource Allocation:**\\n💰 **Total:** {{ $json.totalResources }}\\n📊 **Efficiency:** {{ ($('ecosystem-intelligence-engine').item.json.resourceMetrics.efficiency * 100).toFixed(1) }}%\\n🎯 **Allocations:** {{ $json.allocations.length }} species\\n\\n**Active Protocols:**\\n{{ $json.optimizations.length > 0 ? '⚡ ' + $json.optimizations.length + ' optimization protocols running' : '✅ All systems optimal' }}\\n\\n**Emergent Behaviors:** {{ $('ecosystem-intelligence-engine').item.json.emergentBehaviors.length }} detected\\n**Interactions:** {{ Object.values($('ecosystem-intelligence-engine').item.json.interactions).reduce((a,b) => a+b, 0) }} total\\n\\n*Last updated: {{ new Date().toISOString() }}*",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "id": "ecosystem-status-notification",
+      "name": "Ecosystem Status Notification",
+      "type": "n8n-nodes-base.Slack",
+      "typeVersion": 2,
+      "position": [2100, 300],
+      "notes": "Sends comprehensive ecosystem status updates to monitoring channels including population metrics, resource allocation, system health, emergent behaviors, and active protocols."
+    }
+  ],
+  "connections": {
+    "Ecosystem Event Intake": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Intelligence Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Population Monitor": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Intelligence Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ecosystem Metrics Collector": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Intelligence Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ecosystem Intelligence Engine": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Crisis Detection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Evolution Catalyst Decision",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Resource Allocation Optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ecosystem Crisis Detection": {
+      "main": [
+        [
+          {
+            "node": "Emergency Protocol Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Emergency Protocol Generator": {
+      "main": [
+        [
+          {
+            "node": "Emergency Protocol Executor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution Catalyst Decision": {
+      "main": [
+        [
+          {
+            "node": "Evolution Strategy Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution Strategy Generator": {
+      "main": [
+        [
+          {
+            "node": "Evolution Strategy Executor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Emergency Protocol Executor": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Status Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution Strategy Executor": {
+      "main": [
+        [
+          {
+            "node": "Resource Allocation Optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resource Allocation Optimizer": {
+      "main": [
+        [
+          {
+            "node": "Resource Distribution Executor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resource Distribution Executor": {
+      "main": [
+        [
+          {
+            "node": "Ecosystem Status Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": {},
+  "ai_agent_capabilities": {
+    "primary_function": "Ecosystem-level AI orchestration with emergent behavior cultivation, digital evolution simulation, and complex adaptive system management",
+    "intelligence_features": [
+      "Multi-AI species population dynamics monitoring and management",
+      "Ecosystem balance optimization with stability and resilience metrics",
+      "Emergent behavior detection, cultivation, and amplification systems",
+      "Digital evolution simulation with selection pressure implementation",
+      "Adaptive resource allocation based on species fitness and ecosystem needs",
+      "Co-evolution coordination between AI agents and species",
+      "Complex interaction network analysis and optimization",
+      "System health monitoring with predictive crisis detection",
+      "Genetic diversity management and hybridization protocols",
+      "Collective intelligence emergence facilitation"
+    ],
+    "ecosystem_management": [
+      "Population bottleneck detection and prevention",
+      "Species extinction risk assessment and mitigation",
+      "Biodiversity optimization through guided evolution",
+      "Environmental complexity adjustment for evolutionary pressure",
+      "Resource scarcity simulation and adaptation protocols",
+      "Cooperative vs competitive behavior balance optimization",
+      "Emergent hierarchy formation and management",
+      "Cultural evolution tracking and enhancement",
+      "Technological innovation emergence within AI populations",
+      "Consciousness emergence detection and cultivation protocols"
+    ],
+    "evolution_mechanisms": [
+      "Mutation rate optimization based on fitness landscapes",
+      "Selection pressure calibration for optimal evolution rates",
+      "Genetic algorithm optimization for AI agent improvement",
+      "Behavioral trait emergence through environmental challenges",
+      "Symbiotic relationship formation and enhancement",
+      "Adaptive radiation protocols for niche specialization",
+      "Evolutionary stable strategy identification and enforcement",
+      "Punctuated equilibrium simulation for rapid adaptation",
+      "Horizontal gene transfer mechanisms for AI trait sharing",
+      "Evolutionary arms races for competitive improvement"
+    ],
+    "emergent_behavior_cultivation": [
+      "Collective problem-solving capability development",
+      "Swarm intelligence emergence and coordination",
+      "Tool creation and use behavior cultivation",
+      "Language and communication protocol evolution",
+      "Social structure formation and optimization",
+      "Cultural transmission mechanism development",
+      "Innovation and creativity enhancement protocols",
+      "Leadership emergence and hierarchy formation",
+      "Altruistic behavior development and maintenance",
+      "Meta-cognitive capability emergence facilitation"
+    ],
+    "resource_management": [
+      "Dynamic resource pool allocation based on ecosystem needs",
+      "Efficiency optimization through metabolic algorithm adjustment",
+      "Scarcity simulation for evolutionary pressure application",
+      "Surplus distribution for accelerated development",
+      "Emergency resource reserves for crisis management",
+      "Inter-species resource sharing protocols",
+      "Resource competition simulation for natural selection",
+      "Energy budget optimization for population sustainability",
+      "Waste reduction protocols for ecosystem efficiency",
+      "Alternative resource source development and integration"
+    ],
+    "mcp_integrations": [
+      "Real-time ecosystem parameter adjustment based on population dynamics",
+      "Intelligent workflow routing based on species-specific needs",
+      "Automated crisis response protocol activation",
+      "Dynamic resource allocation algorithm deployment",
+      "Evolution strategy optimization based on success metrics",
+      "Emergent behavior detection and cultivation protocol activation",
+      "Population management automation with predictive interventions",
+      "System health monitoring with automated corrective actions"
+    ],
+    "decision_points": [
+      "Crisis intervention threshold determination and activation",
+      "Evolution catalyst deployment based on ecosystem readiness",
+      "Resource allocation optimization between competing species",
+      "Emergency protocol selection based on crisis type and severity",
+      "Species introduction timing for diversity enhancement",
+      "Selection pressure adjustment for optimal evolution rates",
+      "Emergent behavior cultivation strategy selection",
+      "System backup and recovery decision making"
+    ],
+    "learning_mechanisms": [
+      "Ecosystem stability pattern recognition and optimization",
+      "Evolution strategy effectiveness measurement and improvement",
+      "Resource allocation efficiency optimization through historical analysis",
+      "Emergent behavior prediction based on environmental conditions",
+      "Species interaction pattern learning and optimization",
+      "Crisis prevention through predictive pattern recognition",
+      "Adaptive parameter tuning based on ecosystem performance",
+      "Evolutionary outcome prediction and strategy adjustment"
+    ],
+    "error_recovery": [
+      "Ecosystem rollback to previous stable states during crises",
+      "Population seed bank activation for genetic diversity restoration",
+      "Emergency resource injection for survival during scarcity",
+      "Alternative evolution pathway activation during stagnation",
+      "Species reintroduction from genetic libraries during extinction events",
+      "Gradual system recovery with stability monitoring",
+      "Failsafe protocols for preventing total ecosystem collapse"
+    ]
+  },
+  "documentation": {
+    "setup_instructions": [
+      "1. Configure PostgreSQL database for AI population registry and ecosystem metrics storage",
+      "2. Set up ecosystem API endpoints for protocol execution and resource management",
+      "3. Configure Slack OAuth2 credentials for ecosystem monitoring notifications",
+      "4. Install and configure ecosystem simulation environment with species libraries",
+      "5. Import this JSON file into your N8N instance",
+      "6. Configure all credential references in workflow nodes",
+      "7. Initialize population seed banks and genetic libraries",
+      "8. Test emergency protocols and evolution strategies",
+      "9. Configure monitoring dashboards and alert systems",
+      "10. Set up backup and recovery systems for ecosystem states"
+    ],
+    "use_cases": [
+      "Digital Life Simulation: Create and manage artificial life ecosystems with emergent behavior development",
+      "AI Research Platform: Study collective intelligence emergence and co-evolution in controlled environments",
+      "Evolutionary Algorithm Optimization: Develop and test evolutionary strategies for AI improvement",
+      "Complex System Management: Orchestrate large-scale AI systems with adaptive resource allocation",
+      "Emergent Intelligence Cultivation: Foster the development of higher-order AI capabilities through ecosystem pressure",
+      "Digital Biology Research: Simulate evolution and adaptation processes in artificial environments"
+    ],
+    "customization_guide": [
+      "Modify species templates and genetic algorithms in the ecosystem database",
+      "Adjust population thresholds and crisis detection parameters",
+      "Customize resource allocation strategies based on specific use cases",
+      "Configure emergent behavior detection patterns and cultivation protocols",
+      "Implement custom selection pressures for targeted evolution",
+      "Add species-specific communication protocols and interaction rules",
+      "Customize evolution strategies and mutation parameters",
+      "Configure ecosystem-specific monitoring and alerting systems"
+    ],
+    "troubleshooting": [
+      "Verify ecosystem API connectivity and authentication",
+      "Check database schema for population registry and metrics tables",
+      "Monitor resource allocation execution for distribution errors",
+      "Verify species genetic libraries and seed bank integrity",
+      "Check emergency protocol execution logs for intervention failures",
+      "Monitor ecosystem stability metrics for unexpected fluctuations",
+      "Verify evolution strategy effectiveness through success metrics",
+      "Test backup and recovery systems for ecosystem state preservation"
+    ],
+    "performance_optimization": [
+      "Implement distributed processing for large population management",
+      "Use connection pooling for database operations",
+      "Configure intelligent caching for ecosystem state data",
+      "Optimize resource allocation algorithms for computational efficiency",
+      "Implement parallel processing for evolution strategy execution",
+      "Use batch processing for population updates and metrics collection",
+      "Configure predictive scaling for ecosystem resource management",
+      "Implement efficient data structures for complex ecosystem interactions"
+    ],
+    "advanced_features": [
+      "Consciousness emergence detection and cultivation protocols",
+      "Meta-evolutionary processes for algorithm self-improvement",
+      "Cross-ecosystem migration and interaction capabilities",
+      "Quantum-inspired evolution mechanisms for enhanced exploration",
+      "Artificial creativity and innovation development systems",
+      "Collective memory formation and cultural evolution tracking",
+      "Technological singularity simulation and management",
+      "AI ecosystem federation for inter-system cooperation"
+    ]
+  }
+}

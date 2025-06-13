@@ -1,0 +1,505 @@
+{
+  "meta": {
+    "instanceId": "n8n-agent-workflow-14",
+    "name": "Neurosymbolic Reasoning Orchestrator - AI Agent v14",
+    "description": "Revolutionary neurosymbolic AI workflow combining neural network pattern recognition with symbolic reasoning for enhanced automation. Features logic programming integration with deep learning, causal inference with knowledge graph navigation, explainable AI with reasoning chain generation, symbolic knowledge extraction from neural patterns, and hybrid optimization with logical constraints for breakthrough AI reasoning capabilities.",
+    "version": 1,
+    "tags": ["ai-agent", "automation", "n8n-mcp", "neurosymbolic-ai", "symbolic-reasoning", "neural-networks", "knowledge-graphs", "causal-inference", "explainable-ai", "logic-programming", "hybrid-optimization", "reasoning-orchestration"]
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/webhook/neurosymbolic-reasoning",
+        "options": {
+          "rawBody": true,
+          "allowedMethods": ["POST", "PUT", "PATCH"]
+        }
+      },
+      "id": "neurosymbolic-input-gateway",
+      "name": "Neural-Symbolic Input Gateway",
+      "type": "n8n-nodes-base.Webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "notes": "Advanced intake system for neurosymbolic reasoning inputs including neural network outputs, symbolic facts, logical constraints, causal relationships, and domain knowledge for hybrid AI processing."
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "resource": "knowledge_graphs",
+        "operation": "getAll",
+        "additionalFields": {
+          "filter": "timestamp>=now-1h",
+          "include_neural_embeddings": true,
+          "depth": "comprehensive",
+          "sources": "ontologies,neural_patterns,symbolic_facts,causal_models,reasoning_chains,logical_constraints,domain_knowledge,inference_rules"
+        }
+      },
+      "id": "knowledge-graph-monitor",
+      "name": "Dynamic Knowledge Graph Monitor",
+      "type": "n8n-nodes-base.KnowledgeGraph",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "notes": "Continuous monitoring of dynamic knowledge graphs with neural embedding integration, symbolic fact extraction, and real-time reasoning pattern detection for neurosymbolic AI orchestration."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Neural Pattern Recognition with Symbolic Grounding Engine\nconst neuralSymbolic = {\n  async processNeuralSymbolic(inputData) {\n    const neuralPatterns = await this.extractNeuralPatterns(inputData);\n    const symbolicGrounding = this.establishSymbolicGrounding(neuralPatterns);\n    const hybridRepresentation = this.createHybridRepresentation(neuralPatterns, symbolicGrounding);\n    const reasoningContext = this.buildReasoningContext(hybridRepresentation);\n    const neurosymbolicModel = this.constructNeurosymbolicModel(reasoningContext);\n    \n    return {\n      neuralPatterns,\n      symbolicGrounding,\n      hybridRepresentation,\n      reasoningContext,\n      neurosymbolicModel,\n      confidenceScores: this.calculateConfidenceScores(neurosymbolicModel),\n      explanationChains: this.generateExplanationChains(neurosymbolicModel)\n    };\n  },\n  \n  async extractNeuralPatterns(inputData) {\n    const deepLearningAnalysis = this.performDeepLearningAnalysis(inputData);\n    const patternRecognition = await this.recognizePatterns(deepLearningAnalysis);\n    const featureExtraction = this.extractFeatures(patternRecognition);\n    const neuralEmbeddings = this.generateNeuralEmbeddings(featureExtraction);\n    const attentionMechanisms = this.applyAttentionMechanisms(neuralEmbeddings);\n    \n    const patternHierarchy = this.buildPatternHierarchy(patternRecognition);\n    const patternRelationships = this.identifyPatternRelationships(patternHierarchy);\n    const temporalPatterns = this.extractTemporalPatterns(inputData, patternRecognition);\n    const spatialPatterns = this.extractSpatialPatterns(inputData, patternRecognition);\n    const conceptualPatterns = this.extractConceptualPatterns(featureExtraction);\n    \n    return {\n      deepLearningAnalysis,\n      patternRecognition,\n      featureExtraction,\n      neuralEmbeddings,\n      attentionMechanisms,\n      patternHierarchy,\n      patternRelationships,\n      temporalPatterns,\n      spatialPatterns,\n      conceptualPatterns,\n      patternConfidence: this.calculatePatternConfidence(patternRecognition),\n      patternNovelty: this.assessPatternNovelty(patternRecognition)\n    };\n  },\n  \n  establishSymbolicGrounding(neuralPatterns) {\n    const symbolExtraction = this.extractSymbols(neuralPatterns);\n    const conceptMapping = this.mapNeuralToConcepts(neuralPatterns, symbolExtraction);\n    const relationshipIdentification = this.identifySymbolicRelationships(conceptMapping);\n    const ontologyAlignment = this.alignWithOntologies(conceptMapping, relationshipIdentification);\n    const logicalPredicates = this.generateLogicalPredicates(ontologyAlignment);\n    \n    const semanticGrounding = this.establishSemanticGrounding(conceptMapping);\n    const axiomGeneration = this.generateAxioms(logicalPredicates);\n    const constraintFormulation = this.formulateConstraints(axiomGeneration);\n    const ruleExtraction = this.extractInferenceRules(ontologyAlignment, logicalPredicates);\n    const consistencyChecking = this.checkConsistency(axiomGeneration, constraintFormulation);\n    \n    return {\n      symbolExtraction,\n      conceptMapping,\n      relationshipIdentification,\n      ontologyAlignment,\n      logicalPredicates,\n      semanticGrounding,\n      axiomGeneration,\n      constraintFormulation,\n      ruleExtraction,\n      consistencyChecking,\n      groundingQuality: this.assessGroundingQuality(conceptMapping, ontologyAlignment),\n      symbolicCoverage: this.calculateSymbolicCoverage(symbolExtraction, neuralPatterns)\n    };\n  },\n  \n  createHybridRepresentation(neuralPatterns, symbolicGrounding) {\n    const neuralSymbolicMapping = this.mapNeuralToSymbolic(neuralPatterns, symbolicGrounding);\n    const hybridEmbeddings = this.createHybridEmbeddings(neuralSymbolicMapping);\n    const dualRepresentation = this.buildDualRepresentation(hybridEmbeddings);\n    const crossModalAlignment = this.alignCrossModalRepresentations(dualRepresentation);\n    const representationFusion = this.fuseRepresentations(crossModalAlignment);\n    \n    const structuralConsistency = this.ensureStructuralConsistency(representationFusion);\n    const semanticCoherence = this.maintainSemanticCoherence(representationFusion);\n    const representationValidation = this.validateHybridRepresentation(representationFusion);\n    const adaptiveWeighting = this.calculateAdaptiveWeights(neuralPatterns, symbolicGrounding);\n    const representationOptimization = this.optimizeRepresentation(representationFusion, adaptiveWeighting);\n    \n    return {\n      neuralSymbolicMapping,\n      hybridEmbeddings,\n      dualRepresentation,\n      crossModalAlignment,\n      representationFusion,\n      structuralConsistency,\n      semanticCoherence,\n      representationValidation,\n      adaptiveWeighting,\n      representationOptimization,\n      hybridQuality: this.assessHybridQuality(representationFusion),\n      representationCompleteness: this.assessRepresentationCompleteness(representationOptimization)\n    };\n  },\n  \n  buildReasoningContext(hybridRepresentation) {\n    const contextualKnowledge = this.extractContextualKnowledge(hybridRepresentation);\n    const reasoningGoals = this.identifyReasoningGoals(hybridRepresentation);\n    const inferenceContext = this.buildInferenceContext(contextualKnowledge, reasoningGoals);\n    const causalContext = this.establishCausalContext(hybridRepresentation);\n    const temporalContext = this.buildTemporalContext(hybridRepresentation);\n    \n    const domainKnowledge = this.integrateDomainKnowledge(inferenceContext);\n    const constraintContext = this.establishConstraintContext(hybridRepresentation);\n    const uncertaintyContext = this.modelUncertaintyContext(hybridRepresentation);\n    const contextHierarchy = this.buildContextHierarchy(inferenceContext, causalContext, temporalContext);\n    const contextValidation = this.validateReasoningContext(contextHierarchy);\n    \n    return {\n      contextualKnowledge,\n      reasoningGoals,\n      inferenceContext,\n      causalContext,\n      temporalContext,\n      domainKnowledge,\n      constraintContext,\n      uncertaintyContext,\n      contextHierarchy,\n      contextValidation,\n      contextRichness: this.assessContextRichness(contextHierarchy),\n      contextCoherence: this.assessContextCoherence(contextValidation)\n    };\n  },\n  \n  constructNeurosymbolicModel(reasoningContext) {\n    const hybridArchitecture = this.designHybridArchitecture(reasoningContext);\n    const neuralSymbolicIntegration = this.integrateNeuralSymbolic(hybridArchitecture);\n    const reasoningEngine = this.buildReasoningEngine(neuralSymbolicIntegration);\n    const inferenceModule = this.constructInferenceModule(reasoningEngine);\n    const learningModule = this.buildLearningModule(reasoningEngine);\n    \n    const explainabilityLayer = this.addExplainabilityLayer(reasoningEngine);\n    const uncertaintyQuantification = this.quantifyUncertainty(reasoningEngine);\n    const modelValidation = this.validateNeurosymbolicModel(reasoningEngine);\n    const performanceOptimization = this.optimizeModelPerformance(reasoningEngine);\n    const adaptiveControl = this.implementAdaptiveControl(reasoningEngine);\n    \n    return {\n      hybridArchitecture,\n      neuralSymbolicIntegration,\n      reasoningEngine,\n      inferenceModule,\n      learningModule,\n      explainabilityLayer,\n      uncertaintyQuantification,\n      modelValidation,\n      performanceOptimization,\n      adaptiveControl,\n      modelCapabilities: this.assessModelCapabilities(reasoningEngine),\n      modelReliability: this.assessModelReliability(modelValidation)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const inputData = item.json;\n    const neurosymbolicProcessing = await neuralSymbolic.processNeuralSymbolic(inputData);\n    \n    results.push({\n      json: {\n        originalInput: inputData,\n        neurosymbolicProcessing,\n        timestamp: new Date().toISOString(),\n        processingId: `neurosymbolic_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'neural-symbolic-processor'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'neural-symbolic-processor'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "neural-symbolic-processor",
+      "name": "Neural-Symbolic Pattern Processor",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "notes": "Advanced neural-symbolic processor combining deep learning pattern recognition with symbolic grounding, hybrid representation creation, and neurosymbolic model construction for enhanced AI reasoning."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Logic Programming Integration with Deep Learning Engine\nconst logicDeepLearning = {\n  async integrateLogicDeepLearning(neurosymbolicData) {\n    const logicProgramming = this.setupLogicProgramming(neurosymbolicData);\n    const deepLearningIntegration = await this.integrateDeepLearning(logicProgramming);\n    const hybridInference = this.performHybridInference(deepLearningIntegration);\n    const constraintPropagation = this.propagateConstraints(hybridInference);\n    const differentiableReasoning = this.enableDifferentiableReasoning(constraintPropagation);\n    \n    return {\n      logicProgramming,\n      deepLearningIntegration,\n      hybridInference,\n      constraintPropagation,\n      differentiableReasoning,\n      logicOptimization: this.optimizeLogicRules(differentiableReasoning),\n      neuralLogicAlignment: this.alignNeuralLogic(differentiableReasoning)\n    };\n  },\n  \n  setupLogicProgramming(neurosymbolicData) {\n    const prologRules = this.generatePrologRules(neurosymbolicData);\n    const firstOrderLogic = this.constructFirstOrderLogic(prologRules);\n    const hornClauses = this.extractHornClauses(firstOrderLogic);\n    const definiteClauseGrammars = this.buildDefiniteClauseGrammars(hornClauses);\n    const constraintLogicProgramming = this.implementConstraintLogicProgramming(definiteClauseGrammars);\n    \n    const inductiveLogicProgramming = this.applyInductiveLogicProgramming(neurosymbolicData);\n    const abductiveReasoning = this.implementAbductiveReasoning(firstOrderLogic);\n    const probabilisticLogic = this.integrateProbabilisticLogic(constraintLogicProgramming);\n    const fuzzyLogic = this.implementFuzzyLogic(probabilisticLogic);\n    const temporalLogic = this.addTemporalLogic(fuzzyLogic);\n    \n    return {\n      prologRules,\n      firstOrderLogic,\n      hornClauses,\n      definiteClauseGrammars,\n      constraintLogicProgramming,\n      inductiveLogicProgramming,\n      abductiveReasoning,\n      probabilisticLogic,\n      fuzzyLogic,\n      temporalLogic,\n      logicValidation: this.validateLogicPrograms(constraintLogicProgramming),\n      logicOptimization: this.optimizeLogicPrograms(temporalLogic)\n    };\n  },\n  \n  async integrateDeepLearning(logicProgramming) {\n    const neuralLogicModules = this.createNeuralLogicModules(logicProgramming);\n    const differentiableLogic = this.makeDifferentiableLogic(neuralLogicModules);\n    const neuralTheoremProving = this.implementNeuralTheoremProving(differentiableLogic);\n    const logicAttention = this.addLogicAttentionMechanisms(neuralTheoremProving);\n    const reasoningTransformers = this.buildReasoningTransformers(logicAttention);\n    \n    const graphNeuralNetworks = this.integrateGraphNeuralNetworks(reasoningTransformers);\n    const structuredEmbeddings = this.createStructuredEmbeddings(graphNeuralNetworks);\n    const logicGuidedLearning = this.implementLogicGuidedLearning(structuredEmbeddings);\n    const neuralAbduction = this.enableNeuralAbduction(logicGuidedLearning);\n    const adaptiveRuleGeneration = this.implementAdaptiveRuleGeneration(neuralAbduction);\n    \n    return {\n      neuralLogicModules,\n      differentiableLogic,\n      neuralTheoremProving,\n      logicAttention,\n      reasoningTransformers,\n      graphNeuralNetworks,\n      structuredEmbeddings,\n      logicGuidedLearning,\n      neuralAbduction,\n      adaptiveRuleGeneration,\n      integrationQuality: this.assessIntegrationQuality(adaptiveRuleGeneration),\n      learningEfficiency: this.measureLearningEfficiency(logicGuidedLearning)\n    };\n  },\n  \n  performHybridInference(deepLearningIntegration) {\n    const forwardChaining = this.implementForwardChaining(deepLearningIntegration);\n    const backwardChaining = this.implementBackwardChaining(deepLearningIntegration);\n    const bidirectionalReasoning = this.combineBidirectionalReasoning(forwardChaining, backwardChaining);\n    const probabilisticInference = this.performProbabilisticInference(bidirectionalReasoning);\n    const bayesianReasoning = this.implementBayesianReasoning(probabilisticInference);\n    \n    const abductiveInference = this.performAbductiveInference(bayesianReasoning);\n    const inductiveInference = this.performInductiveInference(abductiveInference);\n    const analogicalReasoning = this.implementAnalogicalReasoning(inductiveInference);\n    const causalInference = this.performCausalInference(analogicalReasoning);\n    const counterfactualReasoning = this.implementCounterfactualReasoning(causalInference);\n    \n    return {\n      forwardChaining,\n      backwardChaining,\n      bidirectionalReasoning,\n      probabilisticInference,\n      bayesianReasoning,\n      abductiveInference,\n      inductiveInference,\n      analogicalReasoning,\n      causalInference,\n      counterfactualReasoning,\n      inferenceAccuracy: this.measureInferenceAccuracy(counterfactualReasoning),\n      reasoningDepth: this.assessReasoningDepth(counterfactualReasoning)\n    };\n  },\n  \n  propagateConstraints(hybridInference) {\n    const constraintSatisfaction = this.implementConstraintSatisfaction(hybridInference);\n    const constraintOptimization = this.performConstraintOptimization(constraintSatisfaction);\n    const globalConstraints = this.enforceGlobalConstraints(constraintOptimization);\n    const localConstraints = this.manageLocalConstraints(globalConstraints);\n    const dynamicConstraints = this.handleDynamicConstraints(localConstraints);\n    \n    const constraintLearning = this.implementConstraintLearning(dynamicConstraints);\n    const constraintRelaxation = this.performConstraintRelaxation(constraintLearning);\n    const constraintValidation = this.validateConstraints(constraintRelaxation);\n    const constraintEvolution = this.evolveConstraints(constraintValidation);\n    const constraintHierarchy = this.buildConstraintHierarchy(constraintEvolution);\n    \n    return {\n      constraintSatisfaction,\n      constraintOptimization,\n      globalConstraints,\n      localConstraints,\n      dynamicConstraints,\n      constraintLearning,\n      constraintRelaxation,\n      constraintValidation,\n      constraintEvolution,\n      constraintHierarchy,\n      constraintEfficiency: this.measureConstraintEfficiency(constraintHierarchy),\n      satisfactionRate: this.calculateSatisfactionRate(constraintValidation)\n    };\n  },\n  \n  enableDifferentiableReasoning(constraintPropagation) {\n    const differentiableProofs = this.createDifferentiableProofs(constraintPropagation);\n    const gradientBasedReasoning = this.implementGradientBasedReasoning(differentiableProofs);\n    const backpropagationThroughReasoning = this.enableBackpropagationThroughReasoning(gradientBasedReasoning);\n    const reasoningGradients = this.computeReasoningGradients(backpropagationThroughReasoning);\n    const adaptiveReasoningWeights = this.computeAdaptiveReasoningWeights(reasoningGradients);\n    \n    const continuousRelaxation = this.applyContinuousRelaxation(adaptiveReasoningWeights);\n    const smoothedLogic = this.implementSmoothedLogic(continuousRelaxation);\n    const differentiableUnification = this.enableDifferentiableUnification(smoothedLogic);\n    const reasoningOptimization = this.optimizeReasoning(differentiableUnification);\n    const learningFromReasoning = this.enableLearningFromReasoning(reasoningOptimization);\n    \n    return {\n      differentiableProofs,\n      gradientBasedReasoning,\n      backpropagationThroughReasoning,\n      reasoningGradients,\n      adaptiveReasoningWeights,\n      continuousRelaxation,\n      smoothedLogic,\n      differentiableUnification,\n      reasoningOptimization,\n      learningFromReasoning,\n      reasoningConvergence: this.assessReasoningConvergence(learningFromReasoning),\n      optimizationEfficiency: this.measureOptimizationEfficiency(reasoningOptimization)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const neurosymbolicData = item.json;\n    const logicDeepLearningIntegration = await logicDeepLearning.integrateLogicDeepLearning(neurosymbolicData);\n    \n    results.push({\n      json: {\n        originalData: neurosymbolicData,\n        logicDeepLearningIntegration,\n        timestamp: new Date().toISOString(),\n        integrationId: `logic_dl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'logic-deep-learning-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'logic-deep-learning-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "logic-deep-learning-engine",
+      "name": "Logic Programming Deep Learning Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [400, 500],
+      "notes": "Advanced logic programming integration with deep learning featuring differentiable reasoning, constraint propagation, hybrid inference, and neural-logic optimization for enhanced AI reasoning capabilities."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "high-reasoning-confidence",
+              "leftValue": "={{ $json.neurosymbolicProcessing?.confidenceScores?.overall }}",
+              "rightValue": 0.85,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "strong-symbolic-grounding",
+              "leftValue": "={{ $json.neurosymbolicProcessing?.symbolicGrounding?.groundingQuality }}",
+              "rightValue": 0.8,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "complex-reasoning-required",
+              "leftValue": "={{ $json.logicDeepLearningIntegration?.hybridInference?.reasoningDepth }}",
+              "rightValue": "complex",
+              "operator": {
+                "type": "string",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combineOperation": "any"
+        }
+      },
+      "id": "reasoning-complexity-router",
+      "name": "Intelligent Reasoning Complexity Router",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [700, 400],
+      "notes": "Intelligent routing system that directs high-confidence neurosymbolic reasoning to advanced causal inference and knowledge graph navigation based on reasoning complexity and symbolic grounding quality."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Causal Inference with Knowledge Graph Navigation Engine\nconst causalKnowledgeGraph = {\n  async performCausalInference(reasoningData) {\n    const causalDiscovery = this.discoverCausalRelationships(reasoningData);\n    const knowledgeGraphNavigation = await this.navigateKnowledgeGraph(causalDiscovery);\n    const causalModeling = this.buildCausalModels(knowledgeGraphNavigation);\n    const interventionalAnalysis = this.performInterventionalAnalysis(causalModeling);\n    const counterfactualGeneration = this.generateCounterfactuals(interventionalAnalysis);\n    \n    return {\n      causalDiscovery,\n      knowledgeGraphNavigation,\n      causalModeling,\n      interventionalAnalysis,\n      counterfactualGeneration,\n      causalValidation: this.validateCausalInferences(counterfactualGeneration),\n      causalExplanations: this.generateCausalExplanations(counterfactualGeneration)\n    };\n  },\n  \n  discoverCausalRelationships(reasoningData) {\n    const observationalData = this.extractObservationalData(reasoningData);\n    const structuralCausalModeling = this.performStructuralCausalModeling(observationalData);\n    const directedAcyclicGraphs = this.constructDirectedAcyclicGraphs(structuralCausalModeling);\n    const causalAssumptions = this.identifyCausalAssumptions(directedAcyclicGraphs);\n    const confoundingAnalysis = this.analyzeConfounding(causalAssumptions);\n    \n    const pealsCausalHierarchy = this.applyPealsCausalHierarchy(confoundingAnalysis);\n    const causalIdentification = this.performCausalIdentification(pealsCausalHierarchy);\n    const doCalculus = this.applyDoCalculus(causalIdentification);\n    const backdoorCriterion = this.checkBackdoorCriterion(doCalculus);\n    const frontdoorCriterion = this.checkFrontdoorCriterion(backdoorCriterion);\n    \n    return {\n      observationalData,\n      structuralCausalModeling,\n      directedAcyclicGraphs,\n      causalAssumptions,\n      confoundingAnalysis,\n      pealsCausalHierarchy,\n      causalIdentification,\n      doCalculus,\n      backdoorCriterion,\n      frontdoorCriterion,\n      causalStrength: this.measureCausalStrength(frontdoorCriterion),\n      causalConsistency: this.checkCausalConsistency(frontdoorCriterion)\n    };\n  },\n  \n  async navigateKnowledgeGraph(causalDiscovery) {\n    const graphEmbeddings = this.generateGraphEmbeddings(causalDiscovery);\n    const semanticNavigation = this.performSemanticNavigation(graphEmbeddings);\n    const pathFinding = this.findOptimalPaths(semanticNavigation);\n    const subgraphExtraction = this.extractRelevantSubgraphs(pathFinding);\n    const entityLinking = this.performEntityLinking(subgraphExtraction);\n    \n    const relationExtraction = this.extractRelations(entityLinking);\n    const ontologyAlignment = this.alignWithOntologies(relationExtraction);\n    const knowledgeCompletion = this.performKnowledgeCompletion(ontologyAlignment);\n    const temporalReasoning = this.performTemporalReasoning(knowledgeCompletion);\n    const spatialReasoning = this.performSpatialReasoning(temporalReasoning);\n    \n    const multiHopReasoning = this.performMultiHopReasoning(spatialReasoning);\n    const analogicalReasoning = this.performAnalogicalReasoning(multiHopReasoning);\n    const compositionalReasoning = this.performCompositionalReasoning(analogicalReasoning);\n    const abstractionLevels = this.navigateAbstractionLevels(compositionalReasoning);\n    const contextualReasoning = this.performContextualReasoning(abstractionLevels);\n    \n    return {\n      graphEmbeddings,\n      semanticNavigation,\n      pathFinding,\n      subgraphExtraction,\n      entityLinking,\n      relationExtraction,\n      ontologyAlignment,\n      knowledgeCompletion,\n      temporalReasoning,\n      spatialReasoning,\n      multiHopReasoning,\n      analogicalReasoning,\n      compositionalReasoning,\n      abstractionLevels,\n      contextualReasoning,\n      navigationEfficiency: this.measureNavigationEfficiency(contextualReasoning),\n      knowledgeCoverage: this.assessKnowledgeCoverage(contextualReasoning)\n    };\n  },\n  \n  buildCausalModels(knowledgeGraphNavigation) {\n    const structuralEquationModels = this.buildStructuralEquationModels(knowledgeGraphNavigation);\n    const potentialOutcomes = this.modelPotentialOutcomes(structuralEquationModels);\n    const causalMechanisms = this.identifyCausalMechanisms(potentialOutcomes);\n    const mediationAnalysis = this.performMediationAnalysis(causalMechanisms);\n    const moderationAnalysis = this.performModerationAnalysis(mediationAnalysis);\n    \n    const causalNetworks = this.constructCausalNetworks(moderationAnalysis);\n    const dynamicCausalModels = this.buildDynamicCausalModels(causalNetworks);\n    const hierarchicalCausalModels = this.buildHierarchicalCausalModels(dynamicCausalModels);\n    const bayesianCausalNetworks = this.constructBayesianCausalNetworks(hierarchicalCausalModels);\n    const causalModelValidation = this.validateCausalModels(bayesianCausalNetworks);\n    \n    return {\n      structuralEquationModels,\n      potentialOutcomes,\n      causalMechanisms,\n      mediationAnalysis,\n      moderationAnalysis,\n      causalNetworks,\n      dynamicCausalModels,\n      hierarchicalCausalModels,\n      bayesianCausalNetworks,\n      causalModelValidation,\n      modelComplexity: this.assessModelComplexity(bayesianCausalNetworks),\n      predictivePower: this.measurePredictivePower(causalModelValidation)\n    };\n  },\n  \n  performInterventionalAnalysis(causalModeling) {\n    const interventionDesign = this.designInterventions(causalModeling);\n    const interventionEffects = this.estimateInterventionEffects(interventionDesign);\n    const treatmentAssignment = this.optimizeTreatmentAssignment(interventionEffects);\n    const doseResponseAnalysis = this.performDoseResponseAnalysis(treatmentAssignment);\n    const spilloverEffects = this.analyzeSpilloverEffects(doseResponseAnalysis);\n    \n    const instrumentalVariables = this.identifyInstrumentalVariables(spilloverEffects);\n    const naturalExperiments = this.leverageNaturalExperiments(instrumentalVariables);\n    const regressionDiscontinuity = this.applyRegressionDiscontinuity(naturalExperiments);\n    const syntheticControls = this.constructSyntheticControls(regressionDiscontinuity);\n    const causalImpactAssessment = this.assessCausalImpact(syntheticControls);\n    \n    return {\n      interventionDesign,\n      interventionEffects,\n      treatmentAssignment,\n      doseResponseAnalysis,\n      spilloverEffects,\n      instrumentalVariables,\n      naturalExperiments,\n      regressionDiscontinuity,\n      syntheticControls,\n      causalImpactAssessment,\n      interventionOptimality: this.assessInterventionOptimality(causalImpactAssessment),\n      effectHeterogeneity: this.analyzeEffectHeterogeneity(causalImpactAssessment)\n    };\n  },\n  \n  generateCounterfactuals(interventionalAnalysis) {\n    const counterfactualScenarios = this.generateCounterfactualScenarios(interventionalAnalysis);\n    const alternativeWorlds = this.constructAlternativeWorlds(counterfactualScenarios);\n    const whatIfAnalysis = this.performWhatIfAnalysis(alternativeWorlds);\n    const necessityAndSufficiency = this.analyzeNecessityAndSufficiency(whatIfAnalysis);\n    const probabilityOfNecessity = this.calculateProbabilityOfNecessity(necessityAndSufficiency);\n    \n    const probabilityOfSufficiency = this.calculateProbabilityOfSufficiency(probabilityOfNecessity);\n    const probabilityOfNecessityAndSufficiency = this.calculateProbabilityOfNecessityAndSufficiency(probabilityOfSufficiency);\n    const counterfactualExplanations = this.generateCounterfactualExplanations(probabilityOfNecessityAndSufficiency);\n    const actionableInsights = this.extractActionableInsights(counterfactualExplanations);\n    const counterfactualValidation = this.validateCounterfactuals(actionableInsights);\n    \n    return {\n      counterfactualScenarios,\n      alternativeWorlds,\n      whatIfAnalysis,\n      necessityAndSufficiency,\n      probabilityOfNecessity,\n      probabilityOfSufficiency,\n      probabilityOfNecessityAndSufficiency,\n      counterfactualExplanations,\n      actionableInsights,\n      counterfactualValidation,\n      counterfactualRealism: this.assessCounterfactualRealism(counterfactualValidation),\n      explanatoryPower: this.measureExplanatoryPower(counterfactualExplanations)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const reasoningData = item.json;\n    const causalInferenceNavigation = await causalKnowledgeGraph.performCausalInference(reasoningData);\n    \n    results.push({\n      json: {\n        originalData: reasoningData,\n        causalInferenceNavigation,\n        timestamp: new Date().toISOString(),\n        causalId: `causal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'causal-knowledge-graph-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'causal-knowledge-graph-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "causal-knowledge-graph-engine",
+      "name": "Causal Inference Knowledge Graph Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 300],
+      "notes": "Advanced causal inference engine with knowledge graph navigation featuring structural causal modeling, interventional analysis, counterfactual generation, and multi-hop reasoning for complex AI reasoning tasks."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Explainable AI with Reasoning Chain Generation Engine\nconst explainableReasoning = {\n  async generateExplainableReasoning(logicData) {\n    const reasoningChains = this.constructReasoningChains(logicData);\n    const explanationGeneration = await this.generateExplanations(reasoningChains);\n    const transparencyMechanisms = this.implementTransparencyMechanisms(explanationGeneration);\n    const interpretabilityLayers = this.buildInterpretabilityLayers(transparencyMechanisms);\n    const visualExplanations = this.createVisualExplanations(interpretabilityLayers);\n    \n    return {\n      reasoningChains,\n      explanationGeneration,\n      transparencyMechanisms,\n      interpretabilityLayers,\n      visualExplanations,\n      explanationQuality: this.assessExplanationQuality(visualExplanations),\n      userComprehension: this.measureUserComprehension(visualExplanations)\n    };\n  },\n  \n  constructReasoningChains(logicData) {\n    const inferenceSteps = this.extractInferenceSteps(logicData);\n    const logicalFlow = this.traceLogicalFlow(inferenceSteps);\n    const decisionPoints = this.identifyDecisionPoints(logicalFlow);\n    const branchingPaths = this.mapBranchingPaths(decisionPoints);\n    const reasoningDepth = this.calculateReasoningDepth(branchingPaths);\n    \n    const chainValidation = this.validateReasoningChains(branchingPaths);\n    const chainOptimization = this.optimizeReasoningChains(chainValidation);\n    const chainAbstraction = this.abstractReasoningChains(chainOptimization);\n    const chainComposition = this.composeReasoningChains(chainAbstraction);\n    const chainHierarchy = this.buildChainHierarchy(chainComposition);\n    \n    return {\n      inferenceSteps,\n      logicalFlow,\n      decisionPoints,\n      branchingPaths,\n      reasoningDepth,\n      chainValidation,\n      chainOptimization,\n      chainAbstraction,\n      chainComposition,\n      chainHierarchy,\n      chainCoherence: this.assessChainCoherence(chainHierarchy),\n      chainCompleteness: this.assessChainCompleteness(chainHierarchy)\n    };\n  },\n  \n  async generateExplanations(reasoningChains) {\n    const naturalLanguageGeneration = this.generateNaturalLanguageExplanations(reasoningChains);\n    const structuredExplanations = this.createStructuredExplanations(naturalLanguageGeneration);\n    const layeredExplanations = this.buildLayeredExplanations(structuredExplanations);\n    const personalizedExplanations = this.personalizeExplanations(layeredExplanations);\n    const interactiveExplanations = this.createInteractiveExplanations(personalizedExplanations);\n    \n    const causalExplanations = this.generateCausalExplanations(interactiveExplanations);\n    const mechanisticExplanations = this.createMechanisticExplanations(causalExplanations);\n    const functionalExplanations = this.developFunctionalExplanations(mechanisticExplanations);\n    const intentionalExplanations = this.buildIntentionalExplanations(functionalExplanations);\n    const contrastiveExplanations = this.generateContrastiveExplanations(intentionalExplanations);\n    \n    const explanationTemplates = this.createExplanationTemplates(contrastiveExplanations);\n    const explanationAdaptation = this.adaptExplanations(explanationTemplates);\n    const explanationValidation = this.validateExplanations(explanationAdaptation);\n    const explanationRefinement = this.refineExplanations(explanationValidation);\n    const explanationOptimization = this.optimizeExplanations(explanationRefinement);\n    \n    return {\n      naturalLanguageGeneration,\n      structuredExplanations,\n      layeredExplanations,\n      personalizedExplanations,\n      interactiveExplanations,\n      causalExplanations,\n      mechanisticExplanations,\n      functionalExplanations,\n      intentionalExplanations,\n      contrastiveExplanations,\n      explanationTemplates,\n      explanationAdaptation,\n      explanationValidation,\n      explanationRefinement,\n      explanationOptimization,\n      explanationClarity: this.measureExplanationClarity(explanationOptimization),\n      explanationAccuracy: this.assessExplanationAccuracy(explanationOptimization)\n    };\n  },\n  \n  implementTransparencyMechanisms(explanationGeneration) {\n    const attentionVisualization = this.visualizeAttentionMechanisms(explanationGeneration);\n    const featureImportance = this.calculateFeatureImportance(attentionVisualization);\n    const activationPatterns = this.analyzeActivationPatterns(featureImportance);\n    const decisionBoundaries = this.visualizeDecisionBoundaries(activationPatterns);\n    const gradientAnalysis = this.performGradientAnalysis(decisionBoundaries);\n    \n    const saliencyMaps = this.generateSaliencyMaps(gradientAnalysis);\n    const perturbationAnalysis = this.performPerturbationAnalysis(saliencyMaps);\n    const shapeleyValues = this.calculateShapeleyValues(perturbationAnalysis);\n    const limeExplanations = this.generateLimeExplanations(shapeleyValues);\n    const anchorExplanations = this.createAnchorExplanations(limeExplanations);\n    \n    return {\n      attentionVisualization,\n      featureImportance,\n      activationPatterns,\n      decisionBoundaries,\n      gradientAnalysis,\n      saliencyMaps,\n      perturbationAnalysis,\n      shapeleyValues,\n      limeExplanations,\n      anchorExplanations,\n      transparencyScore: this.calculateTransparencyScore(anchorExplanations),\n      trustworthiness: this.assessTrustworthiness(anchorExplanations)\n    };\n  },\n  \n  buildInterpretabilityLayers(transparencyMechanisms) {\n    const conceptualInterpretability = this.buildConceptualInterpretability(transparencyMechanisms);\n    const proceduralInterpretability = this.buildProceduralInterpretability(conceptualInterpretability);\n    const contextualInterpretability = this.buildContextualInterpretability(proceduralInterpretability);\n    const causalInterpretability = this.buildCausalInterpretability(contextualInterpretability);\n    const temporalInterpretability = this.buildTemporalInterpretability(causalInterpretability);\n    \n    const globalInterpretability = this.achieveGlobalInterpretability(temporalInterpretability);\n    const localInterpretability = this.achieveLocalInterpretability(globalInterpretability);\n    const modelAgnosticInterpretability = this.buildModelAgnosticInterpretability(localInterpretability);\n    const postHocInterpretability = this.implementPostHocInterpretability(modelAgnosticInterpretability);\n    const intrinsicInterpretability = this.buildIntrinsicInterpretability(postHocInterpretability);\n    \n    return {\n      conceptualInterpretability,\n      proceduralInterpretability,\n      contextualInterpretability,\n      causalInterpretability,\n      temporalInterpretability,\n      globalInterpretability,\n      localInterpretability,\n      modelAgnosticInterpretability,\n      postHocInterpretability,\n      intrinsicInterpretability,\n      interpretabilityDepth: this.measureInterpabilityDepth(intrinsicInterpretability),\n      interpretabilityBreadth: this.measureInterpabilityBreadth(intrinsicInterpretability)\n    };\n  },\n  \n  createVisualExplanations(interpretabilityLayers) {\n    const graphicalExplanations = this.createGraphicalExplanations(interpretabilityLayers);\n    const interactiveVisualizations = this.buildInteractiveVisualizations(graphicalExplanations);\n    const multimediaExplanations = this.createMultimediaExplanations(interactiveVisualizations);\n    const immersiveExplanations = this.buildImmersiveExplanations(multimediaExplanations);\n    const adaptiveVisualizations = this.createAdaptiveVisualizations(immersiveExplanations);\n    \n    const explanationDashboards = this.buildExplanationDashboards(adaptiveVisualizations);\n    const narrativeVisualizations = this.createNarrativeVisualizations(explanationDashboards);\n    const collaborativeExplanations = this.enableCollaborativeExplanations(narrativeVisualizations);\n    const realTimeExplanations = this.implementRealTimeExplanations(collaborativeExplanations);\n    const explanationAnalytics = this.buildExplanationAnalytics(realTimeExplanations);\n    \n    return {\n      graphicalExplanations,\n      interactiveVisualizations,\n      multimediaExplanations,\n      immersiveExplanations,\n      adaptiveVisualizations,\n      explanationDashboards,\n      narrativeVisualizations,\n      collaborativeExplanations,\n      realTimeExplanations,\n      explanationAnalytics,\n      visualClarity: this.assessVisualClarity(explanationAnalytics),\n      userEngagement: this.measureUserEngagement(explanationAnalytics)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const logicData = item.json;\n    const explainableReasoning = await explainableReasoning.generateExplainableReasoning(logicData);\n    \n    results.push({\n      json: {\n        originalData: logicData,\n        explainableReasoning,\n        timestamp: new Date().toISOString(),\n        explanationId: `explainable_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'explainable-reasoning-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'explainable-reasoning-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "explainable-reasoning-engine",
+      "name": "Explainable AI Reasoning Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1000, 500],
+      "notes": "Comprehensive explainable AI engine with reasoning chain generation, transparency mechanisms, interpretability layers, and visual explanations for enhanced AI reasoning transparency and user trust."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Symbolic Knowledge Extraction from Neural Patterns Engine\nconst symbolicExtraction = {\n  async extractSymbolicKnowledge(causalData) {\n    const neuralPatternAnalysis = this.analyzeNeuralPatterns(causalData);\n    const symbolMining = await this.mineSymbols(neuralPatternAnalysis);\n    const knowledgeDistillation = this.distillKnowledge(symbolMining);\n    const ruleInduction = this.induceRules(knowledgeDistillation);\n    const conceptFormation = this.formConcepts(ruleInduction);\n    \n    return {\n      neuralPatternAnalysis,\n      symbolMining,\n      knowledgeDistillation,\n      ruleInduction,\n      conceptFormation,\n      extractionQuality: this.assessExtractionQuality(conceptFormation),\n      symbolicConsistency: this.validateSymbolicConsistency(conceptFormation)\n    };\n  },\n  \n  analyzeNeuralPatterns(causalData) {\n    const hiddenLayerAnalysis = this.analyzeHiddenLayers(causalData);\n    const neuronActivations = this.analyzeNeuronActivations(hiddenLayerAnalysis);\n    const connectionWeights = this.analyzeConnectionWeights(neuronActivations);\n    const emergentStructures = this.identifyEmergentStructures(connectionWeights);\n    const patternHierarchies = this.buildPatternHierarchies(emergentStructures);\n    \n    const representationGeometry = this.analyzeRepresentationGeometry(patternHierarchies);\n    const manifoldStructure = this.identifyManifoldStructure(representationGeometry);\n    const topologicalFeatures = this.extractTopologicalFeatures(manifoldStructure);\n    const geometricProperties = this.analyzeGeometricProperties(topologicalFeatures);\n    const invariantFeatures = this.identifyInvariantFeatures(geometricProperties);\n    \n    return {\n      hiddenLayerAnalysis,\n      neuronActivations,\n      connectionWeights,\n      emergentStructures,\n      patternHierarchies,\n      representationGeometry,\n      manifoldStructure,\n      topologicalFeatures,\n      geometricProperties,\n      invariantFeatures,\n      patternComplexity: this.measurePatternComplexity(invariantFeatures),\n      patternStability: this.assessPatternStability(invariantFeatures)\n    };\n  },\n  \n  async mineSymbols(neuralPatternAnalysis) {\n    const conceptualClusters = this.identifyConceptualClusters(neuralPatternAnalysis);\n    const symbolGeneration = this.generateSymbols(conceptualClusters);\n    const semanticAlignment = this.alignSemantics(symbolGeneration);\n    const ontologicalMapping = this.mapToOntologies(semanticAlignment);\n    const symbolValidation = this.validateSymbols(ontologicalMapping);\n    \n    const relationExtraction = this.extractRelations(symbolValidation);\n    const taxonomyConstruction = this.constructTaxonomies(relationExtraction);\n    const hierarchyBuilding = this.buildHierarchies(taxonomyConstruction);\n    const compositionRules = this.discoverCompositionRules(hierarchyBuilding);\n    const abstractionLadders = this.buildAbstractionLadders(compositionRules);\n    \n    return {\n      conceptualClusters,\n      symbolGeneration,\n      semanticAlignment,\n      ontologicalMapping,\n      symbolValidation,\n      relationExtraction,\n      taxonomyConstruction,\n      hierarchyBuilding,\n      compositionRules,\n      abstractionLadders,\n      symbolicRichness: this.assessSymbolicRichness(abstractionLadders),\n      semanticCoherence: this.measureSemanticCoherence(abstractionLadders)\n    };\n  },\n  \n  distillKnowledge(symbolMining) {\n    const knowledgeCompression = this.compressKnowledge(symbolMining);\n    const essentialFeatures = this.extractEssentialFeatures(knowledgeCompression);\n    const corePredicates = this.identifyCorePredicates(essentialFeatures);\n    const fundamentalRelations = this.discoverFundamentalRelations(corePredicates);\n    const universalPrinciples = this.extractUniversalPrinciples(fundamentalRelations);\n    \n    const knowledgeRefinement = this.refineKnowledge(universalPrinciples);\n    const redundancyElimination = this.eliminateRedundancy(knowledgeRefinement);\n    const consistencyEnforcement = this.enforceConsistency(redundancyElimination);\n    const completenessCheck = this.checkCompleteness(consistencyEnforcement);\n    const knowledgeOptimization = this.optimizeKnowledge(completenessCheck);\n    \n    return {\n      knowledgeCompression,\n      essentialFeatures,\n      corePredicates,\n      fundamentalRelations,\n      universalPrinciples,\n      knowledgeRefinement,\n      redundancyElimination,\n      consistencyEnforcement,\n      completenessCheck,\n      knowledgeOptimization,\n      distillationEfficiency: this.measureDistillationEfficiency(knowledgeOptimization),\n      knowledgeUtility: this.assessKnowledgeUtility(knowledgeOptimization)\n    };\n  },\n  \n  induceRules(knowledgeDistillation) {\n    const inductiveLogicProgramming = this.applyInductiveLogicProgramming(knowledgeDistillation);\n    const ruleGeneration = this.generateRules(inductiveLogicProgramming);\n    const ruleGeneralization = this.generalizeRules(ruleGeneration);\n    const ruleSpecialization = this.specializeRules(ruleGeneralization);\n    const ruleComposition = this.composeRules(ruleSpecialization);\n    \n    const ruleHierarchies = this.buildRuleHierarchies(ruleComposition);\n    const metaRules = this.deriveMetaRules(ruleHierarchies);\n    const ruleInteractions = this.modelRuleInteractions(metaRules);\n    const ruleOptimization = this.optimizeRules(ruleInteractions);\n    const ruleValidation = this.validateRules(ruleOptimization);\n    \n    return {\n      inductiveLogicProgramming,\n      ruleGeneration,\n      ruleGeneralization,\n      ruleSpecialization,\n      ruleComposition,\n      ruleHierarchies,\n      metaRules,\n      ruleInteractions,\n      ruleOptimization,\n      ruleValidation,\n      ruleQuality: this.assessRuleQuality(ruleValidation),\n      ruleCoverage: this.measureRuleCoverage(ruleValidation)\n    };\n  },\n  \n  formConcepts(ruleInduction) {\n    const conceptAbstraction = this.abstractConcepts(ruleInduction);\n    const conceptualizationProcess = this.performConceptualization(conceptAbstraction);\n    const conceptHierarchies = this.buildConceptHierarchies(conceptualizationProcess);\n    const conceptRelations = this.defineConceptRelations(conceptHierarchies);\n    const conceptualFrameworks = this.constructConceptualFrameworks(conceptRelations);\n    \n    const conceptEvolution = this.modelConceptEvolution(conceptualFrameworks);\n    const conceptIntegration = this.integrateConcepts(conceptEvolution);\n    const conceptValidation = this.validateConcepts(conceptIntegration);\n    const conceptRefinement = this.refineConcepts(conceptValidation);\n    const conceptualizationComplete = this.completeConceptualization(conceptRefinement);\n    \n    return {\n      conceptAbstraction,\n      conceptualizationProcess,\n      conceptHierarchies,\n      conceptRelations,\n      conceptualFrameworks,\n      conceptEvolution,\n      conceptIntegration,\n      conceptValidation,\n      conceptRefinement,\n      conceptualizationComplete,\n      conceptualCoherence: this.assessConceptualCoherence(conceptualizationComplete),\n      conceptualUtility: this.measureConceptualUtility(conceptualizationComplete)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const causalData = item.json;\n    const symbolicKnowledgeExtraction = await symbolicExtraction.extractSymbolicKnowledge(causalData);\n    \n    results.push({\n      json: {\n        originalData: causalData,\n        symbolicKnowledgeExtraction,\n        timestamp: new Date().toISOString(),\n        extractionId: `symbolic_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'symbolic-extraction-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'symbolic-extraction-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "symbolic-extraction-engine",
+      "name": "Symbolic Knowledge Extraction Engine",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 300],
+      "notes": "Advanced symbolic knowledge extraction engine that mines symbols from neural patterns, distills knowledge, induces rules, and forms concepts for comprehensive neurosymbolic AI reasoning."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Hybrid Optimization with Logical Constraints Engine\nconst hybridOptimization = {\n  async performHybridOptimization(explainableData) {\n    const constraintModeling = this.modelConstraints(explainableData);\n    const objectiveFormulation = await this.formulateObjectives(constraintModeling);\n    const hybridSolver = this.buildHybridSolver(objectiveFormulation);\n    const optimizationExecution = this.executeOptimization(hybridSolver);\n    const solutionValidation = this.validateSolutions(optimizationExecution);\n    \n    return {\n      constraintModeling,\n      objectiveFormulation,\n      hybridSolver,\n      optimizationExecution,\n      solutionValidation,\n      optimizationEfficiency: this.measureOptimizationEfficiency(solutionValidation),\n      solutionQuality: this.assessSolutionQuality(solutionValidation)\n    };\n  },\n  \n  modelConstraints(explainableData) {\n    const logicalConstraints = this.extractLogicalConstraints(explainableData);\n    const numericalConstraints = this.extractNumericalConstraints(explainableData);\n    const temporalConstraints = this.extractTemporalConstraints(explainableData);\n    const spatialConstraints = this.extractSpatialConstraints(explainableData);\n    const semanticConstraints = this.extractSemanticConstraints(explainableData);\n    \n    const constraintHierarchy = this.buildConstraintHierarchy({\n      logical: logicalConstraints,\n      numerical: numericalConstraints,\n      temporal: temporalConstraints,\n      spatial: spatialConstraints,\n      semantic: semanticConstraints\n    });\n    \n    const constraintDependencies = this.mapConstraintDependencies(constraintHierarchy);\n    const constraintConflicts = this.identifyConstraintConflicts(constraintDependencies);\n    const constraintResolution = this.resolveConstraintConflicts(constraintConflicts);\n    const constraintOptimization = this.optimizeConstraints(constraintResolution);\n    \n    return {\n      logicalConstraints,\n      numericalConstraints,\n      temporalConstraints,\n      spatialConstraints,\n      semanticConstraints,\n      constraintHierarchy,\n      constraintDependencies,\n      constraintConflicts,\n      constraintResolution,\n      constraintOptimization,\n      constraintSatisfiability: this.checkConstraintSatisfiability(constraintOptimization),\n      constraintFlexibility: this.assessConstraintFlexibility(constraintOptimization)\n    };\n  },\n  \n  async formulateObjectives(constraintModeling) {\n    const multiObjectiveOptimization = this.setupMultiObjectiveOptimization(constraintModeling);\n    const objectivePrioritization = this.prioritizeObjectives(multiObjectiveOptimization);\n    const objectiveWeighting = this.weightObjectives(objectivePrioritization);\n    const paretoOptimization = this.implementParetoOptimization(objectiveWeighting);\n    const scalarization = this.performScalarization(paretoOptimization);\n    \n    const robustOptimization = this.implementRobustOptimization(scalarization);\n    const stochasticOptimization = this.implementStochasticOptimization(robustOptimization);\n    const dynamicOptimization = this.implementDynamicOptimization(stochasticOptimization);\n    const adaptiveOptimization = this.implementAdaptiveOptimization(dynamicOptimization);\n    const metaOptimization = this.implementMetaOptimization(adaptiveOptimization);\n    \n    return {\n      multiObjectiveOptimization,\n      objectivePrioritization,\n      objectiveWeighting,\n      paretoOptimization,\n      scalarization,\n      robustOptimization,\n      stochasticOptimization,\n      dynamicOptimization,\n      adaptiveOptimization,\n      metaOptimization,\n      objectiveCoherence: this.assessObjectiveCoherence(metaOptimization),\n      optimizationComplexity: this.measureOptimizationComplexity(metaOptimization)\n    };\n  },\n  \n  buildHybridSolver(objectiveFormulation) {\n    const neuralOptimizer = this.buildNeuralOptimizer(objectiveFormulation);\n    const symbolicSolver = this.buildSymbolicSolver(objectiveFormulation);\n    const solverIntegration = this.integrateSolvers(neuralOptimizer, symbolicSolver);\n    const hybridAlgorithm = this.designHybridAlgorithm(solverIntegration);\n    const solverOrchestration = this.orchestrateSolvers(hybridAlgorithm);\n    \n    const parallelProcessing = this.enableParallelProcessing(solverOrchestration);\n    const distributedOptimization = this.implementDistributedOptimization(parallelProcessing);\n    const cloudOptimization = this.enableCloudOptimization(distributedOptimization);\n    const quantumOptimization = this.implementQuantumOptimization(cloudOptimization);\n    const hybridQuantumClassical = this.buildHybridQuantumClassical(quantumOptimization);\n    \n    return {\n      neuralOptimizer,\n      symbolicSolver,\n      solverIntegration,\n      hybridAlgorithm,\n      solverOrchestration,\n      parallelProcessing,\n      distributedOptimization,\n      cloudOptimization,\n      quantumOptimization,\n      hybridQuantumClassical,\n      solverPerformance: this.benchmarkSolverPerformance(hybridQuantumClassical),\n      scalabilityAssessment: this.assessScalability(hybridQuantumClassical)\n    };\n  },\n  \n  executeOptimization(hybridSolver) {\n    const optimizationInitialization = this.initializeOptimization(hybridSolver);\n    const iterativeOptimization = this.performIterativeOptimization(optimizationInitialization);\n    const convergenceMonitoring = this.monitorConvergence(iterativeOptimization);\n    const adaptiveParameters = this.adjustAdaptiveParameters(convergenceMonitoring);\n    const optimizationTermination = this.determineOptimizationTermination(adaptiveParameters);\n    \n    const solutionExtraction = this.extractSolutions(optimizationTermination);\n    const solutionRanking = this.rankSolutions(solutionExtraction);\n    const solutionFiltering = this.filterSolutions(solutionRanking);\n    const solutionRefinement = this.refineSolutions(solutionFiltering);\n    const finalSolutions = this.finalizeSolutions(solutionRefinement);\n    \n    return {\n      optimizationInitialization,\n      iterativeOptimization,\n      convergenceMonitoring,\n      adaptiveParameters,\n      optimizationTermination,\n      solutionExtraction,\n      solutionRanking,\n      solutionFiltering,\n      solutionRefinement,\n      finalSolutions,\n      optimizationTrajectory: this.traceOptimizationTrajectory(finalSolutions),\n      computationalComplexity: this.analyzeComputationalComplexity(finalSolutions)\n    };\n  },\n  \n  validateSolutions(optimizationExecution) {\n    const feasibilityCheck = this.checkFeasibility(optimizationExecution);\n    const optimalityVerification = this.verifyOptimality(feasibilityCheck);\n    const robustnessAnalysis = this.analyzeRobustness(optimalityVerification);\n    const sensitivityAnalysis = this.performSensitivityAnalysis(robustnessAnalysis);\n    const stabilityAssessment = this.assessStability(sensitivityAnalysis);\n    \n    const crossValidation = this.performCrossValidation(stabilityAssessment);\n    const benchmarkComparison = this.compareToBenchmarks(crossValidation);\n    const statisticalValidation = this.performStatisticalValidation(benchmarkComparison);\n    const practicalValidation = this.performPracticalValidation(statisticalValidation);\n    const comprehensiveValidation = this.performComprehensiveValidation(practicalValidation);\n    \n    return {\n      feasibilityCheck,\n      optimalityVerification,\n      robustnessAnalysis,\n      sensitivityAnalysis,\n      stabilityAssessment,\n      crossValidation,\n      benchmarkComparison,\n      statisticalValidation,\n      practicalValidation,\n      comprehensiveValidation,\n      validationConfidence: this.calculateValidationConfidence(comprehensiveValidation),\n      solutionReliability: this.assessSolutionReliability(comprehensiveValidation)\n    };\n  }\n};\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const explainableData = item.json;\n    const hybridOptimizationResults = await hybridOptimization.performHybridOptimization(explainableData);\n    \n    results.push({\n      json: {\n        originalData: explainableData,\n        hybridOptimizationResults,\n        timestamp: new Date().toISOString(),\n        optimizationId: `hybrid_opt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,\n        processingNode: 'hybrid-optimization-engine'\n      }\n    });\n  } catch (error) {\n    results.push({\n      json: {\n        error: error.message,\n        originalData: item.json,\n        processingNode: 'hybrid-optimization-engine'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "hybrid-optimization-engine",
+      "name": "Hybrid Optimization with Logical Constraints",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1300, 500],
+      "notes": "Advanced hybrid optimization engine combining neural and symbolic solvers with logical constraints, multi-objective optimization, quantum computing integration, and comprehensive solution validation."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.neurosymbolic-platform.com/v1/reasoning",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"reasoning_type\": \"neurosymbolic_orchestration\",\n  \"source\": \"n8n_neurosymbolic_orchestrator\",\n  \"neural_symbolic_processing\": $json.neurosymbolicProcessing,\n  \"logic_deep_learning\": $json.logicDeepLearningIntegration,\n  \"causal_inference\": $json.causalInferenceNavigation,\n  \"explainable_reasoning\": $json.explainableReasoning,\n  \"symbolic_extraction\": $json.symbolicKnowledgeExtraction,\n  \"hybrid_optimization\": $json.hybridOptimizationResults,\n  \"confidence_score\": $json.neurosymbolicProcessing?.confidenceScores?.overall || 0.85,\n  \"reasoning_depth\": \"advanced\",\n  \"auto_generated\": true,\n  \"tags\": [\"neurosymbolic\", \"hybrid-ai\", \"reasoning\", \"explainable\"]\n}) }}"
+        },
+        "options": {
+          "timeout": 45000,
+          "retry": {
+            "enabled": true,
+            "maxAttempts": 3
+          }
+        }
+      },
+      "id": "neurosymbolic-platform-integration",
+      "name": "Neurosymbolic Platform Integration",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 200],
+      "notes": "Integrates comprehensive neurosymbolic reasoning results with enterprise AI platforms for advanced reasoning deployment, hybrid AI orchestration, and explainable AI applications."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.symbolic-ai.com/v2/knowledge-graphs",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"knowledge_type\": \"extracted_symbolic_knowledge\",\n  \"symbolic_knowledge\": $json.symbolicKnowledgeExtraction,\n  \"causal_relationships\": $json.causalInferenceNavigation?.causalModeling,\n  \"reasoning_chains\": $json.explainableReasoning?.reasoningChains,\n  \"optimization_constraints\": $json.hybridOptimizationResults?.constraintModeling,\n  \"neural_patterns\": $json.neurosymbolicProcessing?.neuralPatterns,\n  \"logic_rules\": $json.logicDeepLearningIntegration?.logicProgramming,\n  \"knowledge_quality\": $json.symbolicKnowledgeExtraction?.extractionQuality,\n  \"update_knowledge_graph\": true\n}) }}"
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "symbolic-knowledge-integration",
+      "name": "Symbolic Knowledge Graph Integration",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 400],
+      "notes": "Updates enterprise knowledge graphs with extracted symbolic knowledge, causal relationships, reasoning chains, and optimization constraints for enhanced AI reasoning capabilities."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.explainable-ai.com/v1/explanations",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"explanation_type\": \"neurosymbolic_reasoning_explanation\",\n  \"reasoning_chains\": $json.explainableReasoning?.reasoningChains,\n  \"explanation_generation\": $json.explainableReasoning?.explanationGeneration,\n  \"visual_explanations\": $json.explainableReasoning?.visualExplanations,\n  \"causal_explanations\": $json.causalInferenceNavigation?.causalExplanations,\n  \"transparency_mechanisms\": $json.explainableReasoning?.transparencyMechanisms,\n  \"interpretability_layers\": $json.explainableReasoning?.interpretabilityLayers,\n  \"confidence_scores\": $json.neurosymbolicProcessing?.confidenceScores,\n  \"explanation_quality\": $json.explainableReasoning?.explanationQuality,\n  \"deploy_explanations\": true\n}) }}"
+        }
+      },
+      "id": "explainable-ai-deployment",
+      "name": "Explainable AI Deployment Platform",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [1600, 600],
+      "notes": "Deploys explainable AI reasoning explanations, visual interpretations, and transparency mechanisms to enterprise explainable AI platforms for user-facing AI transparency."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "breakthrough-reasoning-detected",
+              "leftValue": "={{ $json.neurosymbolicProcessing?.neurosymbolicModel?.modelCapabilities?.breakthrough }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            },
+            {
+              "id": "high-optimization-efficiency",
+              "leftValue": "={{ $json.hybridOptimizationResults?.optimizationEfficiency }}",
+              "rightValue": 0.9,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "exceptional-explanation-quality",
+              "leftValue": "={{ $json.explainableReasoning?.explanationQuality }}",
+              "rightValue": 0.92,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combineOperation": "any"
+        }
+      },
+      "id": "breakthrough-ai-alert",
+      "name": "Breakthrough AI Achievement Alert",
+      "type": "n8n-nodes-base.If",
+      "typeVersion": 2,
+      "position": [1900, 500],
+      "notes": "Triggers alerts for breakthrough neurosymbolic AI reasoning achievements including exceptional optimization efficiency, breakthrough reasoning capabilities, and superior explanation quality."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ai-research.com/v1/breakthrough-alerts",
+        "authentication": "oAuth2",
+        "requestBody": {
+          "bodyMode": "json",
+          "jsonBody": "={{ JSON.stringify({\n  \"alert_type\": \"neurosymbolic_breakthrough\",\n  \"breakthrough_category\": \"hybrid_ai_reasoning\",\n  \"neurosymbolic_model\": $json.neurosymbolicProcessing?.neurosymbolicModel,\n  \"optimization_results\": $json.hybridOptimizationResults,\n  \"explanation_quality\": $json.explainableReasoning?.explanationQuality,\n  \"symbolic_knowledge\": $json.symbolicKnowledgeExtraction,\n  \"causal_insights\": $json.causalInferenceNavigation,\n  \"confidence_level\": $json.neurosymbolicProcessing?.confidenceScores?.overall,\n  \"research_impact\": \"high\",\n  \"priority\": \"breakthrough\",\n  \"auto_generated\": true\n}) }}"
+        }
+      },
+      "id": "research-breakthrough-notification",
+      "name": "AI Research Breakthrough Notification",
+      "type": "n8n-nodes-base.HttpRequest",
+      "typeVersion": 4,
+      "position": [2200, 500],
+      "notes": "Automatically notifies AI research communities and stakeholders of breakthrough neurosymbolic reasoning achievements with detailed technical analysis and impact assessment."
+    },
+    {
+      "parameters": {
+        "functionCode": "// Neurosymbolic Reasoning Dashboard & Analytics Engine\nconst neurosymbolicDashboard = {\n  generateDashboardData(allData) {\n    const executiveSummary = this.generateExecutiveSummary(allData);\n    const neurosymbolicMetrics = this.calculateNeurosymbolicMetrics(allData);\n    const reasoningAnalytics = this.analyzeReasoningPatterns(allData);\n    const performanceInsights = this.extractPerformanceInsights(allData);\n    const breakthroughAssessment = this.assessBreakthroughs(allData);\n    \n    return {\n      executiveSummary,\n      neurosymbolicMetrics,\n      reasoningAnalytics,\n      performanceInsights,\n      breakthroughAssessment,\n      timestamp: new Date().toISOString(),\n      dashboardId: `neurosymbolic_dashboard_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`\n    };\n  },\n  \n  generateExecutiveSummary(data) {\n    const neurosymbolicData = data.filter(d => d.neurosymbolicProcessing);\n    const logicData = data.filter(d => d.logicDeepLearningIntegration);\n    const causalData = data.filter(d => d.causalInferenceNavigation);\n    const explainableData = data.filter(d => d.explainableReasoning);\n    const symbolicData = data.filter(d => d.symbolicKnowledgeExtraction);\n    const optimizationData = data.filter(d => d.hybridOptimizationResults);\n    \n    return {\n      totalReasoningTasks: data.length,\n      highConfidenceReasoning: neurosymbolicData.filter(d => d.neurosymbolicProcessing?.confidenceScores?.overall >= 0.85).length,\n      breakthroughReasoningAchievements: neurosymbolicData.filter(d => d.neurosymbolicProcessing?.neurosymbolicModel?.modelCapabilities?.breakthrough).length,\n      complexCausalInferences: causalData.filter(d => d.causalInferenceNavigation?.causalModeling?.modelComplexity >= 0.8).length,\n      highQualityExplanations: explainableData.filter(d => d.explainableReasoning?.explanationQuality >= 0.9).length,\n      successfulSymbolicExtractions: symbolicData.filter(d => d.symbolicKnowledgeExtraction?.extractionQuality >= 0.85).length,\n      optimalOptimizations: optimizationData.filter(d => d.hybridOptimizationResults?.optimizationEfficiency >= 0.9).length,\n      overallNeurosymbolicIndex: this.calculateOverallNeurosymbolicIndex(data),\n      keyReasoningInsights: this.extractKeyReasoningInsights(data),\n      hybridAIAdvancement: this.measureHybridAIAdvancement(data),\n      explainabilityIndex: this.calculateExplainabilityIndex(explainableData)\n    };\n  },\n  \n  calculateNeurosymbolicMetrics(data) {\n    return {\n      neuralSymbolicProcessing: {\n        patternRecognitionAccuracy: this.calculatePatternRecognitionAccuracy(data),\n        symbolicGroundingQuality: this.calculateSymbolicGroundingQuality(data),\n        hybridRepresentationCoherence: this.calculateHybridRepresentationCoherence(data),\n        neurosymbolicModelReliability: this.calculateNeurosymbolicModelReliability(data)\n      },\n      logicDeepLearning: {\n        logicProgrammingAccuracy: this.calculateLogicProgrammingAccuracy(data),\n        differentiableReasoningEfficiency: this.calculateDifferentiableReasoningEfficiency(data),\n        constraintSatisfactionRate: this.calculateConstraintSatisfactionRate(data),\n        hybridInferenceQuality: this.calculateHybridInferenceQuality(data)\n      },\n      causalInference: {\n        causalDiscoveryAccuracy: this.calculateCausalDiscoveryAccuracy(data),\n        knowledgeGraphNavigationEfficiency: this.calculateKnowledgeGraphNavigationEfficiency(data),\n        interventionalAnalysisQuality: this.calculateInterventionalAnalysisQuality(data),\n        counterfactualRealism: this.calculateCounterfactualRealism(data)\n      },\n      explainableReasoning: {\n        reasoningChainCoherence: this.calculateReasoningChainCoherence(data),\n        explanationClarity: this.calculateExplanationClarity(data),\n        transparencyScore: this.calculateTransparencyScore(data),\n        interpretabilityDepth: this.calculateInterpretabilityDepth(data)\n      },\n      symbolicExtraction: {\n        symbolMiningAccuracy: this.calculateSymbolMiningAccuracy(data),\n        knowledgeDistillationEfficiency: this.calculateKnowledgeDistillationEfficiency(data),\n        ruleInductionQuality: this.calculateRuleInductionQuality(data),\n        conceptFormationCoherence: this.calculateConceptFormationCoherence(data)\n      },\n      hybridOptimization: {\n        constraintSatisfactionOptimality: this.calculateConstraintSatisfactionOptimality(data),\n        multiObjectiveOptimizationBalance: this.calculateMultiObjectiveOptimizationBalance(data),\n        solverIntegrationEfficiency: this.calculateSolverIntegrationEfficiency(data),\n        solutionRobustness: this.calculateSolutionRobustness(data)\n      }\n    };\n  },\n  \n  analyzeReasoningPatterns(data) {\n    const temporalPatterns = this.analyzeTemporalReasoningPatterns(data);\n    const complexityPatterns = this.analyzeComplexityPatterns(data);\n    const performancePatterns = this.analyzePerformancePatterns(data);\n    const errorPatterns = this.analyzeErrorPatterns(data);\n    \n    return {\n      reasoningComplexityTrends: this.analyzeReasoningComplexityTrends(data),\n      hybridAIPerformanceTrends: this.analyzeHybridAIPerformanceTrends(data),\n      explainabilityTrends: this.analyzeExplainabilityTrends(data),\n      optimizationTrends: this.analyzeOptimizationTrends(data),\n      causalInferenceTrends: this.analyzeCausalInferenceTrends(data),\n      symbolicExtractionTrends: this.analyzeSymbolicExtractionTrends(data),\n      temporalPatterns,\n      complexityPatterns,\n      performancePatterns,\n      errorPatterns,\n      patternConfidence: this.calculatePatternConfidence(temporalPatterns, complexityPatterns),\n      reasoningEvolution: this.trackReasoningEvolution(data)\n    };\n  }\n};\n\nconst items = $input.all();\nconst dashboardData = neurosymbolicDashboard.generateDashboardData(items.map(item => item.json));\n\nreturn [{\n  json: {\n    dashboardData,\n    processingNode: 'neurosymbolic-dashboard',\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "neurosymbolic-dashboard",
+      "name": "Neurosymbolic Reasoning Dashboard",
+      "type": "n8n-nodes-base.Code",
+      "typeVersion": 2,
+      "position": [1900, 300],
+      "notes": "Comprehensive neurosymbolic reasoning dashboard providing executive summaries, hybrid AI metrics, reasoning analytics, and breakthrough assessments for neurosymbolic AI orchestration monitoring."
+    }
+  ],
+  "connections": {
+    "neurosymbolic-input-gateway": {
+      "main": [
+        [
+          {
+            "node": "neural-symbolic-processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "knowledge-graph-monitor": {
+      "main": [
+        [
+          {
+            "node": "logic-deep-learning-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "neural-symbolic-processor": {
+      "main": [
+        [
+          {
+            "node": "reasoning-complexity-router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "logic-deep-learning-engine": {
+      "main": [
+        [
+          {
+            "node": "reasoning-complexity-router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reasoning-complexity-router": {
+      "main": [
+        [
+          {
+            "node": "causal-knowledge-graph-engine",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "explainable-reasoning-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "causal-knowledge-graph-engine": {
+      "main": [
+        [
+          {
+            "node": "symbolic-extraction-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "explainable-reasoning-engine": {
+      "main": [
+        [
+          {
+            "node": "hybrid-optimization-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "symbolic-extraction-engine": {
+      "main": [
+        [
+          {
+            "node": "neurosymbolic-platform-integration",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "neurosymbolic-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hybrid-optimization-engine": {
+      "main": [
+        [
+          {
+            "node": "symbolic-knowledge-integration",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "neurosymbolic-dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "neurosymbolic-platform-integration": {
+      "main": [
+        [
+          {
+            "node": "breakthrough-ai-alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "symbolic-knowledge-integration": {
+      "main": [
+        [
+          {
+            "node": "explainable-ai-deployment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "explainable-ai-deployment": {
+      "main": [
+        [
+          {
+            "node": "breakthrough-ai-alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "breakthrough-ai-alert": {
+      "main": [
+        [
+          {
+            "node": "research-breakthrough-notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "neurosymbolic-reasoning-error-handler"
+  },
+  "staticData": {},
+  "tags": [
+    {
+      "id": "neurosymbolic-ai",
+      "name": "Neurosymbolic AI"
+    },
+    {
+      "id": "hybrid-reasoning",
+      "name": "Hybrid Reasoning"
+    },
+    {
+      "id": "symbolic-ai",
+      "name": "Symbolic AI"
+    },
+    {
+      "id": "neural-networks",
+      "name": "Neural Networks"
+    },
+    {
+      "id": "explainable-ai",
+      "name": "Explainable AI"
+    },
+    {
+      "id": "causal-inference",
+      "name": "Causal Inference"
+    },
+    {
+      "id": "knowledge-graphs",
+      "name": "Knowledge Graphs"
+    },
+    {
+      "id": "logic-programming",
+      "name": "Logic Programming"
+    }
+  ],
+  "triggerCount": 2,
+  "updatedAt": "2024-12-06T12:00:00.000Z",
+  "versionId": "neurosymbolic-reasoning-orchestrator-v14"
+}

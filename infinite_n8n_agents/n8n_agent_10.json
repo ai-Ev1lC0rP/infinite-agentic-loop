@@ -1,0 +1,300 @@
+{
+  "name": "Meta-Automation Workflow Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "workflow-generator",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Workflow Request Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [260, 300],
+      "webhookId": "meta-workflow-generator"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Meta-Automation Workflow Generator - Natural Language Parser\nconst request = $input.first().json;\n\n// Enhanced NLP preprocessing for workflow generation\nclass WorkflowNLPProcessor {\n  constructor() {\n    this.intentPatterns = {\n      automation: /automate|schedule|trigger|watch|monitor/gi,\n      transformation: /transform|convert|process|format|parse/gi,\n      integration: /connect|integrate|sync|api|webhook/gi,\n      notification: /notify|alert|send|email|slack|sms/gi,\n      dataflow: /data|flow|pipeline|etl|extract|load/gi,\n      conditional: /if|when|condition|check|validate|filter/gi,\n      loop: /loop|iterate|repeat|batch|bulk/gi,\n      ai: /ai|llm|analyze|generate|predict|classify/gi\n    };\n    \n    this.complexityIndicators = {\n      simple: /single|one|basic|simple/gi,\n      medium: /multiple|several|complex|advanced/gi,\n      high: /enterprise|scalable|robust|fault.tolerant/gi\n    };\n    \n    this.nodeMapping = {\n      http: ['api', 'rest', 'endpoint', 'service'],\n      webhook: ['webhook', 'callback', 'trigger'],\n      schedule: ['cron', 'timer', 'periodic', 'schedule'],\n      email: ['email', 'mail', 'smtp', 'send'],\n      slack: ['slack', 'team', 'chat', 'message'],\n      database: ['db', 'sql', 'mongo', 'postgres', 'mysql'],\n      spreadsheet: ['excel', 'csv', 'sheet', 'google sheets'],\n      ai: ['openai', 'gpt', 'claude', 'llm', 'ai'],\n      code: ['javascript', 'python', 'custom', 'function']\n    };\n  }\n  \n  extractWorkflowIntent(description) {\n    const intents = [];\n    \n    Object.entries(this.intentPatterns).forEach(([intent, pattern]) => {\n      if (pattern.test(description)) {\n        intents.push(intent);\n      }\n    });\n    \n    return intents;\n  }\n  \n  determineComplexity(description) {\n    if (this.complexityIndicators.high.test(description)) return 'high';\n    if (this.complexityIndicators.medium.test(description)) return 'medium';\n    return 'simple';\n  }\n  \n  identifyRequiredNodes(description) {\n    const nodes = new Set();\n    const lowercaseDesc = description.toLowerCase();\n    \n    Object.entries(this.nodeMapping).forEach(([nodeType, keywords]) => {\n      keywords.forEach(keyword => {\n        if (lowercaseDesc.includes(keyword)) {\n          nodes.add(nodeType);\n        }\n      });\n    });\n    \n    return Array.from(nodes);\n  }\n  \n  extractDataSources(description) {\n    const sources = [];\n    const sourcePatterns = {\n      file: /file|csv|json|xml|document/gi,\n      api: /api|endpoint|service|rest/gi,\n      database: /database|db|table|collection/gi,\n      webhook: /webhook|callback|event/gi,\n      schedule: /schedule|timer|cron|periodic/gi\n    };\n    \n    Object.entries(sourcePatterns).forEach(([source, pattern]) => {\n      if (pattern.test(description)) {\n        sources.push(source);\n      }\n    });\n    \n    return sources;\n  }\n  \n  generateWorkflowSpecs(description) {\n    return {\n      intents: this.extractWorkflowIntent(description),\n      complexity: this.determineComplexity(description),\n      requiredNodes: this.identifyRequiredNodes(description),\n      dataSources: this.extractDataSources(description),\n      originalDescription: description,\n      timestamp: new Date().toISOString()\n    };\n  }\n}\n\nconst nlpProcessor = new WorkflowNLPProcessor();\nconst specs = nlpProcessor.generateWorkflowSpecs(request.description || request.prompt || '');\n\nreturn {\n  workflowSpecs: specs,\n  requestId: request.requestId || `req-${Date.now()}`,\n  userContext: request.userContext || {},\n  generationMode: request.mode || 'standard'\n};"
+      },
+      "id": "nlp-processor",
+      "name": "NLP Workflow Analyzer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Advanced Workflow Architecture Generator\nconst input = $input.first().json;\nconst specs = input.workflowSpecs;\n\nclass WorkflowArchitectureGenerator {\n  constructor() {\n    this.nodeTemplates = {\n      webhook: {\n        type: 'n8n-nodes-base.webhook',\n        config: { httpMethod: 'POST', responseMode: 'responseNode' }\n      },\n      schedule: {\n        type: 'n8n-nodes-base.scheduleTrigger',\n        config: { rule: { interval: [{ field: 'cronExpression' }] } }\n      },\n      http: {\n        type: 'n8n-nodes-base.httpRequest',\n        config: { method: 'GET', url: '', authentication: 'none' }\n      },\n      code: {\n        type: 'n8n-nodes-base.code',\n        config: { mode: 'runOnceForAllItems', jsCode: '' }\n      },\n      email: {\n        type: 'n8n-nodes-base.emailSend',\n        config: { transport: 'smtp' }\n      },\n      slack: {\n        type: 'n8n-nodes-base.slack',\n        config: { operation: 'postMessage' }\n      },\n      openai: {\n        type: '@n8n/n8n-nodes-langchain.openAi',\n        config: { model: 'gpt-4' }\n      },\n      switch: {\n        type: 'n8n-nodes-base.switch',\n        config: { mode: 'expression' }\n      },\n      merge: {\n        type: 'n8n-nodes-base.merge',\n        config: { mode: 'mergeByIndex' }\n      }\n    };\n    \n    this.architecturePatterns = {\n      simple: ['trigger', 'process', 'output'],\n      medium: ['trigger', 'validate', 'transform', 'condition', 'output'],\n      high: ['trigger', 'preprocess', 'parallel-branch', 'ai-enhance', 'aggregate', 'validate', 'output', 'error-handler']\n    };\n  }\n  \n  generateNodeId(type, index = 0) {\n    return `${type}-${Date.now()}-${index}`;\n  }\n  \n  createNode(type, name, position, parameters = {}) {\n    const template = this.nodeTemplates[type] || this.nodeTemplates.code;\n    return {\n      id: this.generateNodeId(type),\n      name: name,\n      type: template.type,\n      typeVersion: 2,\n      position: position,\n      parameters: { ...template.config, ...parameters }\n    };\n  }\n  \n  generateWorkflowNodes(specs) {\n    const nodes = [];\n    let xPos = 300;\n    const yPos = 400;\n    const spacing = 250;\n    \n    // Start with appropriate trigger\n    if (specs.dataSources.includes('webhook')) {\n      nodes.push(this.createNode('webhook', 'Workflow Trigger', [xPos, yPos], {\n        path: `generated-workflow-${Date.now()}`,\n        httpMethod: 'POST'\n      }));\n    } else if (specs.dataSources.includes('schedule')) {\n      nodes.push(this.createNode('schedule', 'Scheduled Trigger', [xPos, yPos], {\n        rule: { interval: [{ field: 'cronExpression', cronExpression: '0 */1 * * *' }] }\n      }));\n    } else {\n      nodes.push(this.createNode('webhook', 'Manual Trigger', [xPos, yPos]));\n    }\n    \n    xPos += spacing;\n    \n    // Add data processing based on intents\n    if (specs.intents.includes('transformation')) {\n      nodes.push(this.createNode('code', 'Data Transformer', [xPos, yPos], {\n        jsCode: this.generateTransformationCode(specs)\n      }));\n      xPos += spacing;\n    }\n    \n    // Add AI processing if detected\n    if (specs.intents.includes('ai')) {\n      nodes.push(this.createNode('openai', 'AI Processor', [xPos, yPos], {\n        operation: 'message',\n        options: {}\n      }));\n      xPos += spacing;\n    }\n    \n    // Add conditional logic for complex workflows\n    if (specs.complexity !== 'simple' && specs.intents.includes('conditional')) {\n      nodes.push(this.createNode('switch', 'Decision Logic', [xPos, yPos], {\n        rules: {\n          values: [{\n            conditions: [{\n              leftValue: '={{ $json.status }}',\n              rightValue: 'success',\n              operator: { operation: 'equals' }\n            }]\n          }]\n        }\n      }));\n      xPos += spacing;\n    }\n    \n    // Add appropriate output nodes\n    if (specs.intents.includes('notification')) {\n      if (specs.requiredNodes.includes('email')) {\n        nodes.push(this.createNode('email', 'Email Notification', [xPos, yPos + 100]));\n      }\n      if (specs.requiredNodes.includes('slack')) {\n        nodes.push(this.createNode('slack', 'Slack Notification', [xPos, yPos - 100]));\n      }\n    }\n    \n    // Add error handling for complex workflows\n    if (specs.complexity === 'high') {\n      nodes.push(this.createNode('code', 'Error Handler', [xPos + spacing, yPos + 200], {\n        jsCode: this.generateErrorHandlingCode()\n      }));\n    }\n    \n    return nodes;\n  }\n  \n  generateTransformationCode(specs) {\n    return `\n// Auto-generated transformation logic\nconst items = $input.all();\nconst transformed = items.map(item => {\n  const data = item.json;\n  \n  // Apply transformations based on detected intents\n  return {\n    ...data,\n    processed: true,\n    timestamp: new Date().toISOString(),\n    workflowId: '${specs.originalDescription.slice(0, 20)}'\n  };\n});\n\nreturn transformed;\n`;\n  }\n  \n  generateErrorHandlingCode() {\n    return `\n// Auto-generated error handling\ntry {\n  const result = $input.first().json;\n  \n  if (result.error) {\n    return {\n      status: 'error',\n      message: result.error.message,\n      timestamp: new Date().toISOString(),\n      action: 'logged_and_notified'\n    };\n  }\n  \n  return { status: 'success', data: result };\n} catch (error) {\n  return {\n    status: 'error',\n    message: error.message,\n    timestamp: new Date().toISOString()\n  };\n}\n`;\n  }\n  \n  generateConnections(nodes) {\n    const connections = {};\n    \n    for (let i = 0; i < nodes.length - 1; i++) {\n      const currentNode = nodes[i];\n      const nextNode = nodes[i + 1];\n      \n      connections[currentNode.id] = {\n        main: [[{\n          node: nextNode.id,\n          type: 'main',\n          index: 0\n        }]]\n      };\n    }\n    \n    return connections;\n  }\n  \n  generateWorkflow(specs) {\n    const nodes = this.generateWorkflowNodes(specs);\n    const connections = this.generateConnections(nodes);\n    \n    return {\n      name: `Generated: ${specs.originalDescription.slice(0, 30)}...`,\n      nodes: nodes,\n      connections: connections,\n      active: false,\n      settings: {\n        timezone: 'UTC',\n        saveManualExecutions: true\n      },\n      staticData: {},\n      meta: {\n        generated: true,\n        generatedAt: new Date().toISOString(),\n        complexity: specs.complexity,\n        intents: specs.intents,\n        version: '1.0.0'\n      }\n    };\n  }\n}\n\nconst generator = new WorkflowArchitectureGenerator();\nconst workflow = generator.generateWorkflow(specs);\n\nreturn {\n  ...input,\n  generatedWorkflow: workflow,\n  nodeCount: workflow.nodes.length,\n  architecture: 'auto-generated'\n};"
+      },
+      "id": "workflow-generator",
+      "name": "Workflow Architecture Generator",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Intelligent Node Optimization Engine\nconst input = $input.first().json;\nconst workflow = input.generatedWorkflow;\n\nclass NodeOptimizationEngine {\n  constructor() {\n    this.optimizationRules = {\n      performance: {\n        // Combine consecutive code nodes\n        mergeCodeNodes: true,\n        // Use batch processing for large datasets\n        enableBatching: true,\n        // Optimize HTTP requests\n        enableCaching: true\n      },\n      reliability: {\n        // Add retry logic\n        addRetries: true,\n        // Include error handling\n        errorHandling: true,\n        // Add logging\n        enableLogging: true\n      },\n      maintainability: {\n        // Clear naming conventions\n        standardizeNaming: true,\n        // Add documentation\n        addDocumentation: true,\n        // Consistent structure\n        standardizeStructure: true\n      }\n    };\n    \n    this.performanceMetrics = {\n      estimatedExecutionTime: 0,\n      memoryUsage: 'low',\n      apiCallCount: 0,\n      complexityScore: 0\n    };\n  }\n  \n  analyzeWorkflowComplexity(workflow) {\n    let complexityScore = 0;\n    \n    workflow.nodes.forEach(node => {\n      switch (node.type) {\n        case 'n8n-nodes-base.code':\n          complexityScore += 3;\n          break;\n        case 'n8n-nodes-base.httpRequest':\n          complexityScore += 2;\n          this.performanceMetrics.apiCallCount++;\n          break;\n        case '@n8n/n8n-nodes-langchain.openAi':\n          complexityScore += 5;\n          this.performanceMetrics.apiCallCount++;\n          break;\n        case 'n8n-nodes-base.switch':\n          complexityScore += 2;\n          break;\n        default:\n          complexityScore += 1;\n      }\n    });\n    \n    this.performanceMetrics.complexityScore = complexityScore;\n    this.performanceMetrics.estimatedExecutionTime = complexityScore * 0.5; // seconds\n    \n    return complexityScore;\n  }\n  \n  optimizeNodes(workflow) {\n    const optimizedNodes = workflow.nodes.map(node => {\n      const optimizedNode = { ...node };\n      \n      // Add retry logic to HTTP nodes\n      if (node.type === 'n8n-nodes-base.httpRequest') {\n        optimizedNode.parameters = {\n          ...optimizedNode.parameters,\n          options: {\n            ...optimizedNode.parameters.options,\n            retry: {\n              enabled: true,\n              maxAttempts: 3,\n              waitBetween: 1000\n            },\n            timeout: 30000\n          }\n        };\n      }\n      \n      // Optimize code nodes with error handling\n      if (node.type === 'n8n-nodes-base.code') {\n        const originalCode = optimizedNode.parameters.jsCode || '';\n        optimizedNode.parameters.jsCode = this.wrapCodeWithErrorHandling(originalCode, node.name);\n      }\n      \n      // Add caching to AI nodes\n      if (node.type.includes('langchain') || node.type.includes('openAi')) {\n        optimizedNode.parameters = {\n          ...optimizedNode.parameters,\n          options: {\n            ...optimizedNode.parameters.options,\n            cache: true,\n            temperature: 0.1 // More deterministic for caching\n          }\n        };\n      }\n      \n      return optimizedNode;\n    });\n    \n    return optimizedNodes;\n  }\n  \n  wrapCodeWithErrorHandling(originalCode, nodeName) {\n    return `\n// Auto-optimized code with error handling for: ${nodeName}\ntry {\n  const startTime = Date.now();\n  \n  // Original code execution\n  const result = (() => {\n${originalCode.split('\\n').map(line => '    ' + line).join('\\n')}\n  })();\n  \n  const executionTime = Date.now() - startTime;\n  \n  // Add performance metadata\n  if (Array.isArray(result)) {\n    return result.map(item => ({\n      ...item,\n      _meta: {\n        executionTime,\n        nodeOptimized: true,\n        timestamp: new Date().toISOString()\n      }\n    }));\n  } else {\n    return {\n      ...result,\n      _meta: {\n        executionTime,\n        nodeOptimized: true,\n        timestamp: new Date().toISOString()\n      }\n    };\n  }\n  \n} catch (error) {\n  return {\n    error: true,\n    message: error.message,\n    stack: error.stack,\n    nodeName: '${nodeName}',\n    timestamp: new Date().toISOString()\n  };\n}\n`;\n  }\n  \n  addPerformanceMonitoring(workflow) {\n    // Add a performance monitoring node at the end\n    const monitoringNode = {\n      id: `monitor-${Date.now()}`,\n      name: 'Performance Monitor',\n      type: 'n8n-nodes-base.code',\n      typeVersion: 2,\n      position: [workflow.nodes[workflow.nodes.length - 1].position[0] + 250, workflow.nodes[workflow.nodes.length - 1].position[1]],\n      parameters: {\n        jsCode: `\n// Auto-generated performance monitoring\nconst items = $input.all();\nconst totalItems = items.length;\nconst errors = items.filter(item => item.json.error).length;\nconst successRate = ((totalItems - errors) / totalItems * 100).toFixed(2);\n\nconst performanceReport = {\n  workflow: {\n    name: '${workflow.name}',\n    executionId: $execution.id,\n    timestamp: new Date().toISOString()\n  },\n  metrics: {\n    totalItems,\n    errors,\n    successRate: successRate + '%',\n    estimatedCost: ${this.performanceMetrics.apiCallCount} * 0.002 // rough API cost estimate\n  },\n  recommendations: [\n    errors > 0 ? 'Review error handling in failing nodes' : 'Workflow executing successfully',\n    successRate < 95 ? 'Consider adding retry logic' : 'Good success rate',\n    'Monitor API usage costs'\n  ]\n};\n\nreturn [{ json: performanceReport }, ...items];\n`\n      }\n    };\n    \n    return [...workflow.nodes, monitoringNode];\n  }\n  \n  optimizeWorkflow(workflow) {\n    const complexityScore = this.analyzeWorkflowComplexity(workflow);\n    const optimizedNodes = this.optimizeNodes(workflow);\n    const nodesWithMonitoring = this.addPerformanceMonitoring({\n      ...workflow,\n      nodes: optimizedNodes\n    });\n    \n    // Regenerate connections to include monitoring node\n    const connections = { ...workflow.connections };\n    if (nodesWithMonitoring.length > optimizedNodes.length) {\n      const lastOptimizedNode = optimizedNodes[optimizedNodes.length - 1];\n      const monitoringNode = nodesWithMonitoring[nodesWithMonitoring.length - 1];\n      \n      connections[lastOptimizedNode.id] = {\n        main: [[{\n          node: monitoringNode.id,\n          type: 'main',\n          index: 0\n        }]]\n      };\n    }\n    \n    return {\n      ...workflow,\n      nodes: nodesWithMonitoring,\n      connections,\n      meta: {\n        ...workflow.meta,\n        optimized: true,\n        optimizationApplied: new Date().toISOString(),\n        performanceMetrics: this.performanceMetrics,\n        optimizationRules: Object.keys(this.optimizationRules)\n      }\n    };\n  }\n}\n\nconst optimizer = new NodeOptimizationEngine();\nconst optimizedWorkflow = optimizer.optimizeWorkflow(workflow);\n\nreturn {\n  ...input,\n  optimizedWorkflow,\n  optimizationMetrics: optimizer.performanceMetrics,\n  optimizationApplied: true\n};"
+      },
+      "id": "node-optimizer",
+      "name": "Node Optimization Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Advanced Workflow Testing Framework\nconst input = $input.first().json;\nconst workflow = input.optimizedWorkflow;\n\nclass WorkflowTestingFramework {\n  constructor() {\n    this.testSuites = {\n      syntax: 'Syntax and structure validation',\n      logic: 'Logic flow and connections test',\n      performance: 'Performance and efficiency test',\n      security: 'Security and data validation test',\n      integration: 'API and service integration test'\n    };\n    \n    this.testResults = {\n      passed: 0,\n      failed: 0,\n      warnings: 0,\n      details: []\n    };\n  }\n  \n  validateSyntax(workflow) {\n    const issues = [];\n    \n    // Check for required fields\n    if (!workflow.name || workflow.name.trim() === '') {\n      issues.push('Workflow name is missing or empty');\n    }\n    \n    if (!workflow.nodes || workflow.nodes.length === 0) {\n      issues.push('Workflow has no nodes');\n    }\n    \n    // Validate nodes\n    workflow.nodes.forEach((node, index) => {\n      if (!node.id || !node.name || !node.type) {\n        issues.push(`Node ${index} is missing required fields (id, name, type)`);\n      }\n      \n      if (!node.position || !Array.isArray(node.position) || node.position.length !== 2) {\n        issues.push(`Node ${node.name} has invalid position`);\n      }\n      \n      // Validate code nodes for syntax\n      if (node.type === 'n8n-nodes-base.code' && node.parameters && node.parameters.jsCode) {\n        try {\n          new Function(node.parameters.jsCode);\n        } catch (error) {\n          issues.push(`Code node ${node.name} has syntax error: ${error.message}`);\n        }\n      }\n    });\n    \n    return {\n      testName: 'Syntax Validation',\n      passed: issues.length === 0,\n      issues: issues,\n      score: issues.length === 0 ? 100 : Math.max(0, 100 - issues.length * 10)\n    };\n  }\n  \n  validateLogicFlow(workflow) {\n    const issues = [];\n    const nodeIds = new Set(workflow.nodes.map(node => node.id));\n    \n    // Check connections validity\n    if (workflow.connections) {\n      Object.entries(workflow.connections).forEach(([sourceId, connections]) => {\n        if (!nodeIds.has(sourceId)) {\n          issues.push(`Connection source node ${sourceId} does not exist`);\n        }\n        \n        if (connections.main) {\n          connections.main.forEach((connectionArray, index) => {\n            connectionArray.forEach(connection => {\n              if (!nodeIds.has(connection.node)) {\n                issues.push(`Connection target node ${connection.node} does not exist`);\n              }\n            });\n          });\n        }\n      });\n    }\n    \n    // Check for orphaned nodes (nodes with no connections)\n    const connectedNodes = new Set();\n    if (workflow.connections) {\n      Object.entries(workflow.connections).forEach(([sourceId, connections]) => {\n        connectedNodes.add(sourceId);\n        if (connections.main) {\n          connections.main.forEach(connectionArray => {\n            connectionArray.forEach(connection => {\n              connectedNodes.add(connection.node);\n            });\n          });\n        }\n      });\n    }\n    \n    const orphanedNodes = workflow.nodes.filter(node => !connectedNodes.has(node.id));\n    if (orphanedNodes.length > 1) { // Allow one trigger node to be unconnected\n      issues.push(`Found ${orphanedNodes.length} potentially orphaned nodes`);\n    }\n    \n    return {\n      testName: 'Logic Flow Validation',\n      passed: issues.length === 0,\n      issues: issues,\n      score: issues.length === 0 ? 100 : Math.max(0, 100 - issues.length * 15)\n    };\n  }\n  \n  performanceAnalysis(workflow) {\n    const issues = [];\n    const warnings = [];\n    \n    // Count potentially expensive operations\n    let expensiveOps = 0;\n    let codeNodes = 0;\n    let apiNodes = 0;\n    \n    workflow.nodes.forEach(node => {\n      if (node.type === 'n8n-nodes-base.code') {\n        codeNodes++;\n        // Check for potentially expensive operations in code\n        if (node.parameters && node.parameters.jsCode) {\n          if (node.parameters.jsCode.includes('while') || node.parameters.jsCode.includes('for')) {\n            warnings.push(`Code node ${node.name} contains loops - monitor performance`);\n          }\n        }\n      }\n      \n      if (node.type.includes('http') || node.type.includes('api')) {\n        apiNodes++;\n        expensiveOps++;\n      }\n      \n      if (node.type.includes('langchain') || node.type.includes('openAi')) {\n        expensiveOps += 3; // AI operations are more expensive\n      }\n    });\n    \n    if (expensiveOps > 5) {\n      issues.push('High number of expensive operations detected - consider optimization');\n    }\n    \n    if (codeNodes > 3) {\n      warnings.push('Multiple code nodes detected - consider consolidation');\n    }\n    \n    const performanceScore = Math.max(0, 100 - expensiveOps * 5 - warnings.length * 2);\n    \n    return {\n      testName: 'Performance Analysis',\n      passed: issues.length === 0,\n      issues: issues,\n      warnings: warnings,\n      metrics: {\n        expensiveOperations: expensiveOps,\n        codeNodes: codeNodes,\n        apiNodes: apiNodes\n      },\n      score: performanceScore\n    };\n  }\n  \n  securityValidation(workflow) {\n    const issues = [];\n    const warnings = [];\n    \n    workflow.nodes.forEach(node => {\n      // Check for hardcoded credentials or sensitive data\n      if (node.parameters) {\n        const paramStr = JSON.stringify(node.parameters).toLowerCase();\n        \n        if (paramStr.includes('password') || paramStr.includes('secret') || paramStr.includes('key')) {\n          // Check if it's using expressions or hardcoded\n          if (!paramStr.includes('{{') && !paramStr.includes('$')) {\n            issues.push(`Node ${node.name} may contain hardcoded credentials`);\n          }\n        }\n        \n        // Check for potential injection vulnerabilities in code nodes\n        if (node.type === 'n8n-nodes-base.code' && node.parameters.jsCode) {\n          if (node.parameters.jsCode.includes('eval(') || node.parameters.jsCode.includes('Function(')) {\n            warnings.push(`Code node ${node.name} uses potentially unsafe eval/Function`);\n          }\n        }\n      }\n    });\n    \n    return {\n      testName: 'Security Validation',\n      passed: issues.length === 0,\n      issues: issues,\n      warnings: warnings,\n      score: issues.length === 0 ? 100 : Math.max(0, 100 - issues.length * 20)\n    };\n  }\n  \n  runAllTests(workflow) {\n    const tests = [\n      this.validateSyntax(workflow),\n      this.validateLogicFlow(workflow),\n      this.performanceAnalysis(workflow),\n      this.securityValidation(workflow)\n    ];\n    \n    const totalScore = tests.reduce((sum, test) => sum + test.score, 0) / tests.length;\n    const allPassed = tests.every(test => test.passed);\n    const totalWarnings = tests.reduce((sum, test) => sum + (test.warnings ? test.warnings.length : 0), 0);\n    \n    return {\n      summary: {\n        overallScore: Math.round(totalScore),\n        allTestsPassed: allPassed,\n        totalWarnings: totalWarnings,\n        recommendation: this.getRecommendation(totalScore, allPassed, totalWarnings)\n      },\n      testResults: tests,\n      timestamp: new Date().toISOString()\n    };\n  }\n  \n  getRecommendation(score, passed, warnings) {\n    if (score >= 90 && passed) {\n      return 'Excellent workflow quality - ready for production';\n    } else if (score >= 75) {\n      return 'Good workflow - minor optimizations recommended';\n    } else if (score >= 60) {\n      return 'Acceptable workflow - several improvements needed';\n    } else {\n      return 'Workflow needs significant improvements before deployment';\n    }\n  }\n}\n\nconst tester = new WorkflowTestingFramework();\nconst testResults = tester.runAllTests(workflow);\n\nreturn {\n  ...input,\n  testResults,\n  workflowQuality: testResults.summary.overallScore,\n  readyForDeployment: testResults.summary.allTestsPassed && testResults.summary.overallScore >= 75\n};"
+      },
+      "id": "workflow-tester",
+      "name": "Workflow Testing Framework",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Self-Improving Algorithm Engine\nconst input = $input.first().json;\nconst workflow = input.optimizedWorkflow;\nconst testResults = input.testResults;\n\nclass SelfImprovingEngine {\n  constructor() {\n    this.learningDatabase = {\n      patternRecognition: new Map(),\n      optimizationHistory: [],\n      successPatterns: [],\n      failurePatterns: []\n    };\n    \n    this.improvementStrategies = {\n      performance: {\n        caching: 'Add intelligent caching layers',\n        batching: 'Implement batch processing',\n        parallelization: 'Add parallel execution paths',\n        optimization: 'Optimize code and queries'\n      },\n      reliability: {\n        errorHandling: 'Enhanced error handling and recovery',\n        retries: 'Intelligent retry mechanisms',\n        monitoring: 'Advanced monitoring and alerting',\n        fallbacks: 'Fallback strategies for failures'\n      },\n      maintainability: {\n        modularity: 'Break down into reusable modules',\n        documentation: 'Auto-generate comprehensive documentation',\n        testing: 'Add automated testing capabilities',\n        standards: 'Apply coding standards and conventions'\n      }\n    };\n  }\n  \n  analyzeWorkflowPatterns(workflow) {\n    const patterns = {\n      nodeSequences: [],\n      commonConfigurations: {},\n      architecturalPatterns: [],\n      dataFlowPatterns: []\n    };\n    \n    // Analyze node sequences\n    for (let i = 0; i < workflow.nodes.length - 1; i++) {\n      const current = workflow.nodes[i];\n      const next = workflow.nodes[i + 1];\n      const sequence = `${current.type}->${next.type}`;\n      patterns.nodeSequences.push(sequence);\n    }\n    \n    // Identify architectural patterns\n    const nodeTypes = workflow.nodes.map(node => node.type);\n    if (nodeTypes.includes('n8n-nodes-base.webhook') && nodeTypes.includes('n8n-nodes-base.httpRequest')) {\n      patterns.architecturalPatterns.push('webhook-to-api');\n    }\n    if (nodeTypes.filter(type => type === 'n8n-nodes-base.code').length > 2) {\n      patterns.architecturalPatterns.push('code-heavy');\n    }\n    if (nodeTypes.includes('n8n-nodes-base.switch')) {\n      patterns.architecturalPatterns.push('conditional-logic');\n    }\n    \n    return patterns;\n  }\n  \n  generateImprovementSuggestions(workflow, testResults) {\n    const suggestions = [];\n    \n    // Analyze test results for improvement opportunities\n    testResults.testResults.forEach(test => {\n      if (!test.passed || test.score < 90) {\n        test.issues.forEach(issue => {\n          suggestions.push({\n            type: 'fix',\n            priority: 'high',\n            category: test.testName,\n            description: issue,\n            suggestedAction: this.getSuggestedActionForIssue(issue)\n          });\n        });\n      }\n      \n      if (test.warnings) {\n        test.warnings.forEach(warning => {\n          suggestions.push({\n            type: 'optimization',\n            priority: 'medium',\n            category: test.testName,\n            description: warning,\n            suggestedAction: this.getSuggestedActionForWarning(warning)\n          });\n        });\n      }\n    });\n    \n    // Add proactive improvement suggestions\n    const patterns = this.analyzeWorkflowPatterns(workflow);\n    \n    if (patterns.nodeSequences.filter(seq => seq.includes('code')).length > 3) {\n      suggestions.push({\n        type: 'enhancement',\n        priority: 'medium',\n        category: 'Performance',\n        description: 'Multiple code nodes detected',\n        suggestedAction: 'Consider consolidating code nodes or using sub-workflows'\n      });\n    }\n    \n    if (!workflow.nodes.some(node => node.name.toLowerCase().includes('error'))) {\n      suggestions.push({\n        type: 'enhancement',\n        priority: 'high',\n        category: 'Reliability',\n        description: 'No dedicated error handling detected',\n        suggestedAction: 'Add centralized error handling and logging'\n      });\n    }\n    \n    return suggestions;\n  }\n  \n  getSuggestedActionForIssue(issue) {\n    if (issue.includes('syntax')) return 'Review and fix code syntax errors';\n    if (issue.includes('connection')) return 'Verify and fix node connections';\n    if (issue.includes('credential')) return 'Use environment variables for sensitive data';\n    if (issue.includes('performance')) return 'Optimize expensive operations and add caching';\n    return 'Review workflow configuration and fix identified issues';\n  }\n  \n  getSuggestedActionForWarning(warning) {\n    if (warning.includes('loop')) return 'Add performance monitoring and consider pagination';\n    if (warning.includes('eval')) return 'Replace eval with safer alternatives';\n    if (warning.includes('consolidation')) return 'Merge similar nodes to reduce complexity';\n    return 'Consider optimization to improve workflow efficiency';\n  }\n  \n  generateEvolutionPlan(workflow, suggestions) {\n    const plan = {\n      currentVersion: workflow.meta?.version || '1.0.0',\n      nextVersion: this.incrementVersion(workflow.meta?.version || '1.0.0'),\n      evolutionSteps: [],\n      estimatedImprovementScore: 0\n    };\n    \n    // Prioritize suggestions\n    const prioritizedSuggestions = suggestions.sort((a, b) => {\n      const priorityOrder = { high: 3, medium: 2, low: 1 };\n      return priorityOrder[b.priority] - priorityOrder[a.priority];\n    });\n    \n    // Generate evolution steps\n    prioritizedSuggestions.slice(0, 5).forEach((suggestion, index) => {\n      plan.evolutionSteps.push({\n        step: index + 1,\n        action: suggestion.suggestedAction,\n        category: suggestion.category,\n        priority: suggestion.priority,\n        estimatedImpact: this.estimateImpact(suggestion),\n        automatable: this.isAutomatable(suggestion)\n      });\n    });\n    \n    // Calculate estimated improvement\n    plan.estimatedImprovementScore = plan.evolutionSteps.reduce((sum, step) => {\n      return sum + step.estimatedImpact;\n    }, 0);\n    \n    return plan;\n  }\n  \n  incrementVersion(version) {\n    const parts = version.split('.');\n    const patch = parseInt(parts[2] || 0) + 1;\n    return `${parts[0]}.${parts[1]}.${patch}`;\n  }\n  \n  estimateImpact(suggestion) {\n    const impactMap = {\n      high: 15,\n      medium: 10,\n      low: 5\n    };\n    return impactMap[suggestion.priority] || 5;\n  }\n  \n  isAutomatable(suggestion) {\n    const automatableActions = [\n      'add error handling',\n      'optimize code',\n      'add caching',\n      'consolidate nodes'\n    ];\n    \n    return automatableActions.some(action => \n      suggestion.suggestedAction.toLowerCase().includes(action)\n    );\n  }\n  \n  generateLearningInsights(workflow, testResults, suggestions) {\n    return {\n      workflowComplexity: this.calculateComplexity(workflow),\n      commonPatterns: this.analyzeWorkflowPatterns(workflow).architecturalPatterns,\n      qualityMetrics: {\n        overallScore: testResults.summary.overallScore,\n        testsPassed: testResults.summary.allTestsPassed,\n        warningCount: testResults.summary.totalWarnings\n      },\n      improvementOpportunities: suggestions.length,\n      nextIterationFocus: this.determineNextFocus(suggestions),\n      learningModel: {\n        updateTimestamp: new Date().toISOString(),\n        dataPoints: suggestions.length,\n        confidenceScore: Math.min(95, testResults.summary.overallScore + 10)\n      }\n    };\n  }\n  \n  calculateComplexity(workflow) {\n    const nodeCount = workflow.nodes.length;\n    const connectionCount = Object.keys(workflow.connections || {}).length;\n    const codeNodeCount = workflow.nodes.filter(node => node.type === 'n8n-nodes-base.code').length;\n    \n    return Math.round((nodeCount * 2 + connectionCount + codeNodeCount * 3) / 4);\n  }\n  \n  determineNextFocus(suggestions) {\n    const categories = {};\n    suggestions.forEach(suggestion => {\n      categories[suggestion.category] = (categories[suggestion.category] || 0) + 1;\n    });\n    \n    const topCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];\n    return topCategory ? topCategory[0] : 'General Optimization';\n  }\n}\n\nconst engine = new SelfImprovingEngine();\nconst suggestions = engine.generateImprovementSuggestions(workflow, testResults);\nconst evolutionPlan = engine.generateEvolutionPlan(workflow, suggestions);\nconst learningInsights = engine.generateLearningInsights(workflow, testResults, suggestions);\n\nreturn {\n  ...input,\n  improvementSuggestions: suggestions,\n  evolutionPlan,\n  learningInsights,\n  nextIterationReady: true,\n  metaGeneration: {\n    timestamp: new Date().toISOString(),\n    version: evolutionPlan.nextVersion,\n    selfImprovement: true\n  }\n};"
+      },
+      "id": "self-improving-engine",
+      "name": "Self-Improving Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "deployment-ready",
+              "leftValue": "={{ $json.readyForDeployment }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "deployment-check",
+      "name": "Deployment Readiness Check",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.n8n.cloud/workflows",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "n8nApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow",
+              "value": "={{ JSON.stringify($json.optimizedWorkflow) }}"
+            },
+            {
+              "name": "activate",
+              "value": "false"
+            },
+            {
+              "name": "meta",
+              "value": "={{ JSON.stringify($json.metaGeneration) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "deploy-workflow",
+      "name": "Deploy Generated Workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1920, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Workflow Generation Report Generator\nconst input = $input.first().json;\n\nconst report = {\n  generation: {\n    requestId: input.requestId,\n    timestamp: new Date().toISOString(),\n    originalRequest: input.workflowSpecs.originalDescription,\n    complexity: input.workflowSpecs.complexity,\n    detectedIntents: input.workflowSpecs.intents\n  },\n  \n  workflow: {\n    name: input.optimizedWorkflow.name,\n    nodeCount: input.optimizedWorkflow.nodes.length,\n    connectionCount: Object.keys(input.optimizedWorkflow.connections || {}).length,\n    estimatedExecutionTime: input.optimizationMetrics.estimatedExecutionTime,\n    apiCallCount: input.optimizationMetrics.apiCallCount\n  },\n  \n  quality: {\n    overallScore: input.testResults.summary.overallScore,\n    testsPassed: input.testResults.summary.allTestsPassed,\n    warnings: input.testResults.summary.totalWarnings,\n    recommendation: input.testResults.summary.recommendation\n  },\n  \n  improvements: {\n    suggestionsCount: input.improvementSuggestions.length,\n    nextFocus: input.learningInsights.nextIterationFocus,\n    evolutionPlan: input.evolutionPlan,\n    automatable: input.improvementSuggestions.filter(s => s.automatable).length\n  },\n  \n  deployment: {\n    ready: input.readyForDeployment,\n    status: input.readyForDeployment ? 'approved' : 'needs-improvement',\n    nextSteps: input.readyForDeployment ? \n      ['Deploy to staging', 'Monitor performance', 'Collect feedback'] :\n      input.improvementSuggestions.slice(0, 3).map(s => s.suggestedAction)\n  },\n  \n  meta: {\n    generatedBy: 'Meta-Automation Workflow Generator v2.0',\n    aiModel: 'Self-Improving Neural Architecture',\n    version: input.evolutionPlan.nextVersion,\n    learningEnabled: true,\n    confidenceScore: input.learningInsights.learningModel.confidenceScore\n  }\n};\n\nreturn {\n  json: report,\n  binary: {}\n};"
+      },
+      "id": "generation-report",
+      "name": "Generation Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Store Learning Data for Future Improvements\nconst input = $input.first().json;\n\n// Simulate storing learning data (in real implementation, this would connect to a database)\nconst learningData = {\n  workflowPattern: {\n    originalDescription: input.workflowSpecs.originalDescription,\n    detectedIntents: input.workflowSpecs.intents,\n    complexity: input.workflowSpecs.complexity,\n    requiredNodes: input.workflowSpecs.requiredNodes\n  },\n  \n  generationResults: {\n    nodeCount: input.optimizedWorkflow.nodes.length,\n    qualityScore: input.testResults.summary.overallScore,\n    deploymentReady: input.readyForDeployment,\n    improvementCount: input.improvementSuggestions.length\n  },\n  \n  performanceMetrics: input.optimizationMetrics,\n  \n  learningInsights: input.learningInsights,\n  \n  feedback: {\n    timestamp: new Date().toISOString(),\n    dataPoint: true,\n    qualityImprovement: 0, // Will be updated when user provides feedback\n    usageMetrics: {} // Will be populated during workflow execution\n  }\n};\n\n// In a real implementation, this would:\n// 1. Store to a machine learning database\n// 2. Update neural network weights\n// 3. Improve pattern recognition\n// 4. Enhance future workflow generation\n\nreturn {\n  json: {\n    learningDataStored: true,\n    dataPointId: `learn-${Date.now()}`,\n    nextModelUpdate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours\n    improvementCycle: 'continuous',\n    ...input\n  }\n};"
+      },
+      "id": "learning-storage",
+      "name": "Store Learning Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 600]
+    }
+  ],
+  "connections": {
+    "webhook-trigger": {
+      "main": [
+        [
+          {
+            "node": "nlp-processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "nlp-processor": {
+      "main": [
+        [
+          {
+            "node": "workflow-generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "workflow-generator": {
+      "main": [
+        [
+          {
+            "node": "node-optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "node-optimizer": {
+      "main": [
+        [
+          {
+            "node": "workflow-tester",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "workflow-tester": {
+      "main": [
+        [
+          {
+            "node": "self-improving-engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "self-improving-engine": {
+      "main": [
+        [
+          {
+            "node": "deployment-check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deployment-check": {
+      "main": [
+        [
+          {
+            "node": "deploy-workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "generation-report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deploy-workflow": {
+      "main": [
+        [
+          {
+            "node": "generation-report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generation-report": {
+      "main": [
+        [
+          {
+            "node": "learning-storage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "timezone": "UTC",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "error-handler-workflow"
+  },
+  "staticData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "meta-automation-generator-v2"
+  },
+  "id": "meta-automation-workflow-generator",
+  "tags": [
+    {
+      "createdAt": "2024-12-06T00:00:00.000Z",
+      "updatedAt": "2024-12-06T00:00:00.000Z",
+      "id": "meta-automation",
+      "name": "Meta Automation"
+    },
+    {
+      "createdAt": "2024-12-06T00:00:00.000Z", 
+      "updatedAt": "2024-12-06T00:00:00.000Z",
+      "id": "self-improving",
+      "name": "Self Improving"
+    },
+    {
+      "createdAt": "2024-12-06T00:00:00.000Z",
+      "updatedAt": "2024-12-06T00:00:00.000Z", 
+      "id": "ai-generated",
+      "name": "AI Generated"
+    }
+  ]
+}
